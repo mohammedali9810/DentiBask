@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
-import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -24,11 +23,17 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import Charts from "./Chart";
-import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
+import logo from "./logo.png";
+import darklogo from "./darklogo.png";
+import { useContext } from "react";
+import { Theme } from "../../themecontext";
+import "./dashboard.css";
 
 import Products from "../productsdashboard/products";
+import Customers from "../customers/customers";
+import Settings from "../settings/settings";
 
 
 const drawerWidth = 240;
@@ -77,10 +82,11 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
+
 
 export default function Dashboard() {
+  const { theme } = useContext(Theme);
+  const mode = theme ? "darkmode" : "lightmode";
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -89,8 +95,8 @@ export default function Dashboard() {
   const [view,setView] = React.useState(<Charts/>);
   //////////////////////////////////////////////////////////////////////////////
   const mainListItems = (
-    <React.Fragment>
-      <ListItemButton>
+    <React.Fragment >
+      <ListItemButton >
         <ListItemIcon>
           <DashboardIcon style={{color:"#0096FF"}}/>
         </ListItemIcon>
@@ -98,42 +104,45 @@ export default function Dashboard() {
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
-          <ShoppingCartIcon />
+          <ShoppingCartIcon className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Products/>)}} primary="Products" />
+        
+        <ListItemText onClick={()=>{setView(<Products/>)}} primary="Products"  />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
-          <PeopleIcon />
+          <PeopleIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary="Customers" />
+        <ListItemText onClick={()=>{setView(<Customers/>)}} primary="Customers" />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
-          <BarChartIcon />
+          <BarChartIcon  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary="Orders" />
       </ListItemButton>
+
       <ListItemButton>
         <ListItemIcon>
-          <LayersIcon />
+          <LayersIcon  className={theme && "darkicon"} />
+        </ListItemIcon>
+        <ListItemText primary="Categories" />
+      </ListItemButton>
+
+      <ListItemButton>
+        <ListItemIcon>
+          <LayersIcon  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary="Rents" />
       </ListItemButton>
   
       <ListItemButton>
         <ListItemIcon>
-          <LayersIcon />
+          <LayersIcon  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary="Transactions" />
       </ListItemButton>
-  
-      <ListItemButton>
-        <ListItemIcon>
-          <LayersIcon />
-        </ListItemIcon>
-        <ListItemText primary="Rents" />
-      </ListItemButton>
+
       
     </React.Fragment>
   );
@@ -142,13 +151,13 @@ export default function Dashboard() {
     <React.Fragment>
       <ListItemButton>
         <ListItemIcon>
-          <AssignmentIcon />
+          <AssignmentIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary="Settings" />
+        <ListItemText onClick={()=>{setView(<Settings/>)}} primary="Settings" />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
-          <AssignmentIcon />
+          <AssignmentIcon  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>
@@ -159,11 +168,12 @@ export default function Dashboard() {
 
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: "flex" }}>
+
+      <Box className={mode} sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar  position="absolute" open={open}>
           <Toolbar
+          className={theme && "darknav"}
             sx={{
               pr: "24px",
             }}
@@ -201,7 +211,7 @@ export default function Dashboard() {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open}>
+        <Drawer variant="permanent" open={open} >
           <Toolbar
             sx={{
               display: "flex",
@@ -209,13 +219,17 @@ export default function Dashboard() {
               justifyContent: "flex-end",
               px: [1],
             }}
+            className={theme ? "darkmodesidebar" : "lightsidebar"}
           >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
+          <img src={theme ? darklogo :logo} alt="logo" style={{marginTop:"1rem"}} />
+            <IconButton  onClick={toggleDrawer} >
+              <ChevronLeftIcon  className={theme && "darkicon"} />
             </IconButton>
+            
           </Toolbar>
-          <Divider />
-          <List component="nav">
+
+          <List style={{height:"100%"}} component="nav" className={theme ? "darkmodesidebar" : "lightsidebar"}>
+
             {mainListItems}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
@@ -224,33 +238,28 @@ export default function Dashboard() {
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",
           }}
         >
           <Toolbar />
+          <Paper
+  className={`${mode} ${mode === 'darkmode' ? 'dark-paper' : ''}`} 
+  sx={{
+    p: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: mode === 'darkmode' ? 'black' : '', 
+    color: mode === 'darkmode' ? 'white' : '', 
+  }}
+>
+  {view}
+</Paper>
 
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 640,
-                  }}
-                >
-          {view}
-          </Paper>
-              </Grid>
-          </Container>
+
+
         </Box>
       </Box>
-    </ThemeProvider>
   );
 }

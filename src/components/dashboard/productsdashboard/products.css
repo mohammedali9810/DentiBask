@@ -1,0 +1,11 @@
+.productsgrid{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    padding: .5rem;
+    gap: 3rem;
+    margin-bottom: 2rem;
+}
+.darkcard{
+    background-color: rgb(57, 55, 55);
+    color: white;
+}

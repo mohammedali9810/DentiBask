@@ -1,0 +1,20 @@
+.darkmode{
+    background-color: black;
+    color: white;
+}
+.darknav{
+    background-color: rgb(14, 4, 73);
+}
+.lightsidebar{
+    background-color: white;
+}
+.darkmodesidebar{
+    background-color: rgb(14, 4, 73);
+    
+    color: white;
+}
+
+.darkicon{
+    color: white;
+}
+
