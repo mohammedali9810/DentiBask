@@ -1,0 +1,16 @@
+div {
+  color: rgb(110, 185, 255);
+  /* text-decoration: none; */
+}
+
+#numberOfOrders {
+  position: relative;
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+  border-radius: 50%;
+  padding: 1px 3px;
+  background-color: red;
+  top: -5px;
+  right: 5px;
+}
