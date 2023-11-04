@@ -29,6 +29,9 @@ import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
 
 import Products from "../productsdashboard/products";
+import Orders from "../ordersdashboard/orders";
+import Rents from "../rentsdashboard/rents";
+import Transactions from "../Transactionsdashboard/transactions";
 
 
 const drawerWidth = 240;
@@ -112,28 +115,22 @@ export default function Dashboard() {
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Orders" />
+        <ListItemText onClick={()=>{setView(<Orders/>)}} primary="Orders" />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
           <LayersIcon />
         </ListItemIcon>
-        <ListItemText primary="Rents" />
+        <ListItemText onClick={()=>{setView(<Rents/>)}} primary="Rents" />
       </ListItemButton>
   
       <ListItemButton>
         <ListItemIcon>
           <LayersIcon />
         </ListItemIcon>
-        <ListItemText primary="Transactions" />
+        <ListItemText onClick={()=>{setView(<Transactions/>)}} primary="Transactions" />
       </ListItemButton>
   
-      <ListItemButton>
-        <ListItemIcon>
-          <LayersIcon />
-        </ListItemIcon>
-        <ListItemText primary="Rents" />
-      </ListItemButton>
       
     </React.Fragment>
   );
