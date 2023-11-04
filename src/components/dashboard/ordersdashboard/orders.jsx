@@ -12,12 +12,19 @@ import {
   Paper,
   Button,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [openSeeOrderDialog, setOpenSeeOrderDialog] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     fetchOrders();
@@ -42,9 +49,13 @@ const Orders = () => {
     setCurrentPage(page);
   };
 
-  const handleSeeOrder = (orderId) => {
-    console.log(`View Order ID: ${orderId}`);
-    // Implement your logic to view order details, e.g., navigate to a separate page.
+  const handleSeeOrder = (order) => {
+    setSelectedOrder(order);
+    setOpenSeeOrderDialog(true);
+  };
+
+  const handleCloseSeeOrderDialog = () => {
+    setOpenSeeOrderDialog(false);
   };
 
   // Add sample orders
@@ -74,7 +85,7 @@ const Orders = () => {
 
   return (
     <div>
-    <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom>
         Orders Detail
       </Typography>
       <TableContainer component={Paper}>
@@ -99,7 +110,7 @@ const Orders = () => {
                 <TableCell>{order.status}</TableCell>
                 <TableCell>
                   <Button
-                    onClick={() => handleSeeOrder(order.orderId)}
+                    onClick={() => handleSeeOrder(order)}
                     variant="outlined"
                     color="primary"
                   >
@@ -120,6 +131,38 @@ const Orders = () => {
           onChange={handlePageChange}
         />
       </div>
+
+      <Dialog open={openSeeOrderDialog} onClose={handleCloseSeeOrderDialog}>
+        <DialogTitle>Order Detail</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {selectedOrder && (
+              <>
+                <div>
+                  <strong>Order Id:</strong> {selectedOrder.orderId}
+                </div>
+                <div>
+                  <strong>Customer Name:</strong> {selectedOrder.customerName}
+                </div>
+                <div>
+                  <strong>Order Date:</strong> {selectedOrder.orderDate}
+                </div>
+                <div>
+                  <strong>Total Price:</strong> ${selectedOrder.totalPrice}
+                </div>
+                <div>
+                  <strong>Status:</strong> {selectedOrder.status}
+                </div>
+              </>
+            )}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSeeOrderDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

@@ -27,11 +27,14 @@ import Charts from "./Chart";
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
+import CategoryIcon from '@mui/icons-material/Category';
+import PaidIcon from '@mui/icons-material/Paid';
 
 import Products from "../productsdashboard/products";
 import Orders from "../ordersdashboard/orders";
 import Rents from "../rentsdashboard/rents";
 import Transactions from "../Transactionsdashboard/transactions";
+import Categories from "../categoriesdashboard/category";
 
 
 const drawerWidth = 240;
@@ -99,24 +102,41 @@ export default function Dashboard() {
         </ListItemIcon>
         <ListItemText primary="Dashboard"  />
       </ListItemButton>
+
+
+
       <ListItemButton>
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
         <ListItemText onClick={()=>{setView(<Products/>)}} primary="Products" />
       </ListItemButton>
+
+
+      <ListItemButton>
+        <ListItemIcon>
+          <CategoryIcon />
+        </ListItemIcon>
+        <ListItemText onClick={()=>{setView(<Categories/>)}} primary="Category" />
+      </ListItemButton>
+      
       <ListItemButton>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
         <ListItemText primary="Customers" />
       </ListItemButton>
+
+
+      
       <ListItemButton>
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
         <ListItemText onClick={()=>{setView(<Orders/>)}} primary="Orders" />
       </ListItemButton>
+
+
       <ListItemButton>
         <ListItemIcon>
           <LayersIcon />
@@ -126,7 +146,7 @@ export default function Dashboard() {
   
       <ListItemButton>
         <ListItemIcon>
-          <LayersIcon />
+          <PaidIcon />
         </ListItemIcon>
         <ListItemText onClick={()=>{setView(<Transactions/>)}} primary="Transactions" />
       </ListItemButton>
