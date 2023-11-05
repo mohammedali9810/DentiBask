@@ -85,6 +85,7 @@ const Drawer = styled(MuiDrawer, {
 
 
 export default function Dashboard() {
+  const [selected,setSelected] = React.useState("Dashboard");
   const { theme } = useContext(Theme);
   const mode = theme ? "darkmode" : "lightmode";
   const [open, setOpen] = React.useState(true);
@@ -96,47 +97,82 @@ export default function Dashboard() {
   //////////////////////////////////////////////////////////////////////////////
   const mainListItems = (
     <React.Fragment >
-      <ListItemButton >
-        <ListItemIcon>
+      <ListItemButton
+      onClick={()=>{setSelected("Dashboard");}}
+        sx={{
+        backgroundColor: selected === "Dashboard" && "gray",
+      }}
+       >
+        <ListItemIcon >
           <DashboardIcon style={{color:"#0096FF"}}/>
         </ListItemIcon>
-        <ListItemText primary="Dashboard"  />
+        <ListItemText  primary="Dashboard"  />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton
+        onClick={()=>{setSelected("Products");}}
+        sx={{
+        backgroundColor: selected === "Products" && "gray",
+      }}
+      >
         <ListItemIcon>
           <ShoppingCartIcon className={theme && "darkicon"} />
         </ListItemIcon>
         
         <ListItemText onClick={()=>{setView(<Products/>)}} primary="Products"  />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton
+      onClick={()=>{setSelected("Customers");}}
+      sx={{
+      backgroundColor: selected === "Customers" && "gray",
+    }}
+      >
         <ListItemIcon>
           <PeopleIcon  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText onClick={()=>{setView(<Customers/>)}} primary="Customers" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton
+      onClick={()=>{setSelected("Orders");}}
+      sx={{
+      backgroundColor: selected === "Orders" && "gray",
+    }}
+      >
         <ListItemIcon>
           <BarChartIcon  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary="Orders" />
       </ListItemButton>
 
-      <ListItemButton>
+      <ListItemButton
+      onClick={()=>{setSelected("Categories");}}
+      sx={{
+      backgroundColor: selected === "Categories" && "gray",
+    }}
+      >
         <ListItemIcon>
           <LayersIcon  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary="Categories" />
       </ListItemButton>
 
-      <ListItemButton>
+      <ListItemButton
+       onClick={()=>{setSelected("Rents");}}
+       sx={{
+       backgroundColor: selected === "Rents" && "gray",
+     }}
+      >
         <ListItemIcon>
           <LayersIcon  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary="Rents" />
       </ListItemButton>
   
-      <ListItemButton>
+      <ListItemButton
+       onClick={()=>{setSelected("Transactions");}}
+       sx={{
+       backgroundColor: selected === "Transactions" && "gray",
+     }}
+      >
         <ListItemIcon>
           <LayersIcon  className={theme && "darkicon"} />
         </ListItemIcon>
@@ -146,10 +182,14 @@ export default function Dashboard() {
       
     </React.Fragment>
   );
-  
   const secondaryListItems = (
     <React.Fragment>
-      <ListItemButton>
+      <ListItemButton
+      onClick={()=>{setSelected("Settings");}}
+      sx={{
+      backgroundColor: selected === "Settings" && "gray",
+    }}
+      >
         <ListItemIcon>
           <AssignmentIcon  className={theme && "darkicon"} />
         </ListItemIcon>
