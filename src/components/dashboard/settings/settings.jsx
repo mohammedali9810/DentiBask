@@ -1,29 +1,31 @@
 import React, { useContext } from 'react';
 import { Theme } from '../../themecontext';
+import { Lang} from "../../langcontext";
 import Switch from '@mui/material/Switch';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
 const Settings = () => {
   const { theme, setTheme } = useContext(Theme);
+  const { lang, setLang } = useContext(Lang);
 
   const handleThemeChange = () => {
     setTheme(!theme);
   };
 
   const handleResetPassword = () => {
-    // Add logic to reset the password here
+
     console.log('Resetting password...');
   };
 
   const handleChangeLanguage = () => {
-    // Add logic to change the language here
-    console.log('Changing language...');
+    console.log(lang)
+    setLang(!lang);
   };
 
   return (
     <div>
-      <h2>Settings</h2>
+      <h2>{lang ? "الإعدادات ":"Settings"}</h2>
       <Paper
         elevation={3}
         style={{
@@ -36,7 +38,7 @@ const Settings = () => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <p>Dark Mode</p>
+          <p>{lang ? "الوضع الليلي":"Dark Mode"}</p>
           <Switch
             checked={theme}
             onChange={handleThemeChange}
@@ -51,7 +53,7 @@ const Settings = () => {
           style={{ marginTop: '16px' }}
           onClick={handleResetPassword}
         >
-          Reset Password
+          {lang ? "قم بتغيير كلمة المرور ":"Reset Password"}
         </Button>
 
         <Button
@@ -60,7 +62,7 @@ const Settings = () => {
           style={{ marginTop: '16px' }}
           onClick={handleChangeLanguage}
         >
-          Change Language
+          {lang ? "قم بتغيير اللغه ":"Change Language"}
         </Button>
       </Paper>
     </div>
