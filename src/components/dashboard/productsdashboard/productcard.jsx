@@ -31,7 +31,7 @@ const Productcard = (props) => {
         alt="green iguana"
       />
       <CardContent className={theme && "darkcard"}>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography style={{fontWeight:"bold"}} gutterBottom variant="h5" component="div">
           Lizard
         </Typography>
         <span style={{fontSize:"1rem", fontWeight:"bold"}}>

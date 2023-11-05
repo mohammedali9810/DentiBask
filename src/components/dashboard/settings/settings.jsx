@@ -24,8 +24,6 @@ const Settings = () => {
   };
 
   return (
-    <div>
-      <h2>{lang ? "الإعدادات ":"Settings"}</h2>
       <Paper
         elevation={3}
         style={{
@@ -33,7 +31,7 @@ const Settings = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          backgroundColor: theme ? 'black' : 'white',
+          backgroundColor: theme ? 'black' : '#CDCDCD',
           color: theme ? 'white' : 'black',
         }}
       >
@@ -65,7 +63,6 @@ const Settings = () => {
           {lang ? "قم بتغيير اللغه ":"Change Language"}
         </Button>
       </Paper>
-    </div>
   );
 };
 

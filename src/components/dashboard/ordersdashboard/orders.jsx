@@ -11,7 +11,6 @@ import {
   TableRow,
   Paper,
   Button,
-  Typography,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -85,9 +84,6 @@ const Orders = () => {
 
   return (
     <div>
-      <Typography variant="h4" gutterBottom>
-        Orders Detail
-      </Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
