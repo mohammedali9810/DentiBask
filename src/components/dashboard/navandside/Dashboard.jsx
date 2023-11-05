@@ -102,6 +102,9 @@ export default function Dashboard() {
         </ListItemIcon>
         <ListItemText primary="Dashboard"  />
       </ListItemButton>
+
+
+
       <ListItemButton>
         <ListItemIcon>
           <ShoppingCartIcon className={theme && "darkicon"} />
@@ -109,19 +112,35 @@ export default function Dashboard() {
         
         <ListItemText onClick={()=>{setView(<Products/>)}} primary="Products"  />
       </ListItemButton>
+
+
+      <ListItemButton>
+        <ListItemIcon>
+          <CategoryIcon />
+        </ListItemIcon>
+        <ListItemText onClick={()=>{setView(<Categories/>)}} primary="Category" />
+      </ListItemButton>
+      
       <ListItemButton>
         <ListItemIcon>
           <PeopleIcon  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText onClick={()=>{setView(<Customers/>)}} primary="Customers" />
       </ListItemButton>
+
+
+      
       <ListItemButton>
         <ListItemIcon>
           <BarChartIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary="Orders" />
+        <ListItemText onClick={()=>{setView(<Orders/>)}} primary="Orders" />
       </ListItemButton>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/msayed
       <ListItemButton>
         <ListItemIcon>
           <LayersIcon  className={theme && "darkicon"} />
@@ -133,16 +152,24 @@ export default function Dashboard() {
         <ListItemIcon>
           <LayersIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary="Rents" />
+        <ListItemText onClick={()=>{setView(<Rents/>)}} primary="Rents" />
       </ListItemButton>
   
       <ListItemButton>
         <ListItemIcon>
+<<<<<<< HEAD
           <LayersIcon  className={theme && "darkicon"} />
+=======
+          <PaidIcon />
+>>>>>>> origin/msayed
         </ListItemIcon>
-        <ListItemText primary="Transactions" />
+        <ListItemText onClick={()=>{setView(<Transactions/>)}} primary="Transactions" />
       </ListItemButton>
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> origin/msayed
       
     </React.Fragment>
   );
