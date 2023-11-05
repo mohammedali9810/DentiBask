@@ -118,6 +118,7 @@ const Categories = () => {
           color="primary"
           page={currentPage}
           onChange={handlePageChange}
+          style={{marginTop:"2rem"}}
         />
       </div>
     </div>

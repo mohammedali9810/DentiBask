@@ -30,11 +30,17 @@ import darklogo from "./darklogo.png";
 import { useContext } from "react";
 import { Theme } from "../../themecontext";
 import "./dashboard.css";
+import CategoryIcon from "@mui/icons-material/Category";
+import PaidIcon from "@mui/icons-material/Paid";
+import {Lang} from "../../langcontext";
 
 import Products from "../productsdashboard/products";
 import Customers from "../customers/customers";
 import Settings from "../settings/settings";
-
+import Categories from "../categoriesdashboard/category";
+import Orders from "../ordersdashboard/orders";
+import Transactions from "../Transactionsdashboard/transactions";
+import Rents from "../rentsdashboard/rents";
 
 const drawerWidth = 240;
 
@@ -85,6 +91,8 @@ const Drawer = styled(MuiDrawer, {
 
 
 export default function Dashboard() {
+  const {lang} = useContext(Lang);
+  const [ selected , setSelected] = React.useState("Dashboard");
   const { theme } = useContext(Theme);
   const mode = theme ? "darkmode" : "lightmode";
   const [open, setOpen] = React.useState(true);
@@ -96,97 +104,120 @@ export default function Dashboard() {
   //////////////////////////////////////////////////////////////////////////////
   const mainListItems = (
     <React.Fragment >
-      <ListItemButton >
+      <ListItemButton
+      onClick={() => setSelected("Dashboard")}
+      sx={{
+        backgroundColor: selected === "Dashboard" && "gray",
+      }}
+      >
         <ListItemIcon>
           <DashboardIcon style={{color:"#0096FF"}}/>
         </ListItemIcon>
-        <ListItemText primary="Dashboard"  />
+        <ListItemText primary={lang ? " لوحة القياده" : "Dashboard"}  />
       </ListItemButton>
 
 
 
-      <ListItemButton>
+      <ListItemButton
+       onClick={() => setSelected("Products")}
+       sx={{
+         backgroundColor: selected === "Products" && "gray",
+       }}
+      >
         <ListItemIcon>
           <ShoppingCartIcon className={theme && "darkicon"} />
         </ListItemIcon>
         
-        <ListItemText onClick={()=>{setView(<Products/>)}} primary="Products"  />
+        <ListItemText onClick={()=>{setView(<Products/>)}} primary={lang ? "المنتجات" : "Products"}  />
       </ListItemButton>
 
 
-      <ListItemButton>
+      <ListItemButton
+       onClick={() => setSelected("Category")}
+       sx={{
+         backgroundColor: selected === "Category" && "gray",
+       }}
+      >
         <ListItemIcon>
-          <CategoryIcon />
+          <CategoryIcon className={theme && "darkicon"}/>
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Categories/>)}} primary="Category" />
+        <ListItemText onClick={()=>{setView(<Categories/>)}} primary={lang ? "الأنواع" : "Category"} />
       </ListItemButton>
       
-      <ListItemButton>
+      <ListItemButton
+       onClick={() => setSelected("Customers")}
+       sx={{
+         backgroundColor: selected === "Customers" && "gray",
+       }}
+      >
         <ListItemIcon>
           <PeopleIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Customers/>)}} primary="Customers" />
+        <ListItemText onClick={()=>{setView(<Customers/>)}} primary={lang ? "المستخدمين" : "Customers"} />
       </ListItemButton>
 
 
       
-      <ListItemButton>
+      <ListItemButton
+       onClick={() => setSelected("Orders")}
+       sx={{
+         backgroundColor: selected === "Orders" && "gray",
+       }}
+      >
         <ListItemIcon>
           <BarChartIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Orders/>)}} primary="Orders" />
+        <ListItemText onClick={()=>{setView(<Orders/>)}} primary={lang ? "الطلبات" : "Orders"} />
       </ListItemButton>
 
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/msayed
-      <ListItemButton>
+      <ListItemButton
+       onClick={() => setSelected("Rents")}
+       sx={{
+         backgroundColor: selected === "Rents" && "gray",
+       }}
+      >
         <ListItemIcon>
           <LayersIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary="Categories" />
-      </ListItemButton>
-
-      <ListItemButton>
-        <ListItemIcon>
-          <LayersIcon  className={theme && "darkicon"} />
-        </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Rents/>)}} primary="Rents" />
+        <ListItemText onClick={()=>{setView(<Rents/>)}} primary={lang ? "الإيجارات" : "Rents"}/>
       </ListItemButton>
   
-      <ListItemButton>
+      <ListItemButton
+       onClick={() => setSelected("Transactions")}
+       sx={{
+         backgroundColor: selected === "Transactions" && "gray",
+       }}
+      >
         <ListItemIcon>
-<<<<<<< HEAD
-          <LayersIcon  className={theme && "darkicon"} />
-=======
-          <PaidIcon />
->>>>>>> origin/msayed
+          <PaidIcon className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Transactions/>)}} primary="Transactions" />
+        <ListItemText onClick={()=>{setView(<Transactions/>)}} primary={lang ? "التحويلات" : "Transactions"} />
       </ListItemButton>
-<<<<<<< HEAD
 
-=======
   
->>>>>>> origin/msayed
       
     </React.Fragment>
   );
   
   const secondaryListItems = (
     <React.Fragment>
-      <ListItemButton>
+      <ListItemButton
+       onClick={() => setSelected("Settings")}
+       sx={{
+         backgroundColor: selected === "Settings" && "gray",
+       }}
+      >
         <ListItemIcon>
           <AssignmentIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Settings/>)}} primary="Settings" />
+        <ListItemText onClick={()=>{setView(<Settings/>)}} primary={lang ? "الإعدادات" : "Settings"} />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
           <AssignmentIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary="Logout" />
+        <ListItemText primary={lang ? "الخروج" : "Logout"} />
       </ListItemButton>
     </React.Fragment>
   );
@@ -196,9 +227,11 @@ export default function Dashboard() {
 
   return (
 
-      <Box className={mode} sx={{ display: "flex" }}>
+      <Box className={mode} sx={{ display: "flex", flexDirection: lang ? "row-reverse" : "row" }}>
         <CssBaseline />
-        <AppBar  position="absolute" open={open}>
+        <AppBar  position="absolute" open={open}
+        className={lang ? "app-bar-right" : "app-bar-left"}
+        >
           <Toolbar
           className={theme && "darknav"}
             sx={{
@@ -224,7 +257,7 @@ export default function Dashboard() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              {lang ? " لوحة القياده" : "Dashboard"}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -250,7 +283,7 @@ export default function Dashboard() {
           >
           <img src={theme ? darklogo :logo} alt="logo" style={{marginTop:"1rem"}} />
             <IconButton  onClick={toggleDrawer} >
-              <ChevronLeftIcon  className={theme && "darkicon"} />
+              {lang ? null : <ChevronLeftIcon  className={theme && "darkicon"} />}
             </IconButton>
             
           </Toolbar>
