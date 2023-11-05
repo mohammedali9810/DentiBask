@@ -2,6 +2,11 @@
     background-color: black;
     color: white;
 }
+
+.lightnav{
+    background-color: #CDCDCD;
+    color: black;
+}
 .darknav{
     background-color: rgb(14, 4, 73);
 }
@@ -17,4 +22,27 @@
 .darkicon{
     color: white;
 }
+
+.app-bar-right {
+
+    margin-left: 0;
+    margin-right: 240px;
+    flex-direction: row-reverse;
+
+  }
+  
+  .app-bar-left {
+
+    margin-left: 240px;
+    margin-right: 0;
+    flex-direction: row;
+
+  }
+  .sidebtn{
+    opacity: .6;
+  }
+  .sidebtn:hover{
+    opacity: 1;
+  }
+  
 

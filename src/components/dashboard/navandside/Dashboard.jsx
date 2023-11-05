@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
+import { styled,alpha } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
@@ -30,11 +30,20 @@ import darklogo from "./darklogo.png";
 import { useContext } from "react";
 import { Theme } from "../../themecontext";
 import "./dashboard.css";
+import CategoryIcon from "@mui/icons-material/Category";
+import PaidIcon from "@mui/icons-material/Paid";
+import {Lang} from "../../langcontext";
+import logouticon from "./logout.svg";
+import SearchIcon from '@mui/icons-material/Search';
+import InputBase from '@mui/material/InputBase';
 
 import Products from "../productsdashboard/products";
 import Customers from "../customers/customers";
 import Settings from "../settings/settings";
-
+import Categories from "../categoriesdashboard/category";
+import Orders from "../ordersdashboard/orders";
+import Transactions from "../Transactionsdashboard/transactions";
+import Rents from "../rentsdashboard/rents";
 
 const drawerWidth = 240;
 
@@ -82,9 +91,50 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '20ch',
+      '&:focus': {
+        width: '35ch',
+      },
+    },
+  },
+}));
 
 
 export default function Dashboard() {
+  const {lang} = useContext(Lang);
+  const [ selected , setSelected] = React.useState("Dashboard");
   const { theme } = useContext(Theme);
   const mode = theme ? "darkmode" : "lightmode";
   const [open, setOpen] = React.useState(true);
@@ -95,71 +145,138 @@ export default function Dashboard() {
   const [view,setView] = React.useState(<Charts/>);
   //////////////////////////////////////////////////////////////////////////////
   const mainListItems = (
-    <React.Fragment >
-      <ListItemButton >
+    <React.Fragment>
+      <ListItemButton
+      onClick={() => setSelected("Dashboard")}
+      sx={{
+        backgroundColor: selected === "Dashboard" && "#CDCDCD",
+        opacity: selected === "Dashboard" && "1",
+      }}
+      className="sidebtn"
+      >
         <ListItemIcon>
           <DashboardIcon style={{color:"#0096FF"}}/>
         </ListItemIcon>
-        <ListItemText primary="Dashboard"  />
+        <ListItemText primary={lang ? " لوحة القياده" : "Dashboard"}  />
       </ListItemButton>
-      <ListItemButton>
+
+
+
+      <ListItemButton
+       onClick={() => setSelected("Products")}
+       sx={{
+         backgroundColor: selected === "Products" && "#CDCDCD",
+         opacity: selected === "Products" && "1",
+       }}
+       className="sidebtn"
+      >
         <ListItemIcon>
           <ShoppingCartIcon className={theme && "darkicon"} />
         </ListItemIcon>
         
-        <ListItemText onClick={()=>{setView(<Products/>)}} primary="Products"  />
+        <ListItemText onClick={()=>{setView(<Products/>)}} primary={lang ? "المنتجات" : "Products"}  />
       </ListItemButton>
-      <ListItemButton>
+
+
+      <ListItemButton
+       onClick={() => setSelected("Category")}
+       sx={{
+         backgroundColor: selected === "Category" && "#CDCDCD",
+         opacity: selected === "Category" && "1",
+       }}
+       className="sidebtn"
+      >
+        <ListItemIcon>
+          <CategoryIcon className={theme && "darkicon"}/>
+        </ListItemIcon>
+        <ListItemText onClick={()=>{setView(<Categories/>)}} primary={lang ? "الأنواع" : "Category"} />
+      </ListItemButton>
+      
+      <ListItemButton
+       onClick={() => setSelected("Customers")}
+       sx={{
+         backgroundColor: selected === "Customers" && "#CDCDCD",
+         opacity: selected === "Customers" && "1",
+       }}
+       className="sidebtn"
+      >
         <ListItemIcon>
           <PeopleIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Customers/>)}} primary="Customers" />
+        <ListItemText onClick={()=>{setView(<Customers/>)}} primary={lang ? "المستخدمين" : "Customers"} />
       </ListItemButton>
-      <ListItemButton>
+
+
+      
+      <ListItemButton
+       onClick={() => setSelected("Orders")}
+       sx={{
+         backgroundColor: selected === "Orders" && "#CDCDCD",
+         opacity: selected === "Orders" && "1",
+       }}
+       className="sidebtn"
+      >
         <ListItemIcon>
           <BarChartIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary="Orders" />
+        <ListItemText onClick={()=>{setView(<Orders/>)}} primary={lang ? "الطلبات" : "Orders"} />
       </ListItemButton>
 
-      <ListItemButton>
+
+      <ListItemButton
+       onClick={() => setSelected("Rents")}
+       sx={{
+         backgroundColor: selected === "Rents" && "#CDCDCD",
+         opacity: selected === "Rents" && "1",
+       }}
+       className="sidebtn"
+      >
         <ListItemIcon>
           <LayersIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary="Categories" />
-      </ListItemButton>
-
-      <ListItemButton>
-        <ListItemIcon>
-          <LayersIcon  className={theme && "darkicon"} />
-        </ListItemIcon>
-        <ListItemText primary="Rents" />
+        <ListItemText onClick={()=>{setView(<Rents/>)}} primary={lang ? "الإيجارات" : "Rents"}/>
       </ListItemButton>
   
-      <ListItemButton>
+      <ListItemButton
+       onClick={() => setSelected("Transactions")}
+       sx={{
+         backgroundColor: selected === "Transactions" && "#CDCDCD",
+         opacity: selected === "Transactions" && "1",
+       }}
+       className="sidebtn"
+      >
         <ListItemIcon>
-          <LayersIcon  className={theme && "darkicon"} />
+          <PaidIcon className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary="Transactions" />
+        <ListItemText onClick={()=>{setView(<Transactions/>)}} primary={lang ? "التحويلات" : "Transactions"} />
       </ListItemButton>
 
+  
       
     </React.Fragment>
   );
-  
   const secondaryListItems = (
     <React.Fragment>
-      <ListItemButton>
+      <ListItemButton
+       onClick={() => setSelected("Settings")}
+       sx={{
+         backgroundColor: selected === "Settings" && "#CDCDCD",
+         opacity: selected === "Settings" && "1",
+       }}
+       className="sidebtn"
+      >
         <ListItemIcon>
           <AssignmentIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Settings/>)}} primary="Settings" />
+        <ListItemText onClick={()=>{setView(<Settings/>)}} primary={lang ? "الإعدادات" : "Settings"} />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton
+      className="sidebtn"
+      >
         <ListItemIcon>
-          <AssignmentIcon  className={theme && "darkicon"} />
+          <img src={logouticon} alt="logouticon"  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary="Logout" />
+        <ListItemText primary={lang ? "الخروج" : "Logout"} />
       </ListItemButton>
     </React.Fragment>
   );
@@ -169,11 +286,13 @@ export default function Dashboard() {
 
   return (
 
-      <Box className={mode} sx={{ display: "flex" }}>
+      <Box className={mode} sx={{ display: "flex", flexDirection: lang ? "row-reverse" : "row" }}>
         <CssBaseline />
-        <AppBar  position="absolute" open={open}>
+        <AppBar  position="absolute" open={open}
+        className={lang ? "app-bar-right" : "app-bar-left"}
+        >
           <Toolbar
-          className={theme && "darknav"}
+          className={theme ? "darknav" : "lightnav"}
             sx={{
               pr: "24px",
             }}
@@ -195,12 +314,31 @@ export default function Dashboard() {
               variant="h6"
               color="inherit"
               noWrap
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1, fontSize:"2rem", fontWeight:"bold" }}
+              
             >
-              Dashboard
+              {selected === "Dashboard"? lang ? " لوحة القياده" : "Dashboard" : null }
+              {selected === "Products"? lang ? " المنتجات" : "Products" : null }
+              {selected === "Category"? lang ? " الانواع" : "Category" : null }
+              {selected === "Rents"? lang ? "الإيجارات" : "Rents" : null }
+              {selected === "Settings"? lang ? " الإعدادات " : "Settings" : null }
+              {selected === "Orders"? lang ? " الطلبات " : "Orders" : null }
+              {selected === "Customers"? lang ? " المستخدمين " : "Customers" : null }
+              {selected === "Transactions"? lang ? " التحويلات " : "Transactions" : null }
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
+
+            <Search style={{backgroundColor:"white", marginRight:"4rem"}}>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </Search>
+
+            <IconButton style={{marginRight:"2rem"}} color="inherit">
+              <Badge badgeContent={1} color="secondary">
                 <NotificationsIcon />
               </Badge>
               
@@ -223,7 +361,7 @@ export default function Dashboard() {
           >
           <img src={theme ? darklogo :logo} alt="logo" style={{marginTop:"1rem"}} />
             <IconButton  onClick={toggleDrawer} >
-              <ChevronLeftIcon  className={theme && "darkicon"} />
+              {lang ? null : <ChevronLeftIcon  className={theme && "darkicon"} />}
             </IconButton>
             
           </Toolbar>
@@ -250,8 +388,8 @@ export default function Dashboard() {
     p: 2,
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: mode === 'darkmode' ? 'black' : '', 
-    color: mode === 'darkmode' ? 'white' : '', 
+    backgroundColor: mode === 'darkmode' ? 'black' : '#CDCDCD', 
+    color: mode === 'darkmode' ? 'green' : '', 
   }}
 >
   {view}
