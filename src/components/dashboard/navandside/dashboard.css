@@ -2,6 +2,11 @@
     background-color: black;
     color: white;
 }
+
+.lightnav{
+    background-color: #CDCDCD;
+    color: black;
+}
 .darknav{
     background-color: rgb(14, 4, 73);
 }
@@ -32,6 +37,12 @@
     margin-right: 0;
     flex-direction: row;
 
+  }
+  .sidebtn{
+    opacity: .6;
+  }
+  .sidebtn:hover{
+    opacity: 1;
   }
   
 

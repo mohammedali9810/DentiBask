@@ -11,7 +11,6 @@ import {
   TableRow,
   Paper,
   Button,
-  Typography,
 } from '@mui/material';
 
 const Rents = () => {
@@ -76,9 +75,6 @@ const Rents = () => {
 
   return (
     <div>
-    <Typography variant="h4" gutterBottom>
-        Rents Detail
-      </Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

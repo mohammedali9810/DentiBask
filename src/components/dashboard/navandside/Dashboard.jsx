@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
+import { styled,alpha } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
@@ -33,6 +33,9 @@ import "./dashboard.css";
 import CategoryIcon from "@mui/icons-material/Category";
 import PaidIcon from "@mui/icons-material/Paid";
 import {Lang} from "../../langcontext";
+import logouticon from "./logout.svg";
+import SearchIcon from '@mui/icons-material/Search';
+import InputBase from '@mui/material/InputBase';
 
 import Products from "../productsdashboard/products";
 import Customers from "../customers/customers";
@@ -88,6 +91,45 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '20ch',
+      '&:focus': {
+        width: '35ch',
+      },
+    },
+  },
+}));
 
 
 export default function Dashboard() {
@@ -103,12 +145,14 @@ export default function Dashboard() {
   const [view,setView] = React.useState(<Charts/>);
   //////////////////////////////////////////////////////////////////////////////
   const mainListItems = (
-    <React.Fragment >
+    <React.Fragment>
       <ListItemButton
       onClick={() => setSelected("Dashboard")}
       sx={{
-        backgroundColor: selected === "Dashboard" && "gray",
+        backgroundColor: selected === "Dashboard" && "#CDCDCD",
+        opacity: selected === "Dashboard" && "1",
       }}
+      className="sidebtn"
       >
         <ListItemIcon>
           <DashboardIcon style={{color:"#0096FF"}}/>
@@ -121,8 +165,10 @@ export default function Dashboard() {
       <ListItemButton
        onClick={() => setSelected("Products")}
        sx={{
-         backgroundColor: selected === "Products" && "gray",
+         backgroundColor: selected === "Products" && "#CDCDCD",
+         opacity: selected === "Products" && "1",
        }}
+       className="sidebtn"
       >
         <ListItemIcon>
           <ShoppingCartIcon className={theme && "darkicon"} />
@@ -135,8 +181,10 @@ export default function Dashboard() {
       <ListItemButton
        onClick={() => setSelected("Category")}
        sx={{
-         backgroundColor: selected === "Category" && "gray",
+         backgroundColor: selected === "Category" && "#CDCDCD",
+         opacity: selected === "Category" && "1",
        }}
+       className="sidebtn"
       >
         <ListItemIcon>
           <CategoryIcon className={theme && "darkicon"}/>
@@ -147,8 +195,10 @@ export default function Dashboard() {
       <ListItemButton
        onClick={() => setSelected("Customers")}
        sx={{
-         backgroundColor: selected === "Customers" && "gray",
+         backgroundColor: selected === "Customers" && "#CDCDCD",
+         opacity: selected === "Customers" && "1",
        }}
+       className="sidebtn"
       >
         <ListItemIcon>
           <PeopleIcon  className={theme && "darkicon"} />
@@ -161,8 +211,10 @@ export default function Dashboard() {
       <ListItemButton
        onClick={() => setSelected("Orders")}
        sx={{
-         backgroundColor: selected === "Orders" && "gray",
+         backgroundColor: selected === "Orders" && "#CDCDCD",
+         opacity: selected === "Orders" && "1",
        }}
+       className="sidebtn"
       >
         <ListItemIcon>
           <BarChartIcon  className={theme && "darkicon"} />
@@ -174,8 +226,10 @@ export default function Dashboard() {
       <ListItemButton
        onClick={() => setSelected("Rents")}
        sx={{
-         backgroundColor: selected === "Rents" && "gray",
+         backgroundColor: selected === "Rents" && "#CDCDCD",
+         opacity: selected === "Rents" && "1",
        }}
+       className="sidebtn"
       >
         <ListItemIcon>
           <LayersIcon  className={theme && "darkicon"} />
@@ -186,8 +240,10 @@ export default function Dashboard() {
       <ListItemButton
        onClick={() => setSelected("Transactions")}
        sx={{
-         backgroundColor: selected === "Transactions" && "gray",
+         backgroundColor: selected === "Transactions" && "#CDCDCD",
+         opacity: selected === "Transactions" && "1",
        }}
+       className="sidebtn"
       >
         <ListItemIcon>
           <PaidIcon className={theme && "darkicon"} />
@@ -204,17 +260,21 @@ export default function Dashboard() {
       <ListItemButton
        onClick={() => setSelected("Settings")}
        sx={{
-         backgroundColor: selected === "Settings" && "gray",
+         backgroundColor: selected === "Settings" && "#CDCDCD",
+         opacity: selected === "Settings" && "1",
        }}
+       className="sidebtn"
       >
         <ListItemIcon>
           <AssignmentIcon  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText onClick={()=>{setView(<Settings/>)}} primary={lang ? "الإعدادات" : "Settings"} />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton
+      className="sidebtn"
+      >
         <ListItemIcon>
-          <AssignmentIcon  className={theme && "darkicon"} />
+          <img src={logouticon} alt="logouticon"  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary={lang ? "الخروج" : "Logout"} />
       </ListItemButton>
@@ -232,7 +292,7 @@ export default function Dashboard() {
         className={lang ? "app-bar-right" : "app-bar-left"}
         >
           <Toolbar
-          className={theme && "darknav"}
+          className={theme ? "darknav" : "lightnav"}
             sx={{
               pr: "24px",
             }}
@@ -254,12 +314,31 @@ export default function Dashboard() {
               variant="h6"
               color="inherit"
               noWrap
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1, fontSize:"2rem", fontWeight:"bold" }}
+              
             >
-              {lang ? " لوحة القياده" : "Dashboard"}
+              {selected === "Dashboard"? lang ? " لوحة القياده" : "Dashboard" : null }
+              {selected === "Products"? lang ? " المنتجات" : "Products" : null }
+              {selected === "Category"? lang ? " الانواع" : "Category" : null }
+              {selected === "Rents"? lang ? "الإيجارات" : "Rents" : null }
+              {selected === "Settings"? lang ? " الإعدادات " : "Settings" : null }
+              {selected === "Orders"? lang ? " الطلبات " : "Orders" : null }
+              {selected === "Customers"? lang ? " المستخدمين " : "Customers" : null }
+              {selected === "Transactions"? lang ? " التحويلات " : "Transactions" : null }
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
+
+            <Search style={{backgroundColor:"white", marginRight:"4rem"}}>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </Search>
+
+            <IconButton style={{marginRight:"2rem"}} color="inherit">
+              <Badge badgeContent={1} color="secondary">
                 <NotificationsIcon />
               </Badge>
               
@@ -309,8 +388,8 @@ export default function Dashboard() {
     p: 2,
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: mode === 'darkmode' ? 'black' : '', 
-    color: mode === 'darkmode' ? 'white' : '', 
+    backgroundColor: mode === 'darkmode' ? 'black' : '#CDCDCD', 
+    color: mode === 'darkmode' ? 'green' : '', 
   }}
 >
   {view}
