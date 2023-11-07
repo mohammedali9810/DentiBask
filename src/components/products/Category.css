@@ -1,0 +1,63 @@
+/* Category */
+
+/* Custom styles for the dropdown button */
+/* .category-dropdown button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+  } */
+  
+  /* Custom styles for the dropdown menu */
+  /* .category-dropdown .dropdown-menu {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+  } */
+  
+  /* Custom styles for the dropdown items */
+  /* .category-dropdown .dropdown-item {
+    color: #333;
+  } */
+  
+  /* Custom styles for the active dropdown item */
+  /* .category-dropdown .dropdown-item.active,
+  .category-dropdown .dropdown-item:hover {
+    background-color: #007bff;
+    color: #fff;
+  } */
+  
+  /* Custom styles for the dropdown item separators (optional) */
+  /* .category-dropdown .dropdown-divider {
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+  } */
+  
+  .category-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .nav-link {
+    color: #027fcc; /* Default text color */
+    transition: color 0.3s ease; /* Smooth transition for color change */
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  
+  .nav-link:hover {
+    color: #33a3ff; /* Text color on hover */
+  }
+  
+  /* Example icons (replace these with your actual icon classes) */
+  .icon-smartphones::before {
+    content: "\1F4F1"; /* Unicode character for a smartphone emoji */
+  }
+  
+  .icon-laptops::before {
+    content: "\1F4BB"; /* Unicode character for a laptop emoji */
+  }
+  
+  /* Define other icon classes similarly */
+  

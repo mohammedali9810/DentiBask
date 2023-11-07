@@ -17,8 +17,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -29,24 +27,16 @@ import darklogo from "./darklogo.png";
 import { useContext } from "react";
 import { Theme } from "../../themecontext";
 import "./dashboard.css";
-import CategoryIcon from "@mui/icons-material/Category";
 import PaidIcon from "@mui/icons-material/Paid";
 import {Lang} from "../../langcontext";
 import logouticon from "./logout.svg";
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouseMedicalFlag } from '@fortawesome/free-solid-svg-icons';
 
-
-import Products from "../productsdashboard/products";
-import Customers from "../customers/customers";
 import Settings from "../settings/settings";
-import Categories from "../categoriesdashboard/category";
 import Orders from "../ordersdashboard/orders";
 import Transactions from "../Transactionsdashboard/transactions";
 import Rents from "../rentsdashboard/rents";
-import Clinic from "../clinic/clinic";
 
 const drawerWidth = 240;
 
@@ -135,17 +125,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-export default function Dashboard() {
+export default function UserDashboard() {
   const {lang} = useContext(Lang);
-  const [ selected , setSelected] = React.useState("Products");
+  const [ selected , setSelected] = React.useState("Orders");
   const { theme } = useContext(Theme);
   const mode = theme ? "darkmode" : "lightmode";
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  const [view,setView] = React.useState(<Products/>);
+  const [view,setView] = React.useState(<Orders/>);
   //////////////////////////////////////////////////////////////////////////////
   const mainListItems = (
     <React.Fragment>
@@ -163,50 +152,6 @@ export default function Dashboard() {
       </ListItemButton>
       <Divider sx={{ my: 1, opacity:"1" }} />
       <ListItemButton
-       onClick={() => {setView(<Products/>) ;return setSelected("Products")}}
-       sx={{
-         backgroundColor: selected === "Products" && "#CDCDCD",
-         opacity: selected === "Products" && "1",
-       }}
-       className="sidebtn"
-      >
-        <ListItemIcon>
-          <ShoppingCartIcon className={theme && "darkicon"} />
-        </ListItemIcon>
-        
-        <ListItemText primary={lang ? "المنتجات" : "Products"}  />
-      </ListItemButton>
-
-
-      <ListItemButton
-       onClick={() => {setView(<Categories/>) ;return setSelected("Category")}}
-       sx={{
-         backgroundColor: selected === "Category" && "#CDCDCD",
-         opacity: selected === "Category" && "1",
-       }}
-       className="sidebtn"
-      >
-        <ListItemIcon>
-          <CategoryIcon className={theme && "darkicon"}/>
-        </ListItemIcon>
-        <ListItemText primary={lang ? "الأنواع" : "Category"} />
-      </ListItemButton>
-      
-      <ListItemButton
-       onClick={() => {setView(<Customers/>) ;return setSelected("Customers")}}
-       sx={{
-         backgroundColor: selected === "Customers" && "#CDCDCD",
-         opacity: selected === "Customers" && "1",
-       }}
-       className="sidebtn"
-      >
-        <ListItemIcon>
-          <PeopleIcon  className={theme && "darkicon"} />
-        </ListItemIcon>
-        <ListItemText primary={lang ? "المستخدمين" : "Customers"} />
-      </ListItemButton>
-
-      <ListItemButton
        onClick={() => setSelected("Orders")}
        sx={{
          backgroundColor: selected === "Orders" && "#CDCDCD",
@@ -222,24 +167,7 @@ export default function Dashboard() {
 
 
       <ListItemButton
-       onClick={() => {setView(<Clinic/>) ;return setSelected("Clinic")}}
-       sx={{
-         backgroundColor: selected === "Clinic" && "#CDCDCD",
-         opacity: selected === "Clinic" && "1",
-       }}
-       className="sidebtn"
-      >
-        <ListItemIcon>
-        <FontAwesomeIcon icon={faHouseMedicalFlag} className={theme ? "darkicon" : ""} />
-        </ListItemIcon>
-        <ListItemText onClick={()=>{
-        }}
-         primary={lang ? "العيادات" : "Clinic"}/>
-      </ListItemButton>
-
-
-      <ListItemButton
-       onClick={() => {setView(<Rents/>) ;return setSelected("Rents")}}
+       onClick={() => setSelected("Rents")}
        sx={{
          backgroundColor: selected === "Rents" && "#CDCDCD",
          opacity: selected === "Rents" && "1",
@@ -249,7 +177,7 @@ export default function Dashboard() {
         <ListItemIcon>
           <LayersIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary={lang ? "الإيجارات" : "Rents"}/>
+        <ListItemText onClick={()=>{setView(<Rents/>)}} primary={lang ? "الإيجارات" : "Rents"}/>
       </ListItemButton>
   
       <ListItemButton
@@ -273,7 +201,7 @@ export default function Dashboard() {
   const secondaryListItems = (
     <React.Fragment>
       <ListItemButton
-       onClick={() => {setView(<Settings/>); return setSelected("Settings");}}
+       onClick={() => setSelected("Settings")}
        sx={{
          backgroundColor: selected === "Settings" && "#CDCDCD",
          opacity: selected === "Settings" && "1",
@@ -283,7 +211,7 @@ export default function Dashboard() {
         <ListItemIcon>
           <AssignmentIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary={lang ? "الإعدادات" : "Settings"} />
+        <ListItemText onClick={()=>{setView(<Settings/>)}} primary={lang ? "الإعدادات" : "Settings"} />
       </ListItemButton>
       <ListItemButton
       className="sidebtn"
@@ -312,28 +240,25 @@ export default function Dashboard() {
               pr: "24px",
             }}
           >
-           <div className="dashboardtitle"> {/* Add the class to this div */}
-  <IconButton
-    edge="start"
-    color="inherit"
-    aria-label="open drawer"
-    onClick={toggleDrawer}
-    sx={{
-      marginRight: "36px",
-      ...(open && { display: "none" }),
-    }}
-  >
-    <MenuIcon />
-  </IconButton>
-</div>
-
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: "36px",
+                ...(open && { display: "none" }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
             <Typography
               component="h1"
               variant="h6"
               color="inherit"
               noWrap
               sx={{ flexGrow: 1, fontSize:"2rem", fontWeight:"bold" }}
-              className="dashboardtitle"
+              
             >
               {selected === "Dashboard"? lang ? " لوحة القياده" : "Dashboard" : null }
               {selected === "Products"? lang ? " المنتجات" : "Products" : null }
@@ -343,10 +268,9 @@ export default function Dashboard() {
               {selected === "Orders"? lang ? " الطلبات " : "Orders" : null }
               {selected === "Customers"? lang ? " المستخدمين " : "Customers" : null }
               {selected === "Transactions"? lang ? " التحويلات " : "Transactions" : null }
-              {selected === "Clinic"? lang ? " العيادات " : "Clinic" : null }
             </Typography>
 
-            <Search style={{backgroundColor:"white"}}>
+            <Search style={{backgroundColor:"white", marginRight:"4rem"}}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -356,7 +280,7 @@ export default function Dashboard() {
             />
           </Search>
 
-            <IconButton color="inherit">
+            <IconButton style={{marginRight:"2rem"}} color="inherit">
               <Badge badgeContent={1} color="secondary">
                 <NotificationsIcon />
               </Badge>
@@ -413,6 +337,7 @@ export default function Dashboard() {
 >
   {view}
 </Paper>
+
         </Box>
       </Box>
   );

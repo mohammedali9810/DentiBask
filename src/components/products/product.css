@@ -1,0 +1,8 @@
+.product-card-description {
+    height: 100px; /* Adjust the height as needed */
+    overflow: hidden;
+  }
+.product-card-description.expanded {
+    height: auto;
+    overflow: visible;
+  }
