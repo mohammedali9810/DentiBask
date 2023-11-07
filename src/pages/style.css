@@ -3,3 +3,10 @@
     --primary-color: #AAE0FF;
   }
   
+.my-margin-top { margin-top: 6rem; /* or any value you need */ }
+
+.my-border{
+  border: solid 1px #AAE0FF;
+  border-radius: 30px;
+}
+

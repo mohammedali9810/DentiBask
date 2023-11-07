@@ -30,9 +30,9 @@ function ProductsList() {
   return (
     <>
       <Category updateCategory={setCategory} />
-      <div className='d-flex justify-content-center mt-3 '>
+      <div className='d-flex justify-content-center mt-3 m-auto '>
 
-      <Row xs={1} sm={2} md={2} lg={4} className="g-3">
+      <Row xs={1} sm={2} md={2} lg={4} className="g-3 ">
         {/* loop on the all list of products come from the api */}
         {productsList && productsList?.map((product, index) => (
           <Col key={index}>

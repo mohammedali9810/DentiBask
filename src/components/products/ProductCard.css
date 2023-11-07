@@ -30,7 +30,7 @@
     /* object-fit: cover; Ensure the image covers the entire container */
   /* } */
   .product-card img {
-    border: 2px solid blue;
+    border: 2px solid rgb(0, 162, 255);
     width: 100%;
     height: 200px; /* Set a fixed height for the images */
     object-fit: cover;
