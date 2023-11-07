@@ -47,8 +47,6 @@ const Editproduct = (props) => {
   
         if (isNaN(numericValue) || numericValue <= 0) {
           setProductErr({ ...producterr, price: "Must be a positive number" });
-        } else if (numericValue < product.collected) {
-          setProductErr({ ...producterr, price: "Can't be less than the collected price" });
         } else {
           setProductErr({ ...producterr, price: "" });
           setProduct({ ...product, price: numericValue });
@@ -203,7 +201,7 @@ const Editproduct = (props) => {
               color="success"
               sx={{ mt: 3, mb: 2 }}
             >
-              Add Product
+              Apply Editation
             </Button>
           </Box>
         </Box>

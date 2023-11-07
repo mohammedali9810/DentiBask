@@ -57,7 +57,7 @@
 //               >
 //                 {/* <Settings/> */}
 //               </button>
-              
+
 //             </NavDropdown.Item>
 //           </NavDropdown>
 //         </Navbar.Collapse>
@@ -74,6 +74,7 @@ import { Navbar, Container, NavDropdown } from "react-bootstrap";
 import { FaShoppingCart } from "react-icons/fa";
 import { FiSettings } from "react-icons/fi";
 import { useSelector } from "react-redux";
+import usericon from "./usericon.svg";
 
 function Header() {
   // Get cart items from Redux store
@@ -110,6 +111,7 @@ function Header() {
     alignItems: "center", // Center align items vertically
     marginRight: "20px", // Add right margin for spacing
     textDecoration: "none", // Remove default text decoration for NavLink
+    color: "#027fcc",
   };
 
   // Function to generate styles for active links in the navigation bar
@@ -145,23 +147,40 @@ function Header() {
         {/* Navbar Items */}
         <Navbar.Collapse className="justify-content-end">
           {/* Register Link */}
-          <NavLink style={generateActiveLinkStyles} className="nav-link" to="/Register">
+          <NavLink
+            style={generateActiveLinkStyles}
+            className="nav-link"
+            to="/Register"
+          >
             Register
           </NavLink>
 
           {/* Login Link */}
-          <NavLink style={generateActiveLinkStyles} className="nav-link" to="/Login">
+          <NavLink
+            style={generateActiveLinkStyles}
+            className="nav-link"
+            to="/Login"
+          >
             Login
           </NavLink>
 
           {/* Cart Link */}
           <NavLink style={cartStyles} className="nav-link" to="/Cart">
-            <FaShoppingCart style={{ fontSize: "1.2rem", marginRight: "5px" }} />
+            <FaShoppingCart
+              style={{ fontSize: "1.2rem", marginRight: "5px" }}
+            />
             <span id="numberOfOrders">{getTotalQuantity()}</span>
           </NavLink>
 
+          <NavLink style={cartStyles} className="nav-link" to="/dashboard">
+            <img src={usericon} alt="dashboard" />
+          </NavLink>
+
           {/* Settings Dropdown */}
-          <NavDropdown title={<FiSettings style={{ fontSize: "1.2rem" }} />} id="basic-nav-dropdown">
+          <NavDropdown
+            title={<FiSettings style={{ fontSize: "1.2rem" }} />}
+            id="basic-nav-dropdown"
+          >
             {/* Dropdown Items */}
             <NavDropdown.Item href="#action/3.1">Theme</NavDropdown.Item>
           </NavDropdown>

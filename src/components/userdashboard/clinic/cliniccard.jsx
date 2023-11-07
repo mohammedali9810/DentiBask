@@ -7,11 +7,10 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import Editproduct from "./editproduct";
+import Editclinic from "./editclinic";
 import { useContext } from "react";
 import { Theme } from "../../themecontext";
-import "./products.css";
-const Productcard = (props) => {
+const Cliniccard = (props) => {
   const { theme } = useContext(Theme);
   const [openAddProductDialog, setOpenAddProductDialog] = useState(false);
   const handleOpenAddProductDialog = () => {
@@ -27,7 +26,7 @@ const Productcard = (props) => {
       <CardMedia
         component="img"
         height="200"
-        image={props.product.thumbnail}
+        image={props.clinic.thumbnail}
         alt="green iguana"
       />
       <CardContent className={theme && "darkcard"}>
@@ -39,8 +38,8 @@ const Productcard = (props) => {
           species, ranging across all continents except Antarctica
         </span>
         <p style={{fontWeight:"bold", fontSize:"1rem"}}>Price: 200 $</p>
-        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Category: Instrument</p>
-        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Ordered: 3000 times</p>
+        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Area: Instrument</p>
+        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Location: 3000 times</p>
       </CardContent>
     </CardActionArea>
     <CardActions  className={theme && "darkcard"}>
@@ -54,11 +53,11 @@ const Productcard = (props) => {
     <Dialog open={openAddProductDialog} onClose={handleCloseAddProductDialog}>
         <DialogTitle>Edit Product</DialogTitle>
         <DialogContent>
-          <Editproduct product={props.product} />
+          <Editclinic clinic={props.clinic} />
         </DialogContent>
       </Dialog>
   </Card>
   )
 }
 
-export default Productcard;
+export default Cliniccard;

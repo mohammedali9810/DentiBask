@@ -4,26 +4,22 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import axiosinstance from '../../../axiosconfig';
-import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography'; 
 
+const Editclinic = (props) => {
+  const [product, setProduct] = useState({ title: '', price: 0, image: '', description: '', location:'',area:0 });
+  const [producterr, setProductErr] = useState({ title: '', price: "",location:'',area:'' });
+  const defaultTheme = createTheme();
 
-
-const Addproduct = ({ handleClose }) => {
-  const [product, setProduct] = useState({ title: '', price: 0, image: '', description: '', category: '' });
-  const [producterr, setProductErr] = useState({ title: '', price: "",category:'' });
-  const [categories, setCategories] = useState([]);
 
   useEffect(()=>{
-    axiosinstance.get('/categories')
-    .then((response)=>{setCategories(response.data);})
-    .catch((error)=>{console.error(error);});
-  }
-  ,[])
+    setProduct({title:props.clinic.title, price:props.clinic.price,area:props.clinic.area,
+    image:props.clinic.thumbnail,description:props.clinic.description,location:props.clinic.location});
+    }
+  ,[]);
 
   const handlechange = (e) => {
     if (e.target.name === 'title') {
@@ -54,15 +50,35 @@ const Addproduct = ({ handleClose }) => {
     } else if (e.target.name === 'description') {
       setProduct({ ...product, description: e.target.value });
     }
-    if(e.target.name === 'category') {
-        if(e.target.value.trim().length === 0){
-            setProductErr({ ...producterr, category: "Category must be added" });
+    
+
+    else if (e.target.name === 'location') {
+      const titleValue = e.target.value.trim();
+      if (titleValue.length < 4) {
+        setProductErr({ ...producterr, location: "Must be at least 4 characters" });
+      } else {
+        setProductErr({ ...producterr, location: "" });
+      }
+      setProduct({ ...product, location: e.target.value });
+    } 
+
+    else if (e.target.name === 'area') {
+      const input = e.target.value.trim();
+      if (input === '') {
+        setProductErr({ ...producterr, area: "Required" });
+      } else {
+        const numericValue = parseFloat(input);
+  
+        if (isNaN(numericValue) || numericValue <= 0) {
+          setProductErr({ ...producterr, area: "Must be a positive number" });
+        } else {
+          setProductErr({ ...producterr, area: "" });
+          setProduct({ ...product, area: numericValue });
         }
-        else{
-            setProductErr({ ...producterr, category: "" });
-        }
-        setProduct({ ...product, category: e.target.value });
+      }
+      setProduct({ ...product, area: e.target.value });
     }
+
   };
   const senddata = (e) => {
     e.preventDefault();
@@ -75,7 +91,7 @@ const Addproduct = ({ handleClose }) => {
     formData.append("category", product.category);
   
     axiosinstance
-      .post('/addproduct', formData, {
+      .post('/editproduct', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -92,7 +108,7 @@ const Addproduct = ({ handleClose }) => {
   
 
   return (
-
+      <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="l">
         <Box
           sx={{
@@ -104,6 +120,9 @@ const Addproduct = ({ handleClose }) => {
 
           <Box component="form" noValidate onSubmit={senddata} sx={{ mt: 2 }}>
             <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <img src={product.image} alt="" />
+            </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   name="title"
@@ -126,16 +145,16 @@ const Addproduct = ({ handleClose }) => {
                 <TextField
                   required
                   fullWidth
-                  id="Price"
-                  label="Price"
-                  name="price"
-                  value={product.price}
+                  id="Location"
+                  label="Location"
+                  name="location"
+                  value={product.location}
                   onChange={handlechange}
-                  error={Boolean(producterr.price)}
+                  error={Boolean(producterr.location)}
                 />
-                 {producterr.price && (
+                 {producterr.location && (
                   <Typography variant="caption" color="error">
-                    {producterr.price}
+                    {producterr.location}
                   </Typography>
                 )}
               </Grid>
@@ -152,21 +171,43 @@ const Addproduct = ({ handleClose }) => {
                   onChange={handlechange}
                 />
               </Grid>
-              <Grid item xs={12}>
-              <InputLabel id="demo-simple-select-label">Category</InputLabel>
-              <Select
-              required
-              fullWidth
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-          value={product.category}
-          label="Category"
-          name='category'
-          onChange={handlechange}
-        >
-            {categories.map((category,index) => <MenuItem key={index} value={category.id}>{category.name}</MenuItem>)}
-        </Select>
-        </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="Area"
+                  label="Area"
+                  name="area"
+                  value={product.area}
+                  onChange={handlechange}
+                  error={Boolean(producterr.area)}
+                />
+                 {producterr.area && (
+                  <Typography variant="caption" color="error">
+                    {producterr.area}
+                  </Typography>
+                )}
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="Price"
+                  label="Price"
+                  name="price"
+                  value={product.price}
+                  onChange={handlechange}
+                  error={Boolean(producterr.price)}
+                />
+                 {producterr.price && (
+                  <Typography variant="caption" color="error">
+                    {producterr.price}
+                  </Typography>
+                )}
+              </Grid>
+
             </Grid>
             <label className="custom-upload-button">
   <Button
@@ -194,12 +235,13 @@ const Addproduct = ({ handleClose }) => {
               color="success"
               sx={{ mt: 3, mb: 2 }}
             >
-              Add Product
+              Apply Editation
             </Button>
           </Box>
         </Box>
       </Container>
+    </ThemeProvider>
   );
 };
 
-export default Addproduct;
+export default Editclinic;
