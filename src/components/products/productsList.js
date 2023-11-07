@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ProductCard from './productCard';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import { Container, Row, Col } from 'react-bootstrap'; // Make sure to import Container
 import Category from './catogery';
-
 
 function ProductsList() {
   const navigate = useNavigate();
@@ -19,7 +17,7 @@ function ProductsList() {
         setProductsList(products);
       })
       .catch(error => {
-        console.error(error);
+        console.error('There was an error!', error);
       });
   }, [category]);
 
@@ -28,25 +26,20 @@ function ProductsList() {
   };
 
   return (
-    <>
+    <Container> {/* Use Container for centered and responsive padding */}
       <Category updateCategory={setCategory} />
-      <div className='d-flex justify-content-center mt-3 m-auto '>
-
-      <Row xs={1} sm={2} md={2} lg={4} className="g-3 ">
+      <Row className="g-2 justify-content-center mt-3 mx-2 mx-sm-1 mx-md-4 mx-lg-4 mx-xl-5" xs={1} sm={2} lg={3} xl={3} xxl={4}>
         {/* loop on the all list of products come from the api */}
-        {productsList && productsList?.map((product, index) => (
-          <Col key={index}>
-            <div className="" key={product.id}>
-              <ProductCard
-                productData={product}
-                handleNavigate={(id) => redirectToDetails(id)}
-              />
-            </div>
+        {productsList.map((product, index) => (
+          <Col key={product.id} className="d-flex"> {/* Use the product's unique id for the key */}
+            <ProductCard
+              productData={product}
+              handleNavigate={() => redirectToDetails(product.id)}
+            />
           </Col>
         ))}
       </Row>
-      </div>
-    </>
+    </Container>
   );
 }
 
