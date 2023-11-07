@@ -49,7 +49,6 @@ import Rents from "../rentsdashboard/rents";
 import Clinic from "../clinic/clinic";
 
 const drawerWidth = 240;
-
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -67,7 +66,6 @@ const AppBar = styled(MuiAppBar, {
     }),
   }),
 }));
-
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -93,7 +91,6 @@ const Drawer = styled(MuiDrawer, {
     }),
   },
 }));
-
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -108,7 +105,6 @@ const Search = styled('div')(({ theme }) => ({
     width: 'auto',
   },
 }));
-
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: '100%',
@@ -133,18 +129,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-
-
 export default function Dashboard() {
   const {lang} = useContext(Lang);
   const [ selected , setSelected] = React.useState("Products");
   const { theme } = useContext(Theme);
   const mode = theme ? "darkmode" : "lightmode";
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
   const [view,setView] = React.useState(<Products/>);
   //////////////////////////////////////////////////////////////////////////////
   const mainListItems = (
@@ -176,8 +169,6 @@ export default function Dashboard() {
         
         <ListItemText primary={lang ? "المنتجات" : "Products"}  />
       </ListItemButton>
-
-
       <ListItemButton
        onClick={() => {setView(<Categories/>) ;return setSelected("Category")}}
        sx={{
@@ -205,7 +196,6 @@ export default function Dashboard() {
         </ListItemIcon>
         <ListItemText primary={lang ? "المستخدمين" : "Customers"} />
       </ListItemButton>
-
       <ListItemButton
        onClick={() => setSelected("Orders")}
        sx={{
@@ -264,10 +254,7 @@ export default function Dashboard() {
           <PaidIcon className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText onClick={()=>{setView(<Transactions/>)}} primary={lang ? "التحويلات" : "Transactions"} />
-      </ListItemButton>
-
-  
-      
+      </ListItemButton>   
     </React.Fragment>
   );
   const secondaryListItems = (
@@ -295,10 +282,7 @@ export default function Dashboard() {
       </ListItemButton>
     </React.Fragment>
   );
-
 ////////////////////////////////////////////////////////////////////////////
-
-
   return (
 
       <Box className={mode} sx={{ display: "flex", flexDirection: lang ? "row-reverse" : "row" }}>
@@ -326,7 +310,6 @@ export default function Dashboard() {
     <MenuIcon />
   </IconButton>
 </div>
-
             <Typography
               component="h1"
               variant="h6"
@@ -345,15 +328,13 @@ export default function Dashboard() {
               {selected === "Transactions"? lang ? " التحويلات " : "Transactions" : null }
               {selected === "Clinic"? lang ? " العيادات " : "Clinic" : null }
             </Typography>
-
             <Search style={{backgroundColor:"white"}}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
+              inputProps={{ 'aria-label': 'search' }}/>
           </Search>
 
             <IconButton color="inherit">
@@ -378,7 +359,7 @@ export default function Dashboard() {
             }}
             className={theme ? "darkmodesidebar" : "lightsidebar"}
           >
-          <img src={theme ? darklogo :logo} alt="logo" style={{marginTop:"1rem"}} />
+            {open && <img src={theme ? darklogo :logo} alt="logo" style={{marginTop:"1rem"}} />}
             <IconButton  onClick={toggleDrawer} >
               {lang ? null : <ChevronLeftIcon  className={theme && "darkicon"} />}
             </IconButton>

@@ -1,0 +1,22 @@
+.clinicgrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* For screens smaller than 1024px (tablets) but larger than 768px (portrait mobile) */
+  @media screen and (max-width: 1024px) {
+    .clinicgrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  /* For screens smaller than 768px (portrait mobile) */
+  @media screen and (max-width: 768px) {
+    .clinicgrid {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+  

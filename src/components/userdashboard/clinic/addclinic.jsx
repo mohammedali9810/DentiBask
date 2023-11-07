@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axiosinstance from '../../../axiosconfig';
 import Typography from '@mui/material/Typography'; 
 
-const Editclinic = (props) => {
+
+
+const Addclinic = ({ handleClose }) => {
   const [product, setProduct] = useState({ title: '', price: 0, image: '', description: '', location:'',area:0 });
   const [producterr, setProductErr] = useState({ title: '', price: "",location:'',area:'' });
-  const defaultTheme = createTheme();
-
-
-  useEffect(()=>{
-    setProduct({title:props.clinic.title, price:props.clinic.price,area:props.clinic.area,
-    image:props.clinic.thumbnail,description:props.clinic.description,location:props.clinic.location});
-    }
-  ,[]);
 
   const handlechange = (e) => {
     if (e.target.name === 'title') {
@@ -50,7 +43,6 @@ const Editclinic = (props) => {
     } else if (e.target.name === 'description') {
       setProduct({ ...product, description: e.target.value });
     }
-    
 
     else if (e.target.name === 'location') {
       const titleValue = e.target.value.trim();
@@ -79,6 +71,7 @@ const Editclinic = (props) => {
       setProduct({ ...product, area: e.target.value });
     }
 
+
   };
   const senddata = (e) => {
     e.preventDefault();
@@ -91,7 +84,7 @@ const Editclinic = (props) => {
     formData.append("category", product.category);
   
     axiosinstance
-      .post('/editproduct', formData, {
+      .post('/addclinic', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -108,7 +101,7 @@ const Editclinic = (props) => {
   
 
   return (
-      <ThemeProvider theme={defaultTheme}>
+
       <Container component="main" maxWidth="l">
         <Box
           sx={{
@@ -120,16 +113,13 @@ const Editclinic = (props) => {
 
           <Box component="form" noValidate onSubmit={senddata} sx={{ mt: 2 }}>
             <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <img src={product.image} alt="" />
-            </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   name="title"
                   required
                   fullWidth
                   id="productTitle"
-                  label="Product Title"
+                  label="Clinic Title"
                   autoFocus
                   value={product.title}
                   onChange={handlechange}
@@ -171,7 +161,6 @@ const Editclinic = (props) => {
                   onChange={handlechange}
                 />
               </Grid>
-
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
@@ -207,7 +196,6 @@ const Editclinic = (props) => {
                   </Typography>
                 )}
               </Grid>
-
             </Grid>
             <label className="custom-upload-button">
   <Button
@@ -235,13 +223,12 @@ const Editclinic = (props) => {
               color="success"
               sx={{ mt: 3, mb: 2 }}
             >
-              Apply Editation
+              Add Clinic
             </Button>
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
   );
 };
 
-export default Editclinic;
+export default Addclinic;

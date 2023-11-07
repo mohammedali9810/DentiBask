@@ -32,7 +32,9 @@ import {Lang} from "../../langcontext";
 import logouticon from "./logout.svg";
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouseMedicalFlag } from '@fortawesome/free-solid-svg-icons';
+import Clinic from "../clinic/clinic";
 import Settings from "../settings/settings";
 import Orders from "../ordersdashboard/orders";
 import Transactions from "../Transactionsdashboard/transactions";
@@ -130,7 +132,7 @@ export default function UserDashboard() {
   const [ selected , setSelected] = React.useState("Orders");
   const { theme } = useContext(Theme);
   const mode = theme ? "darkmode" : "lightmode";
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -151,6 +153,7 @@ export default function UserDashboard() {
         <ListItemText primary={lang ? " لوحة القياده" : "Dashboard"}  />
       </ListItemButton>
       <Divider sx={{ my: 1, opacity:"1" }} />
+
       <ListItemButton
        onClick={() => setSelected("Orders")}
        sx={{
@@ -167,7 +170,24 @@ export default function UserDashboard() {
 
 
       <ListItemButton
-       onClick={() => setSelected("Rents")}
+       onClick={() => {setView(<Clinic/>) ;return setSelected("Clinic")}}
+       sx={{
+         backgroundColor: selected === "Clinic" && "#CDCDCD",
+         opacity: selected === "Clinic" && "1",
+       }}
+       className="sidebtn"
+      >
+        <ListItemIcon>
+        <FontAwesomeIcon icon={faHouseMedicalFlag} className={theme ? "darkicon" : ""} />
+        </ListItemIcon>
+        <ListItemText onClick={()=>{
+        }}
+         primary={lang ? "العيادات" : "Clinic"}/>
+      </ListItemButton>
+
+
+      <ListItemButton
+       onClick={() => {setView(<Rents/>) ;return setSelected("Rents")}}
        sx={{
          backgroundColor: selected === "Rents" && "#CDCDCD",
          opacity: selected === "Rents" && "1",
@@ -177,7 +197,7 @@ export default function UserDashboard() {
         <ListItemIcon>
           <LayersIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Rents/>)}} primary={lang ? "الإيجارات" : "Rents"}/>
+        <ListItemText primary={lang ? "الإيجارات" : "Rents"}/>
       </ListItemButton>
   
       <ListItemButton
@@ -201,7 +221,7 @@ export default function UserDashboard() {
   const secondaryListItems = (
     <React.Fragment>
       <ListItemButton
-       onClick={() => setSelected("Settings")}
+       onClick={() => {setView(<Settings/>); return setSelected("Settings");}}
        sx={{
          backgroundColor: selected === "Settings" && "#CDCDCD",
          opacity: selected === "Settings" && "1",
@@ -211,7 +231,7 @@ export default function UserDashboard() {
         <ListItemIcon>
           <AssignmentIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Settings/>)}} primary={lang ? "الإعدادات" : "Settings"} />
+        <ListItemText primary={lang ? "الإعدادات" : "Settings"} />
       </ListItemButton>
       <ListItemButton
       className="sidebtn"
@@ -227,118 +247,122 @@ export default function UserDashboard() {
 ////////////////////////////////////////////////////////////////////////////
 
 
-  return (
+return (
 
-      <Box className={mode} sx={{ display: "flex", flexDirection: lang ? "row-reverse" : "row" }}>
-        <CssBaseline />
-        <AppBar  position="absolute" open={open}
-        className={lang ? "app-bar-right" : "app-bar-left"}
-        >
-          <Toolbar
-          className={theme ? "darknav" : "lightnav"}
-            sx={{
-              pr: "24px",
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: "36px",
-                ...(open && { display: "none" }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1, fontSize:"2rem", fontWeight:"bold" }}
-              
-            >
-              {selected === "Dashboard"? lang ? " لوحة القياده" : "Dashboard" : null }
-              {selected === "Products"? lang ? " المنتجات" : "Products" : null }
-              {selected === "Category"? lang ? " الانواع" : "Category" : null }
-              {selected === "Rents"? lang ? "الإيجارات" : "Rents" : null }
-              {selected === "Settings"? lang ? " الإعدادات " : "Settings" : null }
-              {selected === "Orders"? lang ? " الطلبات " : "Orders" : null }
-              {selected === "Customers"? lang ? " المستخدمين " : "Customers" : null }
-              {selected === "Transactions"? lang ? " التحويلات " : "Transactions" : null }
-            </Typography>
-
-            <Search style={{backgroundColor:"white", marginRight:"4rem"}}>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-
-            <IconButton style={{marginRight:"2rem"}} color="inherit">
-              <Badge badgeContent={1} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-              
-              
-            </IconButton>
-            <IconButton color="inherit">
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open} >
-          <Toolbar
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              px: [1],
-            }}
-            className={theme ? "darkmodesidebar" : "lightsidebar"}
-          >
-          <img src={theme ? darklogo :logo} alt="logo" style={{marginTop:"1rem"}} />
-            <IconButton  onClick={toggleDrawer} >
-              {lang ? null : <ChevronLeftIcon  className={theme && "darkicon"} />}
-            </IconButton>
-            
-          </Toolbar>
-
-          <List style={{height:"100%"}} component="nav" className={theme ? "darkmodesidebar" : "lightsidebar"}>
-
-            {mainListItems}
-            <Divider sx={{ my: 1, opacity:"1" }} />
-            {secondaryListItems}
-          </List>
-        </Drawer>
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
-          }}
-        >
-          <Toolbar />
-          <Paper
-  className={`${mode} ${mode === 'darkmode' ? 'dark-paper' : ''}`} 
-  sx={{
-    p: 2,
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: mode === 'darkmode' ? 'black' : '#CDCDCD', 
-    color: mode === 'darkmode' ? 'green' : '', 
-  }}
+  <Box className={mode} sx={{ display: "flex", flexDirection: lang ? "row-reverse" : "row" }}>
+    <CssBaseline />
+    <AppBar  position="absolute" open={open}
+    className={lang ? "app-bar-right" : "app-bar-left"}
+    >
+      <Toolbar
+      className={theme ? "darknav" : "lightnav"}
+        sx={{
+          pr: "24px",
+        }}
+      >
+       <div className="dashboardtitle"> {/* Add the class to this div */}
+<IconButton
+edge="start"
+color="inherit"
+aria-label="open drawer"
+onClick={toggleDrawer}
+sx={{
+  marginRight: "36px",
+  ...(open && { display: "none" }),
+}}
 >
-  {view}
-</Paper>
+<MenuIcon />
+</IconButton>
+</div>
 
-        </Box>
-      </Box>
-  );
+        <Typography
+          component="h1"
+          variant="h6"
+          color="inherit"
+          noWrap
+          sx={{ flexGrow: 1, fontSize:"2rem", fontWeight:"bold" }}
+          className="dashboardtitle"
+        >
+          {selected === "Dashboard"? lang ? " لوحة القياده" : "Dashboard" : null }
+          {selected === "Products"? lang ? " المنتجات" : "Products" : null }
+          {selected === "Category"? lang ? " الانواع" : "Category" : null }
+          {selected === "Rents"? lang ? "الإيجارات" : "Rents" : null }
+          {selected === "Settings"? lang ? " الإعدادات " : "Settings" : null }
+          {selected === "Orders"? lang ? " الطلبات " : "Orders" : null }
+          {selected === "Customers"? lang ? " المستخدمين " : "Customers" : null }
+          {selected === "Transactions"? lang ? " التحويلات " : "Transactions" : null }
+          {selected === "Clinic"? lang ? " العيادات " : "Clinic" : null }
+        </Typography>
+
+        <Search style={{backgroundColor:"white"}}>
+        <SearchIconWrapper>
+          <SearchIcon />
+        </SearchIconWrapper>
+        <StyledInputBase
+          placeholder="Search…"
+          inputProps={{ 'aria-label': 'search' }}
+        />
+      </Search>
+
+        <IconButton color="inherit">
+          <Badge badgeContent={1} color="secondary">
+            <NotificationsIcon />
+          </Badge>
+          
+          
+        </IconButton>
+        <IconButton color="inherit">
+        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        </IconButton>
+      </Toolbar>
+    </AppBar>
+    <Drawer variant="permanent" open={open} >
+      <Toolbar
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          px: [1],
+        }}
+        className={theme ? "darkmodesidebar" : "lightsidebar"}
+      >
+        {open  && <img src={theme ? darklogo :logo} alt="logo" style={{marginTop:"1rem"}} />}
+      
+        <IconButton  onClick={toggleDrawer} >
+          {lang ? null : <ChevronLeftIcon  className={theme && "darkicon"} />}
+        </IconButton>
+        
+      </Toolbar>
+
+      <List style={{height:"100%"}} component="nav" className={theme ? "darkmodesidebar" : "lightsidebar"}>
+
+        {mainListItems}
+        <Divider sx={{ my: 1, opacity:"1" }} />
+        {secondaryListItems}
+      </List>
+    </Drawer>
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+        height: "100vh",
+        overflow: "auto",
+      }}
+    >
+      <Toolbar />
+      <Paper
+className={`${mode} ${mode === 'darkmode' ? 'dark-paper' : ''}`} 
+sx={{
+p: 2,
+display: 'flex',
+flexDirection: 'column',
+backgroundColor: mode === 'darkmode' ? 'black' : '#CDCDCD', 
+color: mode === 'darkmode' ? 'green' : '', 
+}}
+>
+{view}
+</Paper>
+    </Box>
+  </Box>
+);
 }
