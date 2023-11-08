@@ -106,7 +106,7 @@ const handlechanges = (e)=>{
       >
         <div className='settings-data'>
           <div style={{fontWeight:"bold", fontSize:"1.2rem"}}> 
-                 <label style={{marginRight:"3rem",color:"#1976d2"}}>{lang ? " اسم المستخدم":"Username"}</label>
+                 <label style={{textAlign:"left",width:"5rem",marginRight:"5rem",color:"#1976d2"}}>{lang ? " اسم المستخدم":"Username"}</label>
                   <label >Shaher emad mohammed</label>
           </div>
          
@@ -159,7 +159,7 @@ const handlechanges = (e)=>{
       >
         <div className='settings-data'>
         <div style={{fontWeight:"bold", fontSize:"1.2rem"}}> 
-                 <label style={{marginRight:"3rem",color:"#1976d2"}}>{lang ? " البريد الإلكتروني ":"Email"}</label>
+                 <label style={{textAlign:"left",width:"5rem",marginRight:"5rem",color:"#1976d2"}}>{lang ? " البريد الإلكتروني ":"Email"}</label>
                   <label >Shaher@gmail.com</label>
           </div>
           {edit.email &&<><TextField
@@ -211,7 +211,7 @@ const handlechanges = (e)=>{
       >
         <div className='settings-data'>
         <div style={{fontWeight:"bold", fontSize:"1.2rem"}}> 
-                 <label style={{marginRight:"3rem",color:"#1976d2"}}>{lang ? " كلمة السر ":"Password"}</label>
+                 <label style={{textAlign:"left",width:"5rem",marginRight:"5rem",color:"#1976d2"}}>{lang ? " كلمة السر ":"Password"}</label>
                   <label >********</label>
           </div>
           {edit.password &&<><TextField
@@ -264,7 +264,7 @@ const handlechanges = (e)=>{
       >
         <div className='settings-data'>
         <div style={{fontWeight:"bold", fontSize:"1.2rem"}}> 
-                 <label style={{marginRight:"3rem",color:"#1976d2"}}>{lang ? " رقم الموبايل":"Phone"}</label>
+                 <label style={{textAlign:"left",width:"5rem",marginRight:"5rem",color:"#1976d2"}}>{lang ? " رقم الموبايل":"Phone"}</label>
                   <label >0111216161</label>
           </div>
           {edit.phone &&<><TextField
