@@ -157,8 +157,7 @@ import { useForm } from 'react-hook-form';
 import Container from '@mui/material/Container';
 import { Link as RouterLink } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import './SignUp.css';
-
+// import './SignUp.css';
 const defaultTheme = createTheme();
 
 export default function SignUp() {
@@ -186,9 +185,14 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: '#AAE0FF' }}>
+          {/* <Avatar sx={{ m: 1, bgcolor: '#AAE0FF' }}>
             <LockOutlinedIcon />
-          </Avatar>
+          </Avatar> */}
+          <img
+            src="https://i.pinimg.com/originals/9c/87/99/9c879909741ebaa6b7a614071079e542.jpg"
+            alt="Logo"
+            style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+            />
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
