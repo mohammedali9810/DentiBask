@@ -37,6 +37,11 @@ const Footer = () => {
   return (
     <Box component="footer" sx={{ bgcolor: '#2196F3', color: '#fff', py: 4 }}>
       <Container maxWidth="lg">
+      <img
+            src="https://i.pinimg.com/originals/9c/87/99/9c879909741ebaa6b7a614071079e542.jpg"
+            alt="Logo"
+            style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+            />
         <Typography variant="h6" align="center" gutterBottom>
           DentiBask
         </Typography>
