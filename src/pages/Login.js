@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link as RouterLink } from 'react-router-dom';
 import './SignInStyles.css';
 
 function Copyright(props) {
@@ -98,10 +99,13 @@ export default function SignIn() {
                   Forgot password?
                 </Link>
               </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+              // <Grid item>
+              //   <Link href="#" variant="body2">
+              //     {"Don't have an account? Sign Up"}
+              //   </Link>
+                  <RouterLink to="/Register" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </RouterLink>
               </Grid>
             </Grid>
           </Box>
