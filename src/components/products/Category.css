@@ -59,5 +59,7 @@
     content: "\1F4BB"; /* Unicode character for a laptop emoji */
   }
   
-  /* Define other icon classes similarly */
-  
+  .nav-link:target { 
+    font-weight: bold;
+    background-color: #f18989;
+  }

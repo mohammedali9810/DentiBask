@@ -12,11 +12,13 @@ function Category({ updateCategory }) {
   ];
 
   return (
-    <div className='d-flex justify-content-center'>
+    <div className='d-flex justify-content-center mt-3'>
       <ul className="nav nav-tabs">
       {categoriesList?.map((category, index) => (
         <li className="nav-item" key={index} onClick={() => updateCategory(category)}>
-          <a className="nav-link" href="#">{category}</a>
+          <button style={{
+            fontSize:'1.1rem',
+          }} className="nav-link" href="#">{category}</button>
         </li>
       ))}
     </ul>

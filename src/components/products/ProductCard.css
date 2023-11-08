@@ -70,3 +70,10 @@
     margin-bottom: 10px;
   }
   
+  .card-hover-grow {
+    transition: transform 0.3s ease; /* Smooth transition for the scale */
+  }
+  
+  .card-hover-grow:hover {
+    transform: scale(1.05); /* Increase the size of the card to 105% */
+  }

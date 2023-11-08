@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector } from 'react-redux';
 import CartItem from './CartItem'
+import {BsFillCartPlusFill} from 'react-icons/bs'
+import './style.css' 
 function Cart() {
     const cart = useSelector((state) => state.cart)
 
@@ -15,18 +17,22 @@ function Cart() {
     }
     return (
         <>
-            <div className="row">
+            <div className="row ">
                 <div>
-                    <h3>Shopping Cart</h3>
+                    <h3 className="text-center cart-title"> Shopping Cart <BsFillCartPlusFill/></h3>
                     {cart?.map((item) => (
-                    <CartItem
-                        key={item.id}
-                        id={item.id}
-                        image={item.image}
-                        title={item.title}
-                        price={item.price} 
-                        quantity={item.quantity}
-                    />
+                        <div className="my-cart-item">
+                            <CartItem 
+
+                                key={item.id}
+                                id={item.id}
+                                image={item.image}
+                                title={item.title}
+                                price={item.price} 
+                                quantity={item.quantity}
+                                description={item.description}
+                            />
+                        </div>
                     ))}
                 </div>
             </div>
@@ -36,7 +42,7 @@ function Cart() {
                 <h5>the price for all {getTotal().totalQuantity} items is {getTotal().totalPrice} $</h5>
              </div>
             ):(
-                <h1 className="text-center">Cart is empty</h1>
+                <h1 className="text-center mt-5">Cart is empty</h1>
             )}
             
         
