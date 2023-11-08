@@ -10,3 +10,58 @@
   border-radius: 30px;
 }
 
+.cart-title {
+ 
+  /* Existing styles */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: #333;
+  padding: 0.5rem 0;
+  background-color: #fff; /* Add background color to ensure readability over other content */
+
+}
+
+
+/* Container needs to be relative to position the overlay */
+.container {
+  position: relative;
+  /* Ensure there's space for the scaled image */
+  /* overflow: hidden; */
+}
+
+/* The scaling class for the image */
+.big-img {
+  position: relative;
+
+  transition: transform 0.5s ease; /* Smooth transition for the scale */
+}
+
+/* The blur class for the overlay */
+.blur-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7); /* White background with some opacity */
+  transition: opacity 0.5s ease; /* Transition for the blur effect */
+  opacity: 0; /* Start with no blur/overlay */
+  backdrop-filter: blur(0px); /* Start with no blur */
+}
+
+/* What happens when the image scales on hover */
+.container:hover .big-img {
+  transform: scale(2); /* Double the size */
+  position: relative; /* Ensures that the scaling takes place in the correct context */
+  left: 30%;
+  z-index: 999; 
+  cursor: zoom-in;
+  
+}
+
+/* When the container is hovered, the overlay blurs */
+.container:hover .blur-overlay {
+  opacity: 1;
+  backdrop-filter: blur(10px); /* The amount of blur */
+}
