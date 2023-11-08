@@ -158,7 +158,6 @@ import Container from '@mui/material/Container';
 import { Link as RouterLink } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 // import './SignUp.css';
-
 const defaultTheme = createTheme();
 
 export default function SignUp() {
