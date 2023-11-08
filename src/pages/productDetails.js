@@ -35,7 +35,7 @@
 //     <Container className="my-margin-top my-border p-3">
 //       <div className="row">
 //         <div className="col-lg-6  ">
-//           <img 
+//           <img
 //             style={{
 //               width: "100%",
 //               maxHeight:'45vh',
@@ -62,7 +62,7 @@
 //                   border:'1px solid black',
 //                   cursor: "pointer",
 //                 }}
-//                 onClick={() => handleThumbnailClick(image)} 
+//                 onClick={() => handleThumbnailClick(image)}
 //               />
 //             ))}
 //           </div>
@@ -80,15 +80,14 @@
 //           <div className="row m-3 mt-5">
 //             <div  className="">
 //               {productDetails.discountPercentage > 0 ? (
-                
+
 //                 <span>
-//                    <span style={{fontSize:'20px' }} className="">Price Now : <b>{(productDetails.price - productDetails.price * productDetails.discountPercentage/100).toFixed(2)}</b> $</span>  
+//                    <span style={{fontSize:'20px' }} className="">Price Now : <b>{(productDetails.price - productDetails.price * productDetails.discountPercentage/100).toFixed(2)}</b> $</span>
 //                    <span className="m-1" style={{color:'red'}}> {productDetails.discountPercentage}%</span>
 //                    <span className="m-1" style={{textDecoration:'line-through'}}>{productDetails.price}</span>
-                   
-               
+
 //                 </span>
-  
+
 //               ):(
 //                   <span>{productDetails.price}</span>
 //               )}
@@ -100,23 +99,22 @@
 //                   <span className="badge text-bg-secondary">out of stock</span>
 //                 )}
 //               </span>
-              
+
 //             </div>
 //             <div className="col-6 m-2">
-            
+
 //             </div>
 //             <div className='  m-2 d-flex justify-content-center '>
 //           <Button variant="primary"  onClick={() => dispatch(decrementQuantity(productDetails.id))}>-</Button>
 //           <span className='mx-2 '>{quantity}</span>
 //           <Button variant="primary" onClick={() => dispatch(incrementQuantity(productDetails?.id))}>+</Button>
-       
+
 //         </div>
 //           </div>
-          
 
 //         <div className="d-flex justify-content-center pt-5">
-//         <Button 
-//          style={{width:'50%',fontSize:'0.9rem' , borderRadius:'30px', backgroundColor:'#3384b3'} } className="btn  text-center  my-2 " onClick={() => 
+//         <Button
+//          style={{width:'50%',fontSize:'0.9rem' , borderRadius:'30px', backgroundColor:'#3384b3'} } className="btn  text-center  my-2 " onClick={() =>
 //                   dispatch(addToCart({
 //                     id: productDetails.id,
 //                     title: productDetails.title,
@@ -124,7 +122,7 @@
 //                     price: productDetails.price,
 //                     stock: productDetails.stock,
 //                     description: productDetails.description,
-                    
+
 //                   }))}>
 //                     Add To Cart
 //         </Button>
@@ -169,12 +167,16 @@ export default function ProductDetails() {
   };
 
   const handleIncrement = () => {
-    dispatch(setQuantity({ id: productDetails.id, quantity: cartQuantity + 1 }));
+    dispatch(
+      setQuantity({ id: productDetails.id, quantity: cartQuantity + 1 })
+    );
   };
 
   const handleDecrement = () => {
     if (cartQuantity > 1) {
-      dispatch(setQuantity({ id: productDetails.id, quantity: cartQuantity - 1 }));
+      dispatch(
+        setQuantity({ id: productDetails.id, quantity: cartQuantity - 1 })
+      );
     }
   };
 
@@ -247,13 +249,25 @@ export default function ProductDetails() {
               {productDetails.discountPercentage > 0 ? (
                 <span>
                   <span style={{ fontSize: "20px" }} className="">
-                    Price Now: <b>{(productDetails.price - (productDetails.price * productDetails.discountPercentage) / 100).toFixed(2)}</b> $
+                    Price Now:{" "}
+                    <b>
+                      {(
+                        productDetails.price -
+                        (productDetails.price *
+                          productDetails.discountPercentage) /
+                          100
+                      ).toFixed(2)}
+                    </b>{" "}
+                    $
                   </span>
                   <span className="m-1" style={{ color: "red" }}>
                     {" "}
-                   Discount: {productDetails.discountPercentage}%
+                    Discount: {productDetails.discountPercentage}%
                   </span>
-                  <span className="m-1" style={{ textDecoration: "line-through" }}>
+                  <span
+                    className="m-1"
+                    style={{ textDecoration: "line-through" }}
+                  >
                     {productDetails.price}
                   </span>
                 </span>
@@ -270,16 +284,25 @@ export default function ProductDetails() {
               </span>
             </div>
 
-            <div className='m-2 d-flex justify-content-center'>
-              <Button variant="primary" onClick={handleDecrement}>-</Button>
-              <span className='mx-2'>{cartQuantity}</span>
-              <Button variant="primary" onClick={handleIncrement}>+</Button>
+            <div className="m-2 d-flex justify-content-center">
+              <Button variant="primary" onClick={handleDecrement}>
+                -
+              </Button>
+              <span className="mx-2">{cartQuantity}</span>
+              <Button variant="primary" onClick={handleIncrement}>
+                +
+              </Button>
             </div>
           </div>
 
           <div className="d-flex justify-content-center pt-5">
             <Button
-              style={{ width: "50%", fontSize: "0.9rem", borderRadius: "30px", backgroundColor: "#3384b3" }}
+              style={{
+                width: "50%",
+                fontSize: "0.9rem",
+                borderRadius: "30px",
+                backgroundColor: "#3384b3",
+              }}
               className="btn text-center my-2"
               onClick={handleAddToCart}
             >

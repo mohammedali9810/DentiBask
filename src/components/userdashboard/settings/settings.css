@@ -1,0 +1,20 @@
+.firstpaper{
+    flex-direction :row; 
+}
+@media (max-width: 768px){
+    .firstpaper{
+        flex-direction :column; 
+    }
+}
+.reg-error{
+    color:red;
+    font-weight: bold;
+    text-decoration:underline;
+  }
+
+.settings-data{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+}
