@@ -1,0 +1,35 @@
+.categoriesgrid{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    padding: .5rem;
+    gap: 3rem;
+    margin-bottom: 2rem;
+}
+.darkcard{
+    background-color: rgb(57, 55, 55);
+    color: white;
+}
+.categoriesgrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  /* Adjust the width of each card as needed and add margin for spacing */
+  .category-card {
+    flex-basis: calc(33.33% - 10px); /* 3 cards per row with 10px spacing */
+    margin: 5px; /* Add a small margin between cards */
+  }
+  
+  @media (max-width: 768px) {
+    .category-card {
+      flex-basis: calc(50% - 10px); /* 2 cards per row on smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .category-card {
+      flex-basis: 100%; /* 1 card per row on even smaller screens */
+    }
+  }
+  
