@@ -23,8 +23,8 @@ export default function ProductCard(props) {
         height:'62vh'
       }} className="my-product-card mt-3">
         <img style={{
-          maxHeight: '35vh',
-          minHeight:'35vh',
+          maxHeight: '30vh',
+          minHeight:'30vh',
           objectFit: 'contain'
 
         }} src={productData.images[0]} className="card-img-top img-fluid" alt="..." />
@@ -40,7 +40,11 @@ export default function ProductCard(props) {
           {/* and make the title link to navigate to the product page in the router */}
           <div className="row" >
             <div className="col-8"><Link style={{textDecoration:'none'}} to={`/product-details/${productData.id}`}>
-              <b style={{ fontSize: '1.1rem' }} className="card-title">{productData.title} </b>
+              <b style={{ 
+                          fontSize: '1.1rem',
+                          left: '5px',
+                }} 
+              className="card-title">{productData.title} </b>
             </Link> </div>
             <b style={{ fontSize: '1.4rem' }} className="col-4 d-flex justify-content-end">
               {productData.price} $
@@ -60,9 +64,10 @@ export default function ProductCard(props) {
                 borderRadius: '30px',
                 backgroundColor: 'rgb(0, 183, 255)', // Set the button background color to blue
                 color: 'white', // Set the text color to white
-                marginTop: '10px',
+                // marginTop: '1px',
                 position:'absolute',
                 top:'89%',
+                left: '20px',
                 
               }} className="btn add-to-cart-button" onClick={() =>
             dispatch(addToCart({
