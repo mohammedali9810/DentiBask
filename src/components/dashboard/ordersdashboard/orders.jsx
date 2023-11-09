@@ -5,6 +5,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CardActionArea from '@mui/material/CardMedia';
+import Typography from '@material-ui/core/Typography';
+
 
 import {
   Table,
