@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from '@mui/material/Pagination';
 import axiosinstance from '../../../axiosconfig';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import {
   Table,
@@ -41,30 +43,70 @@ const Rents = () => {
     setCurrentPage(page);
   };
 
-  const handleSeerent = (rentId) => {
-    console.log(`View rent ID: ${rentId}`);
-    // Implement your logic to view rent details, e.g., navigate to a separate page.
+
+
+  const handleDeleteRent = (rentId) => {
+    // Implement the logic to delete the rent with the given rentId.
+    // You should remove it from the state or send a delete request to your server.
+    // For example, to remove it from the state:
+    const updatedRents = rents.filter((rent) => rent.rentId !== rentId);
+    setRents(updatedRents);
   };
 
+  const handleCancelRent = (rentId) => {
+    // Add logic for cancelling the rent with the given rentId.
+    // For example, you can update the status to 'Cancelled'.
+    const updatedRents = rents.map((rent) => {
+      if (rent.rentId === rentId) {
+        return { ...rent, status: 'Cancelled' };
+      }
+      return rent;
+    });
+    setRents(updatedRents);
+  };
+
+  
   // Add sample rents
   useEffect(() => {
     const sampleRents = [
       {
         id: 1,
         rentId: 'REN-001',
-        customerName: 'John Doe',
-        rentDateFrom: '2022-11-04',
-        rentDateTo: '2023-10-04',
+        renterName: 'John Doe',
+        location: 'Cairo',
+        rentMonthly: 260,
+        rentShift: 45,
         totalPrice: 99.99,
         status: 'The rental is over',
       },
       {
         id: 2,
         rentId: 'REN-002',
-        customerName: 'Jane Smith',
-        rentDateFrom: '2023-10-04',
-        rentDateTo: '2024-12-04',
+        renterName: 'Jane Smith',
+        location: 'Cairo',
+        rentMonthly: 120,
+        rentShift: 25,
         totalPrice: 49.99,
+        status: 'Renting is ongoing',
+      },
+      {
+        id: 3,
+        rentId: 'REN-003',
+        renterName: 'Sarah Johnson',
+        location: 'New York',
+        rentMonthly: 400,
+        rentShift: 60,
+        totalPrice: 199.99,
+        status: 'Renting is ongoing',
+      },
+      {
+        id: 4,
+        rentId: 'REN-004',
+        renterName: 'Michael Brown',
+        location: 'Los Angeles',
+        rentMonthly: 350,
+        rentShift: 50,
+        totalPrice: 159.99,
         status: 'Renting is ongoing',
       },
       // Add more sample rents as needed
@@ -72,7 +114,6 @@ const Rents = () => {
 
     setRents(sampleRents);
   }, []);
-
   return (
     <div>
       <TableContainer component={Paper}>
@@ -80,10 +121,11 @@ const Rents = () => {
           <TableHead>
             <TableRow>
               <TableCell>Rent ID</TableCell>
-              <TableCell>Customer</TableCell>
-              <TableCell>Date From</TableCell>
-              <TableCell>Date To</TableCell>
-              <TableCell>Total Price</TableCell>
+              <TableCell>Renter</TableCell>
+              <TableCell>Location</TableCell>
+              <TableCell>Monthly</TableCell>
+              <TableCell>Shift</TableCell>
+              <TableCell>Total Revenue</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
@@ -92,19 +134,49 @@ const Rents = () => {
             {currentRents.map((rent) => (
               <TableRow key={rent.id}>
                 <TableCell>{rent.rentId}</TableCell>
-                <TableCell>{rent.customerName}</TableCell>
-                <TableCell>{rent.rentDateFrom}</TableCell>
-                <TableCell>{rent.rentDateTo}</TableCell>
+                <TableCell>{rent.renterName}</TableCell>
+                <TableCell>{rent.location}</TableCell>
+                <TableCell>${rent.rentMonthly}</TableCell>
+                <TableCell>${rent.rentShift}</TableCell>
                 <TableCell>${rent.totalPrice}</TableCell>
-                <TableCell>{rent.status}</TableCell>
-                <TableCell>
-                  <Button
-                    onClick={() => handleSeerent(rent.rentId)}
-                    variant="outlined"
-                    color="primary"
+                <TableCell>          
+                  <span
+                    style={{
+                      color:
+                        rent.status === 'The rental is over'
+                          ? 'red'
+                          : rent.status === 'Renting is ongoing'
+                          ? 'green'
+                          : 'black', // Default color
+                    }}
                   >
-                    See rent Detail
-                  </Button>
+                  {rent.status}
+                  
+                  </span>
+
+                  </TableCell>
+                  <TableCell>
+                  {rent.status === 'The rental is over'  || rent.status === 'Cancelled'? (
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => handleDeleteRent(rent.rentId)}
+                      startIcon={<DeleteIcon />}
+
+                    >
+                      Delete Rent
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => handleCancelRent(rent.rentId)}
+                      startIcon={<CancelIcon />}
+
+                    >
+                      Cancel Rent
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
