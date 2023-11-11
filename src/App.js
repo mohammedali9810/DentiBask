@@ -6,7 +6,6 @@ import { Theme } from "./components/themecontext";
 import { Lang } from "./components/langcontext";
 import Router from "./Router/Router";
 import UserDashboard from "./components/userdashboard/navandside/UserDashboard";
-
 function App() {
   const [theme, setTheme] = useState(false);
   const [lang, setLang] = useState(false);
@@ -16,7 +15,7 @@ function App() {
         <Lang.Provider value={{ lang, setLang }}>
           <div className="App">
             <Routes>
-              <Route path="/dashboard" element={<UserDashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/*" element={<Router />} />
             </Routes>
           </div>
