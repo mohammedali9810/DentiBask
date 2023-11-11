@@ -8,7 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import './products.css';
 import Addproduct from './addproduct';
-import axios from 'axios';
+
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [pages, setPages] = useState(1);
@@ -25,7 +25,7 @@ const Products = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, [pages]);
+  }, [pages,products]);
 
   const handleOpenAddProductDialog = () => {
     setOpenAddProductDialog(true);

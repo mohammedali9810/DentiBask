@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useState} from 'react'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -10,6 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Editproduct from "./editproduct";
 import { useContext } from "react";
 import { Theme } from "../../themecontext";
+import axiosinstance from '../../../axiosconfig';
 import "./products.css";
 const Productcard = (props) => {
   const { theme } = useContext(Theme);
@@ -21,6 +22,22 @@ const Productcard = (props) => {
   const handleCloseAddProductDialog = () => {
     setOpenAddProductDialog(false);
   };
+  const deleteproduct = () =>{
+    axiosinstance
+      .delete(`/Products/products/${props.product.id}/`, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          // 'X-CSRFToken': csrf_token,
+        },
+        withCredentials: true,
+      })
+      .then(() => {
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   return (
   <Card sx={{ maxWidth: 345 }}>
   <CardActionArea>
@@ -46,7 +63,7 @@ const Productcard = (props) => {
       <Button size="large" color="success" onClick={handleOpenAddProductDialog}>
         Edit
       </Button>
-      <Button size="large" color="error">
+      <Button size="large" color="error" onClick={()=>{deleteproduct()}}>
         Delete
       </Button>
     </CardActions>

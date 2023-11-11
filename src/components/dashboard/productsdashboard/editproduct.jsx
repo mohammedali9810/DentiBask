@@ -13,20 +13,31 @@ import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography'; 
 
 const Editproduct = (props) => {
-  const [product, setProduct] = useState({ title: '', price: 0, image: '', description: '', category: {} });
+  const [product, setProduct] = useState({ title: '', price: 0, image: '', description: '',categorry_id:'' });
   const [producterr, setProductErr] = useState({ title: '', price: "",category:'' });
   const defaultTheme = createTheme();
   const [categories, setCategories] = useState([]);
+  const [csrf_token,setCsrfToken] = useState("");
 
   useEffect(()=>{
-    setProduct({title:props.product.name, price:props.product.price,category:props.product.Categ_id['name'],
+    setProduct({title:props.product.name, price:props.product.price,
+    categorry_id:props.product.Categ_id['id'],
     image:props.product.image,description:props.product.desc});
 
     axiosinstance.get('/Products/category/')
     .then((response)=>{
-      console.log(response.data)
+      console.log(response)
       setCategories(response.data);})
     .catch((error)=>{console.error(error);});
+
+    
+    axiosinstance.get('/Products/get_csrf_token/')
+    .then((response) => {
+      setCsrfToken(response.data.csrfToken);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
     }
   ,[])
 
@@ -60,40 +71,39 @@ const Editproduct = (props) => {
       setProduct({ ...product, description: e.target.value });
     }
     if(e.target.name === 'category') {
-        if(!categories.includes(e.target.value)){
-            setProductErr({ ...producterr, category: "Category must be added" });
-        }
-        else{
-            setProductErr({ ...producterr, category: "" });
-        }
-        setProduct({ ...product, category: e.target.value });
+        setProduct({ ...product, categorry_id: e.target.value });
     }
   };
   const senddata = (e) => {
     e.preventDefault();
-    if(producterr.category==="" && producterr.price==="" && producterr.title===""){
-    console.log(product);
-  
-  //   axiosinstance
-  //     .post('/editproduct', formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //       withCredentials: true,
-  //     })
-  //     .then(() => {
-        
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  }
-};
+    console.log(csrf_token);
+    if (producterr.category === "" && producterr.price === "" && producterr.title === "") {
+
+      axiosinstance
+      .put(`/Products/product/${props.product.id}/`, product, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'X-CSRFToken': csrf_token,
+        },
+        withCredentials: true,  // Include this line
+      })
+      .then(() => {
+        // Handle success if needed
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    
+    
+
+    }
+  };
   
 
   return (
       <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="l">
+      
         <Box
           sx={{
             display: 'flex',
@@ -162,12 +172,14 @@ const Editproduct = (props) => {
               fullWidth
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={props.product.Categ_id['id']}
+              value={product.categorry_id}
                label="Category"
               name='category'
             onChange={handlechange}
         >
-            { categories && categories.map((category,index) => <MenuItem key={index} value={category.id}>{category.name}</MenuItem>)}
+            { categories && categories.map((category,index) =>
+             <MenuItem
+              key={index} value={category.id}>{category.name}</MenuItem>)}
         </Select>
         </Grid>
             </Grid>
