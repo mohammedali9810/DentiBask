@@ -155,7 +155,7 @@ export default function UserDashboard() {
       <Divider sx={{ my: 1, opacity:"1" }} />
 
       <ListItemButton
-       onClick={() => setSelected("Orders")}
+       onClick={() => {setView(<Orders/>); return setSelected("Orders")}}
        sx={{
          backgroundColor: selected === "Orders" && "#CDCDCD",
          opacity: selected === "Orders" && "1",
@@ -165,7 +165,7 @@ export default function UserDashboard() {
         <ListItemIcon>
           <BarChartIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Orders/>)}} primary={lang ? "الطلبات" : "Orders"} />
+        <ListItemText primary={lang ? "الطلبات" : "Orders"} />
       </ListItemButton>
 
 
@@ -201,7 +201,7 @@ export default function UserDashboard() {
       </ListItemButton>
   
       <ListItemButton
-       onClick={() => setSelected("Transactions")}
+       onClick={() => {setView(<Transactions/>);return setSelected("Transactions");}}
        sx={{
          backgroundColor: selected === "Transactions" && "#CDCDCD",
          opacity: selected === "Transactions" && "1",
@@ -211,7 +211,7 @@ export default function UserDashboard() {
         <ListItemIcon>
           <PaidIcon className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Transactions/>)}} primary={lang ? "التحويلات" : "Transactions"} />
+        <ListItemText primary={lang ? "التحويلات" : "Transactions"} />
       </ListItemButton>
 
   

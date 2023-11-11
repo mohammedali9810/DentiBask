@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -22,25 +22,24 @@ const Productcard = (props) => {
     setOpenAddProductDialog(false);
   };
   return (
-    <Card  sx={{ maxWidth: 345 }}>
-    <CardActionArea >
-      <CardMedia
-        component="img"
-        height="200"
-        image={props.product.thumbnail}
-        alt="green iguana"
-      />
-      <CardContent className={theme && "darkcard"}>
+  <Card sx={{ maxWidth: 345 }}>
+  <CardActionArea>
+    <CardMedia
+      component="img"
+      style={{ height:"15rem",objectFit: 'contain' }}
+      image={props.product.image}
+      alt="Product Image"
+    />
+      <CardContent className={theme && "darkcard"} style={{ height:"16rem",objectFit: 'contain' }}>
         <Typography style={{fontWeight:"bold"}} gutterBottom variant="h5" component="div">
-          Lizard
+        {props.product.name}
         </Typography>
         <span style={{fontSize:"1rem", fontWeight:"bold"}}>
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+        {props.product.desc}
         </span>
-        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Price: 200 $</p>
-        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Category: Instrument</p>
-        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Ordered: 3000 times</p>
+        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Price: {props.product.price} $</p>
+        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Category: {props.product.Categ_id['name']}</p>
+        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Stock: {props.product.stock}</p>
       </CardContent>
     </CardActionArea>
     <CardActions  className={theme && "darkcard"}>

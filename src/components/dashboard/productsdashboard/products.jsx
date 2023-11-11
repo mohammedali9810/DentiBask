@@ -8,7 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import './products.css';
 import Addproduct from './addproduct';
-
+import axios from 'axios';
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [pages, setPages] = useState(1);
@@ -17,10 +17,10 @@ const Products = () => {
 
   useEffect(() => {
     axiosinstance
-      .get(`/products?page=${pages}`)
+      .get(`/Products/products/?page=${pages}`)
       .then((res) => {
-        setProducts(res.data.products);
-        setMaxPages(res.data.maxpages);
+        setProducts(res.data.results);
+        setMaxPages(Math.ceil((res.data.count)/12));
       })
       .catch((err) => {
         console.error(err);
