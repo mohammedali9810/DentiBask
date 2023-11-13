@@ -1,33 +1,39 @@
-import React from 'react';
+import React from "react";
 import { Link } from "react-router-dom";
-import Card from 'react-bootstrap/Card';
+import Card from "react-bootstrap/Card";
 import Rating from "./Rating";
 import { Container } from "react-bootstrap";
-import './ProductCard.css';
-import { useDispatch } from 'react-redux';
-import {addToCart} from '../../store/slices/cartslice';
+import "./ProductCard.css";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/slices/cartslice";
 
 export default function ProductCard(props) {
   const { productData } = props;
-  
-  //handle the add to cart button
-  const dispatch = useDispatch()
 
+  //handle the add to cart button
+  const dispatch = useDispatch();
 
   return (
     <Container className="card-hover-grow">
-      <Card style={{
-        boxShadow: "7px 7px 10px rgba(0, 149, 175, 0.5)",
-        borderRadius: '15px',
-        padding: '5px',
-        height:'62vh'
-      }} className="my-product-card mt-3">
-        <img style={{
-          maxHeight: '30vh',
-          minHeight:'30vh',
-          objectFit: 'contain'
-
-        }} src={productData.images[0]} className="card-img-top img-fluid" alt="..." />
+      <Card
+        style={{
+          boxShadow: "7px 7px 10px rgba(0, 149, 175, 0.5)",
+          borderRadius: "15px",
+          padding: "5px",
+          height: "62vh",
+        }}
+        className="my-product-card mt-3"
+      >
+        <img
+          style={{
+            maxHeight: "30vh",
+            minHeight: "30vh",
+            objectFit: "contain",
+          }}
+          src={productData.images[0]}
+          className="card-img-top img-fluid"
+          alt="..."
+        />
         <div className="card-body">
           {/*stock*/}
           {productData.stock !== 0 ? (
@@ -38,50 +44,69 @@ export default function ProductCard(props) {
 
           {/* product title */}
           {/* and make the title link to navigate to the product page in the router */}
-          <div className="row" >
-            <div className="col-8"><Link style={{textDecoration:'none'}} to={`/product-details/${productData.id}`}>
-              <b style={{ 
-                          fontSize: '1.1rem',
-                          left: '5px',
-                }} 
-              className="card-title">{productData.title} </b>
-            </Link> </div>
-            <b style={{ fontSize: '1.4rem' }} className="col-4 d-flex justify-content-end">
+          <div className="row">
+            <div className="col-8">
+              <Link
+                style={{ textDecoration: "none" }}
+                to={`/product-details/${productData.id}`}
+              >
+                <b
+                  style={{
+                    fontSize: "1.1rem",
+                    left: "5px",
+                  }}
+                  className="card-title"
+                >
+                  {productData.title}{" "}
+                </b>
+              </Link>{" "}
+            </div>
+            <b
+              style={{ fontSize: "1.4rem" }}
+              className="col-4 d-flex justify-content-end"
+            >
               {productData.price} $
             </b>
           </div>
 
-        <div className={`card-text text-truncate`}>
+          <div className={`card-text text-truncate`}>
             {productData.description}
           </div>
-          
+
           <div className="rating mt-2">
-            <Rating rating={productData.rating}/>
+            <Rating rating={productData.rating} />
           </div>
-          <button style={{
-                width: '90%',
-                fontSize: '1rem',
-                borderRadius: '30px',
-                backgroundColor: 'rgb(0, 183, 255)', // Set the button background color to blue
-                color: 'white', // Set the text color to white
+          {localStorage.getItem("dentibask-access-token") && (
+            <button
+              style={{
+                width: "90%",
+                fontSize: "1rem",
+                borderRadius: "30px",
+                backgroundColor: "rgb(0, 183, 255)", // Set the button background color to blue
+                color: "white", // Set the text color to white
                 // marginTop: '1px',
-                position:'absolute',
-                top:'89%',
-                left: '20px',
-                
-              }} className="btn add-to-cart-button" onClick={() =>
-            dispatch(addToCart({
-              id: productData.id,
-              title: productData.title,
-              image: productData.images[0],
-              price: productData.price,
-              stock: productData.stock,
-              description: productData.description,
-              quantity: productData.quantity
-            }))
-          }>
-            Add To Cart
-          </button>
+                position: "absolute",
+                top: "89%",
+                left: "20px",
+              }}
+              className="btn add-to-cart-button"
+              onClick={() =>
+                dispatch(
+                  addToCart({
+                    id: productData.id,
+                    title: productData.title,
+                    image: productData.images[0],
+                    price: productData.price,
+                    stock: productData.stock,
+                    description: productData.description,
+                    quantity: productData.quantity,
+                  })
+                )
+              }
+            >
+              Add To Cart
+            </button>
+          )}
         </div>
       </Card>
     </Container>
