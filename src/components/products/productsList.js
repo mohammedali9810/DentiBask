@@ -8,29 +8,36 @@ import Category from './catogery';
 function ProductsList() {
   const navigate = useNavigate();
   const [productsList, setProductsList] = useState([]);
-  const [category, setCategory] = useState('smartphones');
+  const [category, setCategory] = useState('Consumble');
 
   useEffect(() => {
-    axios.get(`https://dummyjson.com/products/category/${category}/`)
+    axios.get(`http://127.0.0.1:8000/Products/products/?name=${category}`)
       .then(response => {
-        const { products } = response.data;
-        setProductsList(products);
+  
+        const products  = response.data.results;
+
+        if (products) {
+          console.log(products)
+          setProductsList(products);
+        } else {
+          console.error('Results property not found in the response.');
+        }
       })
       .catch(error => {
         console.error('There was an error!', error);
       });
   }, [category]);
-
+  
   const redirectToDetails = (id) => {
-    navigate(`/product-details/${id}`);
+    navigate(`/Products/products/${id}`);
   };
 
   return (
     <Container> {/* Use Container for centered and responsive padding */}
-      <Category updateCategory={setCategory} />
+      <Category updateCategory={setCategory}/>
       <Row className="g-2 justify-content-center mt-3 mx-2 mx-sm-1 mx-md-4 mx-lg-4 mx-xl-5" xs={1} sm={2} lg={3} xl={3} xxl={4}>
         {/* loop on the all list of products come from the api */}
-        {productsList.map((product, index) => (
+        {productsList?.map((product, index) => (
           <Col key={product.id} className="d-flex"> {/* Use the product's unique id for the key */}
             <ProductCard
               productData={product}
