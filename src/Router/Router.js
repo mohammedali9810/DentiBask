@@ -8,6 +8,9 @@ import Cart from "../pages/Cart";
 import Dashboard from "../components/dashboard/navandside/Dashboard";
 import ProductDetails from "../pages/productDetails";
 import NotFound from "../pages/NotFound";
+import Header from "../components/Header/Header";
+// import ContactUs from '../pages/ContactUs';
+// import AboutUs from '../pages/AboutUs';
 
 export default function Router() {
   return (
@@ -20,5 +23,6 @@ export default function Router() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
+
   );
 }

@@ -1,18 +1,17 @@
-import React from 'react';
+import React from "react";
 import { Link } from "react-router-dom";
-import Card from 'react-bootstrap/Card';
+import Card from "react-bootstrap/Card";
 import Rating from "./Rating";
 import { Container } from "react-bootstrap";
-import './ProductCard.css';
-import { useDispatch } from 'react-redux';
-import {addToCart} from '../../store/slices/cartslice';
+import "./ProductCard.css";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/slices/cartslice";
 
 export default function ProductCard(props) {
   const { productData } = props;
-  
-  //handle the add to cart button
-  const dispatch = useDispatch()
 
+  //handle the add to cart button
+  const dispatch = useDispatch();
 
   return (
     <Container className="card-hover-grow">
@@ -49,9 +48,11 @@ export default function ProductCard(props) {
 
         <div className={`card-text text-truncate`}>
             {productData.desc}
+
           </div>
-          
+
           <div className="rating mt-2">
+
             <Rating rating={4}/>
           </div>
           <button style={{

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,34 +10,56 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+import { useForm } from 'react-hook-form';
 import Container from '@mui/material/Container';
+import { Link as RouterLink } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="">
-        DentiBask
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
+import axiosinstance from '../axiosconfig';
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+      // Fetch CSRF token
+      const csrfTokenResponse = await axiosinstance.get("/Products/get_csrf_token/");
+      const csrfToken = csrfTokenResponse.data.csrfToken;
+  
+      const response = await axiosinstance.post('/api/register/', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'X-CSRFToken': csrfToken,
+          
+        },
+        withCredentials: true,
+      });
+  
+      if (response.ok) {
+        const responseData = await response.json();
+  
+        // Assuming the response includes activation link details
+        const activationLink = responseData.activationLink;
+  
+        // Send activation link to user's email or display it in some way
+        console.log('Activation Link:', activationLink);
+  
+        // Redirect the user or perform other actions as needed
+      } else {
+        // Handle registration error
+        console.error('Registration failed');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+    }
   };
+  
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -51,15 +73,18 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: '#AAE0FF' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <img
+            src="https://i.pinimg.com/originals/9c/87/99/9c879909741ebaa6b7a614071079e542.jpg"
+            alt="Logo"
+            style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+          />
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              {/* First Name Field */}
+              <Grid item xs={12} sm={12}>
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
@@ -68,18 +93,17 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  {...register('firstName', {
+                    required: 'First Name is required',
+                    pattern: {
+                      value: /^[A-Za-z]+$/,
+                      message: 'Invalid First Name',
+                    },
+                  })}
                 />
+                {errors.firstName && <span>{errors.firstName.message}</span>}
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
+              {/* Email Field */}
               <Grid item xs={12}>
                 <TextField
                   required
@@ -88,8 +112,17 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  {...register('email', {
+                    required: 'Email is required',
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                      message: 'Invalid email address',
+                    },
+                  })}
                 />
+                {errors.email && <span>{errors.email.message}</span>}
               </Grid>
+              {/* Password Field */}
               <Grid item xs={12}>
                 <TextField
                   required
@@ -99,18 +132,47 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  {...register('password', {
+                    required: 'Password is required',
+                    minLength: {
+                      value: 8,
+                      message: 'Password must be at least 8 characters long',
+                    },
+                  })}
                 />
+                {errors.password && <span>{errors.password.message}</span>}
               </Grid>
+              {/* Confirm Password Field */}
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="confirm password"
+                  name="confirmPassword"
                   label="Confirm Password"
                   type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  id="confirmPassword"
+                  {...register('confirmPassword', {
+                    validate: (value) => value === getValues('password') || 'Passwords do not match',
+                  })}
                 />
+                {errors.confirmPassword && <span>{errors.confirmPassword.message}</span>}
+              </Grid>
+              {/* Phone Number Field */}
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="phoneNumber"
+                  label="Phone Number"
+                  id="phoneNumber"
+                  {...register('phoneNumber', {
+                    pattern: {
+                      value: /^(01)[0-9]{9}$/,
+                      message: 'Invalid phone number',
+                    },
+                  })}
+                />
+                {errors.phoneNumber && <span>{errors.phoneNumber.message}</span>}
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
@@ -119,24 +181,19 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            {/* Submit Button */}
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
               <Grid item>
-                <Link href="#" variant="body2">
+                <RouterLink to="/login" variant="body2">
                   Already have an account? Sign in
-                </Link>
+                </RouterLink>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

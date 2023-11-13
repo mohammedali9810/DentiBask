@@ -17,15 +17,19 @@ const Products = () => {
 
   useEffect(() => {
     axiosinstance
-      .get(`/products?page=${pages}`)
+      .get(`/Products/products/?page=${pages}`,
+      {headers: {'Content-Type': 'application/json', 
+      Authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5ODY4MzEwLCJpYXQiOjE2OTk4NjgwMTAsImp0aSI6ImM2NjhiM2M4M2JkYTQ2YTU5MWI3MjY3ZDdkYTZjN2Y0IiwidXNlcl9pZCI6NX0.I0S8S26HNC4Q1iLqdjXK4nYMIfl-ZOZ7NV6h06jXUNE'
+    },
+  withCredentials:true})
       .then((res) => {
-        setProducts(res.data.products);
-        setMaxPages(res.data.maxpages);
+        setProducts(res.data.results);
+        setMaxPages(Math.ceil((res.data.count)/12));
       })
       .catch((err) => {
         console.error(err);
       });
-  }, [pages]);
+  }, [pages,products]);
 
   const handleOpenAddProductDialog = () => {
     setOpenAddProductDialog(true);

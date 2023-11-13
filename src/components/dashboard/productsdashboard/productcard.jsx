@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState} from 'react'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -10,6 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Editproduct from "./editproduct";
 import { useContext } from "react";
 import { Theme } from "../../themecontext";
+import axiosinstance from '../../../axiosconfig';
 import "./products.css";
 const Productcard = (props) => {
   const { theme } = useContext(Theme);
@@ -21,40 +22,55 @@ const Productcard = (props) => {
   const handleCloseAddProductDialog = () => {
     setOpenAddProductDialog(false);
   };
+  const deleteproduct = () =>{
+    axiosinstance
+      .delete(`/Products/products/${props.product.id}/`, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          // 'X-CSRFToken': csrf_token,
+        },
+        withCredentials: true,
+      })
+      .then(() => {
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   return (
-    <Card  sx={{ maxWidth: 345 }}>
-    <CardActionArea >
-      <CardMedia
-        component="img"
-        height="200"
-        image={props.product.thumbnail}
-        alt="green iguana"
-      />
-      <CardContent className={theme && "darkcard"}>
+  <Card sx={{ maxWidth: 345 }}>
+  <CardActionArea>
+    <CardMedia
+      component="img"
+      style={{ height:"15rem",objectFit: 'contain' }}
+      image={props.product.image}
+      alt="Product Image"
+    />
+      <CardContent className={theme && "darkcard"} style={{ height:"16rem",objectFit: 'contain' }}>
         <Typography style={{fontWeight:"bold"}} gutterBottom variant="h5" component="div">
-          Lizard
+        {props.product.name}
         </Typography>
         <span style={{fontSize:"1rem", fontWeight:"bold"}}>
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+        {props.product.desc}
         </span>
-        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Price: 200 $</p>
-        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Category: Instrument</p>
-        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Ordered: 3000 times</p>
+        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Price: {props.product.price} $</p>
+        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Category: {props.product.Categ_id['name']}</p>
+        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Stock: {props.product.stock}</p>
       </CardContent>
     </CardActionArea>
     <CardActions  className={theme && "darkcard"}>
       <Button size="large" color="success" onClick={handleOpenAddProductDialog}>
         Edit
       </Button>
-      <Button size="large" color="error">
+      <Button size="large" color="error" onClick={()=>{deleteproduct()}}>
         Delete
       </Button>
     </CardActions>
     <Dialog open={openAddProductDialog} onClose={handleCloseAddProductDialog}>
         <DialogTitle>Edit Product</DialogTitle>
         <DialogContent>
-          <Editproduct product={props.product} />
+          <Editproduct handleclose={handleCloseAddProductDialog} product={props.product} />
         </DialogContent>
       </Dialog>
   </Card>

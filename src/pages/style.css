@@ -57,11 +57,13 @@
   left: 30%;
   z-index: 999; 
   cursor: zoom-in;
-  
 }
 
 /* When the container is hovered, the overlay blurs */
 .container:hover .blur-overlay {
   opacity: 1;
   backdrop-filter: blur(10px); /* The amount of blur */
+}
+.zoom-image:hover {
+  transform: scale(1.2); /* Increase the scale on hover to create a zoom effect */
 }
