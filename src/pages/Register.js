@@ -1,25 +1,23 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import { useForm } from "react-hook-form";
-import Container from "@mui/material/Container";
-import { Link as RouterLink } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axiosinstance from "../axiosconfig";
-// import './SignUp.css';
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { useForm } from 'react-hook-form';
+import Container from '@mui/material/Container';
+import { Link as RouterLink } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const [ user, setUser] = React.useState({'name'})
   const {
     register,
     handleSubmit,
@@ -27,62 +25,40 @@ export default function SignUp() {
     getValues,
   } = useForm();
 
-  const getcsrf = axiosinstance
-    .get("/Products/get_csrf_token/")
-    .then((response) => {
-      return response.data.csrfToken;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  // const onSubmit = (data) => {
+  //   console.log(data);
+  //   // Handle form submission logic here
+  // };
 
-  const registerUser = async (userData) => {
+  const onSubmit = async (data) => {
     try {
-      const response = await fetch("/api/register/", {
-        method: "POST",
+      const response = await fetch('/api/register/', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(data),
       });
-
+  
       if (response.ok) {
         const responseData = await response.json();
-
+  
         // Assuming the response includes activation link details
         const activationLink = responseData.activationLink;
-
+  
         // Send activation link to user's email or display it in some way
-        console.log("Activation Link:", activationLink);
-
+        console.log('Activation Link:', activationLink);
+  
         // Redirect the user or perform other actions as needed
       } else {
         // Handle registration error
-        console.error("Registration failed");
+        console.error('Registration failed');
       }
     } catch (error) {
-      console.error("Error during registration:", error);
+      console.error('Error during registration:', error);
     }
   };
-
-  const onSubmit = async (data) => {
-    // Call the registerUser function with the form data
-    // await registerUser(data);
-    axiosinstance
-      .post("/api/register/", user, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "X-CSRFToken": getcsrf,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -91,25 +67,20 @@ export default function SignUp() {
         <Box
           sx={{
             marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
           <img
             src="https://i.pinimg.com/originals/9c/87/99/9c879909741ebaa6b7a614071079e542.jpg"
             alt="Logo"
-            style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+            style={{ width: '100px', height: '100px', borderRadius: '50%' }}
           />
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit(onSubmit)}
-            sx={{ mt: 3 }}
-          >
+          <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               {/* First Name Field */}
               <Grid item xs={12} sm={6}>
@@ -121,11 +92,11 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  {...register("firstName", {
-                    required: "First Name is required",
+                  {...register('firstName', {
+                    required: 'First Name is required',
                     pattern: {
                       value: /^[A-Za-z]+$/,
-                      message: "Invalid First Name",
+                      message: 'Invalid First Name',
                     },
                   })}
                 />
@@ -140,11 +111,11 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  {...register("lastName", {
-                    required: "Last Name is required",
+                  {...register('lastName', {
+                    required: 'Last Name is required',
                     pattern: {
                       value: /^[A-Za-z]+$/,
-                      message: "Invalid Last Name",
+                      message: 'Invalid Last Name',
                     },
                   })}
                 />
@@ -159,11 +130,11 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                  {...register("email", {
-                    required: "Email is required",
+                  {...register('email', {
+                    required: 'Email is required',
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                      message: "Invalid email address",
+                      message: 'Invalid email address',
                     },
                   })}
                 />
@@ -179,11 +150,11 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  {...register("password", {
-                    required: "Password is required",
+                  {...register('password', {
+                    required: 'Password is required',
                     minLength: {
                       value: 8,
-                      message: "Password must be at least 8 characters long",
+                      message: 'Password must be at least 8 characters long',
                     },
                   })}
                 />
@@ -198,15 +169,11 @@ export default function SignUp() {
                   label="Confirm Password"
                   type="password"
                   id="confirmPassword"
-                  {...register("confirmPassword", {
-                    validate: (value) =>
-                      value === getValues("password") ||
-                      "Passwords do not match",
+                  {...register('confirmPassword', {
+                    validate: (value) => value === getValues('password') || 'Passwords do not match',
                   })}
                 />
-                {errors.confirmPassword && (
-                  <span>{errors.confirmPassword.message}</span>
-                )}
+                {errors.confirmPassword && <span>{errors.confirmPassword.message}</span>}
               </Grid>
               {/* Phone Number Field */}
               <Grid item xs={12}>
@@ -216,43 +183,28 @@ export default function SignUp() {
                   name="phoneNumber"
                   label="Phone Number"
                   id="phoneNumber"
-                  {...register("phoneNumber", {
+                  {...register('phoneNumber', {
                     pattern: {
                       value: /^(01)[0-9]{9}$/,
-                      message: "Invalid phone number",
+                      message: 'Invalid phone number',
                     },
                   })}
                 />
-                {errors.phoneNumber && (
-                  <span>{errors.phoneNumber.message}</span>
-                )}
+                {errors.phoneNumber && <span>{errors.phoneNumber.message}</span>}
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  label="I want to receive inspiration, marketing promotions and updates via email."
+                />
               </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid>
             {/* Submit Button */}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              sx={{ mt: 2 }}
-            >
+            <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
               <Grid item>
-                {/* <Link href="#" variant="body2">
-                Already have an account? Sign in
-              </Link> */}
                 <RouterLink to="/login" variant="body2">
                   Already have an account? Sign in
                 </RouterLink>
