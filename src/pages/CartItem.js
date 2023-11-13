@@ -18,7 +18,7 @@ function CartItem({ id, image, title, price, quantity = 0 ,description}) {
       
       <div className='col-6 col-xs-12 justify-center-start'>
 
-        <Link style={{ textDecoration: 'none' }} to={`/product-details/${id}`}>
+        <Link style={{ textDecoration: 'none' }} to={`/Products/products/${id}/`}>
                 <h3 className="card-title">{title}</h3>
         </Link>
         <Card.Text className="mt-2">
