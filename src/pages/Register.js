@@ -18,6 +18,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const [user, setUser] = React.useState({});
   const {
     register,
     handleSubmit,
