@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,11 +14,11 @@ import { useForm } from 'react-hook-form';
 import Container from '@mui/material/Container';
 import { Link as RouterLink } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axiosinstance from '../axiosconfig';
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const [user, setUser] = React.useState({});
   const {
     register,
     handleSubmit,
@@ -26,19 +26,19 @@ export default function SignUp() {
     getValues,
   } = useForm();
 
-  // const onSubmit = (data) => {
-  //   console.log(data);
-  //   // Handle form submission logic here
-  // };
-
   const onSubmit = async (data) => {
     try {
-      const response = await fetch('/api/register/', {
-        method: 'POST',
+      // Fetch CSRF token
+      const csrfTokenResponse = await axiosinstance.get("/Products/get_csrf_token/");
+      const csrfToken = csrfTokenResponse.data.csrfToken;
+  
+      const response = await axiosinstance.post('/api/register/', data, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+          'X-CSRFToken': csrfToken,
+          
         },
-        body: JSON.stringify(data),
+        withCredentials: true,
       });
   
       if (response.ok) {
@@ -84,7 +84,7 @@ export default function SignUp() {
           <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               {/* First Name Field */}
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
@@ -102,25 +102,6 @@ export default function SignUp() {
                   })}
                 />
                 {errors.firstName && <span>{errors.firstName.message}</span>}
-              </Grid>
-              {/* Last Name Field */}
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  {...register('lastName', {
-                    required: 'Last Name is required',
-                    pattern: {
-                      value: /^[A-Za-z]+$/,
-                      message: 'Invalid Last Name',
-                    },
-                  })}
-                />
-                {errors.lastName && <span>{errors.lastName.message}</span>}
               </Grid>
               {/* Email Field */}
               <Grid item xs={12}>
