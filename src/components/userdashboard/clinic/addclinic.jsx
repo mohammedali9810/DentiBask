@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 
 
 const Addclinic = ({ handleClose }) => {
-  const [product, setProduct] = useState({ title: '', price: 0, image: '', description: '', location:'',area:0 });
+  const [product, setProduct] = useState({ title: '', price: 0, image: '', desc: '', location:'',area:0 });
   const [producterr, setProductErr] = useState({ title: '', price: "",location:'',area:'' });
 
   const handlechange = (e) => {
@@ -40,8 +40,8 @@ const Addclinic = ({ handleClose }) => {
       setProduct({ ...product, price: e.target.value });
     } else if (e.target.name === 'image') {
       setProduct({ ...product, image: e.target.files[0] });
-    } else if (e.target.name === 'description') {
-      setProduct({ ...product, description: e.target.value });
+    } else if (e.target.name === 'desc') {
+      setProduct({ ...product, desc: e.target.value });
     }
 
     else if (e.target.name === 'location') {
@@ -76,15 +76,8 @@ const Addclinic = ({ handleClose }) => {
   const senddata = (e) => {
     e.preventDefault();
     if(producterr.category==="" && producterr.price==="" && producterr.title===""){
-    const formData = new FormData();
-    formData.append("title", product.title);
-    formData.append("price", product.price);
-    formData.append("image", product.image);
-    formData.append("description", product.description);
-    formData.append("category", product.category);
-  
     axiosinstance
-      .post('/addclinic', formData, {
+      .post('/addclinic', product, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -154,10 +147,10 @@ const Addclinic = ({ handleClose }) => {
                   rows={3}
                   required
                   fullWidth
-                  id="description"
-                  label="Description"
-                  name="description"
-                  value={product.description}
+                  id="desc"
+                  label="Descreption"
+                  name="desc"
+                  value={product.desc}
                   onChange={handlechange}
                 />
               </Grid>
