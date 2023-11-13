@@ -27,7 +27,7 @@ export default function ProductCard(props) {
           minHeight:'35vh',
           objectFit: 'contain'
 
-        }} src={productData.images[0]} className="card-img-top img-fluid" alt="..." />
+        }} src={productData.image} className="card-img-top img-fluid" alt="..." />
         <div className="card-body">
           {/*stock*/}
           {productData.stock !== 0 ? (
@@ -39,8 +39,8 @@ export default function ProductCard(props) {
           {/* product title */}
           {/* and make the title link to navigate to the product page in the router */}
           <div className="row" >
-            <div className="col-8"><Link style={{textDecoration:'none'}} to={`/product-details/${productData.id}`}>
-              <b style={{ fontSize: '1.1rem' }} className="card-title">{productData.title} </b>
+            <div className="col-8"><Link style={{textDecoration:'none'}} to={`/Products/products/${productData.id}`}>
+              <b style={{ fontSize: '1.1rem' }} className="card-title">{productData.name} </b>
             </Link> </div>
             <b style={{ fontSize: '1.4rem' }} className="col-4 d-flex justify-content-end">
               {productData.price} $
@@ -48,11 +48,11 @@ export default function ProductCard(props) {
           </div>
 
         <div className={`card-text text-truncate`}>
-            {productData.description}
+            {productData.desc}
           </div>
           
           <div className="rating mt-2">
-            <Rating rating={productData.rating}/>
+            <Rating rating={4}/>
           </div>
           <button style={{
                 width: '90%',
@@ -67,12 +67,12 @@ export default function ProductCard(props) {
               }} className="btn add-to-cart-button" onClick={() =>
             dispatch(addToCart({
               id: productData.id,
-              title: productData.title,
-              image: productData.images[0],
+              title: productData.name,
+              image: productData.image,
               price: productData.price,
               stock: productData.stock,
-              description: productData.description,
-              quantity: productData.quantity
+              description: productData.desc,
+              quantity: productData.unit
             }))
           }>
             Add To Cart

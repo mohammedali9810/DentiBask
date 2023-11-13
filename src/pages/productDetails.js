@@ -18,7 +18,7 @@ export default function ProductDetails() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    axios.get(`https://dummyjson.com/products/${params.id}`)
+    axios.get(`http://127.0.0.1:8000/Products/products/${params.id}`)
       .then((res) => {
         setProductDetails(res.data);
         setSelectedImage(res.data.thumbnail); // Set the initial selected image as the thumbnail
