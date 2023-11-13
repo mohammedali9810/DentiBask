@@ -12,7 +12,7 @@
   margin-bottom: 2rem;
 }
 
-@media screen and (min-width: 1281px) {
+@media screen and (min-width: 1581px) {
   .productsgrid {
     grid-template-columns: repeat(4, 1fr);
   }
