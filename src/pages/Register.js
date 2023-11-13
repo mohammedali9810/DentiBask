@@ -161,6 +161,18 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  //   getValues,
+  // } = useForm();
+
+  // const onSubmit = (data) => {
+  //   console.log(data);
+  //   // Handle form submission logic here
+  // };
+
   const {
     register,
     handleSubmit,
@@ -168,10 +180,40 @@ export default function SignUp() {
     getValues,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // Handle form submission logic here
+  const registerUser = async (userData) => {
+    try {
+      const response = await fetch('/api/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+
+        // Assuming the response includes activation link details
+        const activationLink = responseData.activationLink;
+
+        // Send activation link to user's email or display it in some way
+        console.log('Activation Link:', activationLink);
+
+        // Redirect the user or perform other actions as needed
+      } else {
+        // Handle registration error
+        console.error('Registration failed');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+    }
   };
+
+  const onSubmit = async (data) => {
+    // Call the registerUser function with the form data
+    await registerUser(data);
+  };
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
