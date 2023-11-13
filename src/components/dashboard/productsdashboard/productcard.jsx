@@ -70,7 +70,7 @@ const Productcard = (props) => {
     <Dialog open={openAddProductDialog} onClose={handleCloseAddProductDialog}>
         <DialogTitle>Edit Product</DialogTitle>
         <DialogContent>
-          <Editproduct product={props.product} />
+          <Editproduct handleclose={handleCloseAddProductDialog} product={props.product} />
         </DialogContent>
       </Dialog>
   </Card>

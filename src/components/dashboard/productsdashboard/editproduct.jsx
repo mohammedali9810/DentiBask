@@ -21,7 +21,7 @@ const Editproduct = (props) => {
 
   useEffect(()=>{
     setProduct({title:props.product.name, price:props.product.price,
-    categorry_id:props.product.Categ_id['id'],
+    categorry_id:props.product.Categ_id,
     image:props.product.image,description:props.product.desc});
 
     axiosinstance.get('/Products/category/')
@@ -80,21 +80,21 @@ const Editproduct = (props) => {
     if (producterr.category === "" && producterr.price === "" && producterr.title === "") {
 
       axiosinstance
-      .put(`/Products/product/${props.product.id}/`, product, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'X-CSRFToken': csrf_token,
-        },
-        withCredentials: true,  // Include this line
-      })
-      .then(() => {
-        // Handle success if needed
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    
-    
+        .put(`/Products/product/${props.product.id}/`, product, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'X-CSRFToken': csrf_token,
+          },
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.status === 201) {
+            props.handleClose();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
     }
   };
@@ -167,20 +167,31 @@ const Editproduct = (props) => {
               </Grid>
               <Grid item xs={12}>
               <InputLabel id="demo-simple-select-label">Category</InputLabel>
-              <Select
-              required
-              fullWidth
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={product.categorry_id}
-               label="Category"
-              name='category'
-            onChange={handlechange}
-        >
-            { categories && categories.map((category,index) =>
-             <MenuItem
-              key={index} value={category.id}>{category.name}</MenuItem>)}
-        </Select>
+            <Select
+  required
+  fullWidth
+  labelId="demo-simple-select-label"
+  id="demo-simple-select"
+  value={product.categorry_id}
+  label="Category"
+  name='category'
+  onChange={handlechange}
+>
+  {categories &&
+    categories.map((category, index) =>
+      category.id === props.product.Categ_id ? (
+        <MenuItem selected key={index} value={category.id}>
+          {category.name}
+        </MenuItem>
+      ) : (
+        <MenuItem key={index} value={category.id}>
+          {category.name}
+        </MenuItem>
+      )
+    )
+  }
+</Select>
+
         </Grid>
             </Grid>
             <label className="custom-upload-button">

@@ -77,24 +77,27 @@ const Addproduct = ({ handleClose }) => {
   };
   const senddata = (e) => {
     e.preventDefault();
-    if(producterr.category==="" && producterr.price==="" && producterr.title===""){
+    if (producterr.category === "" && producterr.price === "" && producterr.title === "") {
       console.log(product);
-    axiosinstance
-      .post('/Products/products/', product, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'X-CSRFToken': csrf_token,
-        },
-        withCredentials: true,
-      })
-      .then(() => {
-        
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-};
+      axiosinstance
+        .post('/Products/products/', product, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'X-CSRFToken': csrf_token,
+          },
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.status === 201) {
+            handleClose();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+  
   
 
   return (
