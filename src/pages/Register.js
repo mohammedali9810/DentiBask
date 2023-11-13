@@ -161,7 +161,7 @@ import axiosinstance from "../axiosconfig";
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const [ user, setUser] = React.useState({'name'})
+  const [user, setUser] = React.useState({});
   const {
     register,
     handleSubmit,

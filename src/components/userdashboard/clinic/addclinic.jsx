@@ -73,24 +73,32 @@ const Addclinic = ({ handleClose }) => {
 
 
   };
-  const senddata = (e) => {
-    e.preventDefault();
-    if(producterr.category==="" && producterr.price==="" && producterr.title===""){
-    axiosinstance
-      .post('/addclinic', product, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      })
-      .then(() => {
-        
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+
+const senddata = async (e) => {
+  e.preventDefault();
+  try {
+
+    const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
+    console.log(localStorage.getItem('dentibask-access-token'));
+    const response = await axiosinstance.post('/User/addclinic/', product, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'X-CSRFToken': csrfToken.data.csrfToken,
+        'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
+      },
+      withCredentials: true,
+    });
+
+    // Handle the response as needed
+    console.log(response);
+
+  } catch (error) {
+    console.error(error);
   }
 };
+
+
   
 
   return (
