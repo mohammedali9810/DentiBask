@@ -10,6 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Editclinic from "./editclinic";
 import { useContext } from "react";
 import { Theme } from "../../themecontext";
+import axiosinstance from '../../../axiosconfig';
 const Cliniccard = (props) => {
   const { theme } = useContext(Theme);
   const [openAddProductDialog, setOpenAddProductDialog] = useState(false);
@@ -21,32 +22,40 @@ const Cliniccard = (props) => {
     setOpenAddProductDialog(false);
   };
   return (
-    <Card  sx={{ maxWidth: 345 }}>
+    <Card  sx={{ width:345 }}>
     <CardActionArea >
       <CardMedia
         component="img"
-        height="200"
-        image={props.clinic.thumbnail}
+        style={{ height:"15rem",objectFit: 'contain' }}
+        image={props.clinic.image}
         alt="green iguana"
       />
-      <CardContent className={theme && "darkcard"}>
+      <CardContent className={theme && "darkcard"} style={{ height:"16rem",objectFit: 'contain' }}>
         <Typography style={{fontWeight:"bold"}} gutterBottom variant="h5" component="div">
-          Lizard
+        {props.clinic.title}
         </Typography>
         <span style={{fontSize:"1rem", fontWeight:"bold"}}>
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+        {props.clinic.desc}
         </span>
-        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Price: 200 $</p>
-        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Area: Instrument</p>
-        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Location: 3000 times</p>
+        <p style={{fontWeight:"bold", fontSize:"1rem"}}>{props.clinic.price} $</p>
+        <p style={{fontWeight:"bold", fontSize:"1rem"}}>{props.clinic.area} m2</p>
+        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Location: {props.clinic.location}</p>
       </CardContent>
     </CardActionArea>
     <CardActions  className={theme && "darkcard"}>
       <Button size="large" color="success" onClick={handleOpenAddProductDialog}>
         Edit
       </Button>
-      <Button size="large" color="error">
+      <Button onClick={()=>{axiosinstance.delete('User/delete_clinic/',
+  {
+    data: { clinic_id: props.clinic.id },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('dentibask-access-token'),
+    },
+    withCredentials: true,
+
+  })}} size="large" color="error">
         Delete
       </Button>
     </CardActions>

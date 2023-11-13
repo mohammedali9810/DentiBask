@@ -26,16 +26,15 @@ const Cliniccard = (props) => {
       <CardMedia
         component="img"
         height="200"
-        image={props.clinic.thumbnail}
+        image={props.clinic.image}
         alt="green iguana"
       />
       <CardContent className={theme && "darkcard"}>
         <Typography style={{fontWeight:"bold"}} gutterBottom variant="h5" component="div">
-          Lizard
+        {props.clinic.title}
         </Typography>
         <span style={{fontSize:"1rem", fontWeight:"bold"}}>
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+        {props.clinic.desc}
         </span>
         <p style={{fontWeight:"bold", fontSize:"1rem"}}>Price: 200 $</p>
         <p style={{fontWeight:"bold", fontSize:"1rem"}}>Area: Instrument</p>
