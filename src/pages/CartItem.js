@@ -65,7 +65,6 @@ function CartItem({ id, image, title, price, quantity = 0, description }) {
           </Button>
         </div>
       </div>
-    </div>
   );
 }
 

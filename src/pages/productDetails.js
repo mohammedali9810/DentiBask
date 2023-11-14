@@ -295,6 +295,7 @@ export default function ProductDetails() {
           </div>
         </div>
       </div>
+      </div>
     </Container>
   );
 }

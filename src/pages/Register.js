@@ -32,8 +32,8 @@ export default function SignUp() {
       // Fetch CSRF token
       const csrfTokenResponse = await axiosinstance.get("http://127.0.0.1:8000/User/get_csrf_token/");
       const csrfToken = csrfTokenResponse.data.csrfToken;
-      data['csrfmiddlewaretoken'] = csrfToken;
-      console.log(data['csrfmiddlewaretoken']);
+      //data['csrfmiddlewaretoken'] = csrfToken;
+      console.log(csrfToken);
 
       const response = await axiosinstance.post('http://127.0.0.1:8000/User/register/', data, {
         headers: {
@@ -59,6 +59,7 @@ export default function SignUp() {
       }
     } catch (error) {
       console.error('Error during registration:', error);
+      console.log('Response Data:', error.response.data);
     }
   };
   
