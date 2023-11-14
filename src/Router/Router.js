@@ -11,18 +11,20 @@ import NotFound from "../pages/NotFound";
 import Header from "../components/Header/Header";
 // import ContactUs from '../pages/ContactUs';
 // import AboutUs from '../pages/AboutUs';
-
+import Activate from "../pages/activate";
 export default function Router() {
   return (
-    <Routes>
-      <Route path="/" element={<Products />} />
-      <Route path="/Register" element={<Register />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/Cart" element={<Cart />} />
-      <Route path="/Products/products/:id" element={<ProductDetails />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Products />} />
+        <Route path="/Register" element={<Register />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Cart" element={<Cart />} />
+        <Route path="/Products/products/:id" element={<ProductDetails />} />
+        <Route path="/activate/:token" element={<Activate />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }

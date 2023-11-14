@@ -243,7 +243,7 @@ export default function Dashboard() {
       </ListItemButton>
   
       <ListItemButton
-       onClick={() => setSelected("Transactions")}
+       onClick={() => {setView(<Transactions/>);setSelected("Transactions")}}
        sx={{
          backgroundColor: selected === "Transactions" && "#CDCDCD",
          opacity: selected === "Transactions" && "1",
@@ -253,7 +253,7 @@ export default function Dashboard() {
         <ListItemIcon>
           <PaidIcon className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Transactions/>)}} primary={lang ? "التحويلات" : "Transactions"} />
+        <ListItemText primary={lang ? "التحويلات" : "Transactions"} />
       </ListItemButton>   
     </React.Fragment>
   );
@@ -296,7 +296,7 @@ export default function Dashboard() {
               pr: "24px",
             }}
           >
-           <div className="dashboardtitle"> {/* Add the class to this div */}
+           <div className="dashboardtitle">
   <IconButton
     edge="start"
     color="inherit"

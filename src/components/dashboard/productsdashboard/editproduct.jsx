@@ -13,31 +13,27 @@ import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography'; 
 
 const Editproduct = (props) => {
-  const [product, setProduct] = useState({ title: '', price: 0, image: '', description: '',categorry_id:'' });
+  const [product, setProduct] = useState({ id:"",title: '', price: 0, image:'', description: '',categorry_id:'' });
   const [producterr, setProductErr] = useState({ title: '', price: "",category:'' });
   const defaultTheme = createTheme();
   const [categories, setCategories] = useState([]);
-  const [csrf_token,setCsrfToken] = useState("");
 
   useEffect(()=>{
-    setProduct({title:props.product.name, price:props.product.price,
+    setProduct({id:props.product.id,title:props.product.name, price:props.product.price,
     categorry_id:props.product.Categ_id,
     image:props.product.image,description:props.product.desc});
 
-    axiosinstance.get('/Products/category/')
+    axiosinstance.get('/Products/category/', {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
+      },
+      withCredentials: true,
+    })
     .then((response)=>{
       console.log(response)
       setCategories(response.data);})
     .catch((error)=>{console.error(error);});
-
-    
-    axiosinstance.get('/Products/get_csrf_token/')
-    .then((response) => {
-      setCsrfToken(response.data.csrfToken);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
     }
   ,[])
 
@@ -74,16 +70,16 @@ const Editproduct = (props) => {
         setProduct({ ...product, categorry_id: e.target.value });
     }
   };
-  const senddata = (e) => {
+  const senddata = async(e) => {
     e.preventDefault();
-    console.log(csrf_token);
     if (producterr.category === "" && producterr.price === "" && producterr.title === "") {
-
+      const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
       axiosinstance
-        .put(`/Products/product/${props.product.id}/`, product, {
+        .put(`/Products/update_product/`, product, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'X-CSRFToken': csrf_token,
+            'X-CSRFToken': csrfToken,
+            'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
           },
           withCredentials: true,
         })

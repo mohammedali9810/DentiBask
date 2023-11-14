@@ -27,7 +27,7 @@ const Products = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, [pages,products]);
+  }, [pages]);
 
   const handleOpenAddProductDialog = () => {
     setOpenAddProductDialog(true);
