@@ -14,19 +14,15 @@ import Header from "../components/Header/Header";
 
 export default function Router() {
   return (
-    <>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Products />} />
-        <Route path="/Register" element={<Register />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Cart" element={<Cart />} />
-        <Route path="/product-details/:id" element={<ProductDetails />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        {/* <Route path="/ContactUs" element={<ContactUs />} />
-        <Route path="/AboutUs" element={<AboutUs />} /> */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/" element={<Products />} />
+      <Route path="/Register" element={<Register />} />
+      <Route path="/Login" element={<Login />} />
+      <Route path="/Cart" element={<Cart />} />
+      <Route path="/Products/products/:id" element={<ProductDetails />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+
   );
 }
