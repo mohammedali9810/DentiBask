@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Products from "../pages/Products";
@@ -13,16 +14,18 @@ import Header from "../components/Header/Header";
 // import AboutUs from '../pages/AboutUs';
 
 export default function Router() {
-  return (
-    <Routes>
-      <Route path="/" element={<Products />} />
-      <Route path="/Register" element={<Register />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/Cart" element={<Cart />} />
-      <Route path="/Products/products/:id" element={<ProductDetails />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-
+  return (<>
+  <Header/>
+  <Routes>
+    <Route path="/" element={<Products />} />
+    <Route path="/Register" element={<Register />} />
+    <Route path="/Login" element={<Login />} />
+    <Route path="/Cart" element={<Cart />} />
+    <Route path="/Products/products/:id" element={<ProductDetails />} />
+    <Route path="/dashboard" element={<Dashboard />} />
+    <Route path="*" element={<NotFound />} />
+  </Routes>
+  </>
+    
   );
 }
