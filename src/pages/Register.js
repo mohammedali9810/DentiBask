@@ -27,21 +27,23 @@ export default function SignUp() {
   } = useForm();
 
   const onSubmit = async (data) => {
+    console.log('Form Data:', data);
     try {
       // Fetch CSRF token
-      const csrfTokenResponse = await axiosinstance.get("/Products/get_csrf_token/");
+      const csrfTokenResponse = await axiosinstance.get("http://127.0.0.1:8000/User/get_csrf_token/");
       const csrfToken = csrfTokenResponse.data.csrfToken;
-  
-      const response = await axiosinstance.post('/api/register/', data, {
+      data['csrfmiddlewaretoken'] = csrfToken;
+      console.log(data['csrfmiddlewaretoken']);
+
+      const response = await axiosinstance.post('http://127.0.0.1:8000/User/register/', data, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
           'X-CSRFToken': csrfToken,
-          
         },
         withCredentials: true,
       });
   
-      if (response.ok) {
+      if (response.status===201) {
         const responseData = await response.json();
   
         // Assuming the response includes activation link details
@@ -83,25 +85,25 @@ export default function SignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              {/* First Name Field */}
+              {/* Name Field */}
               <Grid item xs={12} sm={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="name"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="name"
+                  label="Name"
                   autoFocus
-                  {...register('firstName', {
-                    required: 'First Name is required',
+                  {...register('name', {
+                    required: 'Name is required',
                     pattern: {
                       value: /^[A-Za-z]+$/,
-                      message: 'Invalid First Name',
+                      message: 'Invalid Name',
                     },
                   })}
                 />
-                {errors.firstName && <span>{errors.firstName.message}</span>}
+                {errors.name && <span>{errors.name.message}</span>}
               </Grid>
               {/* Email Field */}
               <Grid item xs={12}>
@@ -162,17 +164,17 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  name="phoneNumber"
+                  name="phone"
                   label="Phone Number"
-                  id="phoneNumber"
-                  {...register('phoneNumber', {
+                  id="phone"
+                  {...register('phone', {
                     pattern: {
                       value: /^(01)[0-9]{9}$/,
                       message: 'Invalid phone number',
                     },
                   })}
                 />
-                {errors.phoneNumber && <span>{errors.phoneNumber.message}</span>}
+                {errors.phone && <span>{errors.phone.message}</span>}
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
