@@ -11,54 +11,48 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 
 const Addcategory = ({ handleClose }) => {
-  const [category, setCategory] = useState({ title: '', image: '', description: '', });
-  const [categoryerr, setCategoryErr] = useState({ title: '', });
-  const [ setCategories] = useState([]);
-
-  useEffect(() => {
-    axiosinstance.get('/categories')
-      .then((response) => { setCategories(response.data); })
-      .catch((error) => { console.error(error); });
-  }, [setCategories]);
+  const [category, setCategory] = useState({ name: '', image: '', desc: '', });
+  const [categoryerr, setCategoryErr] = useState({ name: '',image:'',desc:'' });
   
   
 
   const handlechange = (e) => {
-    if (e.target.name === 'title') {
-      const titleValue = e.target.value.trim();
-      if (titleValue.length < 4) {
-        setCategoryErr({ ...categoryerr, title: "Must be at least 4 characters" });
+    if (e.target.name === 'name') {
+      const nameValue = e.target.value.trim();
+      if (nameValue.length < 4) {
+        setCategoryErr({ ...categoryerr, name: "Must be at least 4 characters" });
       } else {
-        setCategoryErr({ ...categoryerr, title: "" });
+        setCategoryErr({ ...categoryerr, name: "" });
       }
-      setCategory({ ...category, title: e.target.value });
+      setCategory({ ...category, name: e.target.value });
     } else if (e.target.name === 'image') {
       setCategory({ ...category, image: e.target.files[0] });
-    }else if (e.target.name === 'description') {
-      setCategory({ ...category, description: e.target.value });
-    }
-    if(e.target.name === 'category') {
-        if(e.target.value.trim().length === 0){
-            setCategoryErr({ ...categoryerr, category: "Category must be added" });
-        }
-        else{
-            setCategoryErr({ ...categoryerr, category: "" });
-        }
-        setCategory({ ...category, category: e.target.value });
+    }else if (e.target.name === 'desc') {
+      if(e.target.value.trim().length ===0){
+        setCategoryErr({...categoryerr,desc:"Please enter a desc"})
+      }
+      else{
+        setCategoryErr({...categoryerr,desc:""});
+      }
+      setCategory({ ...category, desc: e.target.value });
     }
   };
-  const senddata = (e) => {
+  const senddata = async (e) => {
     e.preventDefault();
-    if(categoryerr.category==="" &&  categoryerr.title===""){
-    const formData = new FormData();
-    formData.append("title", category.title);
-    formData.append("description", category.description);
-    formData.append("image", category.image);
-
+    if(category.image === ""){
+      setCategoryErr({...categoryerr,image:"Image must be added"});
+    }
+    else{
+      setCategoryErr({...categoryerr,image:""});
+    }
+    if(categoryerr.name==="" &&  categoryerr.desc==="" && categoryerr.image ===""){
+      const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
     axiosinstance
-      .post('/addcategory', formData, {
+      .post('/Products/category/', category, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'X-CSRFToken': csrfToken.data.csrfToken,
+          'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
         },
         withCredentials: true,
       })
@@ -87,41 +81,26 @@ const Addcategory = ({ handleClose }) => {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  name="title"
+                  name="name"
                   required
                   fullWidth
-                  id="categoryTitle"
-                  label="Category Title"
+                  id="categoryname"
+                  label="Category Name"
                   autoFocus
-                  value={category.title}
+                  value={category.name}
                   onChange={handlechange}
-                  error={Boolean(categoryerr.title)}
+                  error={Boolean(categoryerr.name)}
                 />
-                 {categoryerr.title && (
+                 {categoryerr.name && (
                   <Typography variant="caption" color="error">
-                    {categoryerr.title}
+                    {categoryerr.name}
                   </Typography>
                 )}
               </Grid>
-        
-              <Grid item xs={12}>
-                <TextField
-                 multiline
-                  rows={3}
-                  required
-                  fullWidth
-                  id="description"
-                  label="Description"
-                  name="description"
-                  value={category.description}
-                  onChange={handlechange}
-                />
-              </Grid>
-
-            </Grid>
-            <label className="custom-upload-button">
+              <Grid item xs={12} sm={6}>
+            <label style={{height:"100%", width:"100%"}}>
   <Button
-    sx={{ mt: 3 }}
+    style={{height:"100%", width:"100%"}}
     fullWidth
     component="span"
     variant="contained"
@@ -137,6 +116,24 @@ const Addcategory = ({ handleClose }) => {
     style={{display:"none"}}
   />
       </label>
+            </Grid>
+        
+              <Grid item xs={12}>
+                <TextField
+                 multiline
+                  rows={3}
+                  required
+                  fullWidth
+                  id="desc"
+                  label="Description"
+                  name="desc"
+                  value={category.desc}
+                  onChange={handlechange}
+                />
+              </Grid>
+
+            </Grid>
+          
 
             <Button
               type="submit"

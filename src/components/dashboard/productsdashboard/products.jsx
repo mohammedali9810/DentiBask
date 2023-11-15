@@ -60,7 +60,7 @@ const Products = () => {
       <Dialog open={openAddProductDialog} onClose={handleCloseAddProductDialog}>
         <DialogTitle>Add Product</DialogTitle>
         <DialogContent>
-          <Addproduct handleClose={handleCloseAddProductDialog} />
+          <Addproduct handleClose={handleCloseAddProductDialog} categories={categories}/>
         </DialogContent>
       </Dialog>
     </div>

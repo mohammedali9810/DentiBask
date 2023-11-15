@@ -39,7 +39,7 @@ const Categories = () => {
         Add Category
       </Button>
       <div className='categoriesgrid'>
-        {Array.isArray(categories) &&
+        {categories &&
           categories.map((category, index) => <Categorycard key={index} category={category} />)}
       </div>
       <Dialog open={openAddCategoryDialog} onClose={handleCloseAddCategoryDialog}>

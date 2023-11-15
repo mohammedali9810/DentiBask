@@ -13,28 +13,9 @@ import Typography from '@mui/material/Typography';
 
 
 
-const Addproduct = ({ handleClose }) => {
+const Addproduct = ({ handleClose,categories }) => {
   const [product, setProduct] = useState({ name: '', price: 0, image: '', desc: '', Categ_id: 0,stock:0,unit:"" });
   const [producterr, setProductErr] = useState({ title: '', price: "",category:'' });
-  const [categories, setCategories] = useState([]);
-  const [csrf_token,setCsrfToken] = useState("");
-
-  useEffect(()=>{
-    axiosinstance.get('/Products/category/')
-    .then((response)=>{
-      console.log(response)
-      setCategories(response.data);})
-    .catch((error)=>{console.error(error);});
-
-    axiosinstance.get('/Products/get_csrf_token/')
-    .then((response) => {
-      setCsrfToken(response.data.csrfToken);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  }
-  ,[])
 
   const handlechange = (e) => {
     if (e.target.name === 'title') {
@@ -75,15 +56,16 @@ const Addproduct = ({ handleClose }) => {
     setProduct({ ...product, unit: e.target.value });
 }
   };
-  const senddata = (e) => {
+  const senddata = async (e) => {
     e.preventDefault();
     if (producterr.category === "" && producterr.price === "" && producterr.title === "") {
-
+      const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
       axiosinstance
-        .post('/Products/products/', product, {
+        .post('/Products/add_product/', product, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'X-CSRFToken': csrf_token,
+            'X-CSRFToken': csrfToken.data.csrfToken,
+            'Authorization': 'Bearer ' + localStorage.getItem('dentibask-access-token'),
           },
           withCredentials: true,
         })
@@ -177,7 +159,7 @@ const Addproduct = ({ handleClose }) => {
                   required
                   fullWidth
                   id="desc"
-                  label="desc"
+                  label="Description"
                   name="desc"
                   value={product.desc}
                   onChange={handlechange}

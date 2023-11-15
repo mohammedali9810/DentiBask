@@ -29,11 +29,12 @@ const Productcard = (props) => {
       .delete(`/Products/products/${props.product.id}/`, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': 'Bearer ' + localStorage.getItem('dentibask-access-token'),
         },
         withCredentials: true,
       })
       .then(() => {
-        
+        navigate("/dashboard")
       })
       .catch((error) => {
         console.log(error);
