@@ -10,8 +10,8 @@ import Typography from '@mui/material/Typography';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const Editcategory = (props) => {
-  const [category, setCategory] = useState({ name: '', image: '', description: '' });
-  const [categoryerr, setCategoryErr] = useState({ name: '' });
+  const [category, setCategory] = useState({ title: '', image: '', description: '' });
+  const [categoryerr, setCategoryErr] = useState({ title: '' });
   const defaultTheme = createTheme();
   const [, setCategories] = useState([]);
 
@@ -19,37 +19,49 @@ const Editcategory = (props) => {
     axiosinstance.get('/categories')
       .then((response) => { setCategories(response.data); })
       .catch((error) => { console.error(error); });
-
-    if (props.category) {
-      setCategory({
-        name: props.category.name || '',
-        image: props.category.image || '',
-        description: props.category.description || ''
-      });
-    }
-  }, [props.category]);
+  
+    setCategory({ title: props.category.title, image: props.category.image, description: props.category.description });
+  }, [props.category.title, props.category.image, props.category.description]);
+  
 
   const handlechange = (e) => {
-    if (e.target.name === 'name') {
-      const nameValue = e.target.value.trim();
-      if (nameValue.length < 4) {
-        setCategoryErr({ ...categoryerr, name: "Must be at least 4 characters" });
+    if (e.target.name === 'title') {
+      const titleValue = e.target.value.trim();
+      if (titleValue.length < 4) {
+        setCategoryErr({ ...categoryerr, title: "Must be at least 4 characters" });
       } else {
-        setCategoryErr({ ...categoryerr, name: "" });
+        setCategoryErr({ ...categoryerr, title: "" });
       }
-      setCategory({ ...category, name: e.target.value });
-    } else if (e.target.name === 'description') {
-      setCategory({ ...category, description: e.target.value });
+      setCategory({ ...category, title: e.target.value });
+    } else if (e.target.name === 'price') {
+      const input = e.target.value.trim();
+      if (input === '') {
+        setCategoryErr({ ...categoryerr, price: "Required" });
+      } else {
+        const numericValue = parseFloat(input);
+
+        if (isNaN(numericValue) || numericValue <= 0) {
+          setCategoryErr({ ...categoryerr, price: "Must be a positive number" });
+        } else if (numericValue < category.collected) {
+          setCategoryErr({ ...categoryerr, price: "Can't be less than the collected price" });
+        } else {
+          setCategoryErr({ ...categoryerr, price: "" });
+          setCategory({ ...category, price: numericValue });
+        }
+      }
+      setCategory({ ...category, price: e.target.value });
     } else if (e.target.name === 'image') {
       setCategory({ ...category, image: e.target.files[0] });
+    } else if (e.target.name === 'description') {
+      setCategory({ ...category, description: e.target.value });
     }
-  };
 
+  };
   const senddata = (e) => {
     e.preventDefault();
-    if (categoryerr.name === "") {
+    if (categoryerr.title === "") {
       const formData = new FormData();
-      formData.append("name", category.name);
+      formData.append("title", category.title);
       formData.append("description", category.description);
       formData.append("image", category.image);
 
@@ -69,6 +81,7 @@ const Editcategory = (props) => {
     }
   };
 
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="l">
@@ -79,6 +92,7 @@ const Editcategory = (props) => {
             alignItems: 'center',
           }}
         >
+
           <Box component="form" noValidate onSubmit={senddata} sx={{ mt: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -86,19 +100,19 @@ const Editcategory = (props) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  name="name"
+                  name="title"
                   required
                   fullWidth
-                  id="categoryName"
-                  label="Category Name"
+                  id="categoryTitle"
+                  label="Category Title"
                   autoFocus
-                  value={category.name}
+                  value={category.title}
                   onChange={handlechange}
-                  error={Boolean(categoryerr.name)}
+                  error={Boolean(categoryerr.title)}
                 />
-                {categoryerr.name && (
+                {categoryerr.title && (
                   <Typography variant="caption" color="error">
-                    {categoryerr.name}
+                    {categoryerr.title}
                   </Typography>
                 )}
               </Grid>

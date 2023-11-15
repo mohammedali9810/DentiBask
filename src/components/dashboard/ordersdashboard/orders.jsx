@@ -31,9 +31,7 @@ const Orders = () => {
   const [openSeeOrderDialog, setOpenSeeOrderDialog] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedOrderProducts, setSelectedOrderProducts] = useState([]);
-  const [pages, setPages] = useState(1); 
-  const [products, setProducts] = useState([]);
-  const [maxPages, setMaxPages] = useState(0); 
+
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -57,23 +55,7 @@ const Orders = () => {
     setCurrentPage(page);
   };
 
-  useEffect(() => {
-    axiosinstance
-      .get(`/User/order/`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer your_token_here', // Replace with your actual token
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        setProducts(res.data.results);
-        setMaxPages(Math.ceil(res.data.count / 12));
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, [pages, products]);
+
 
   const handleSeeOrder = (order) => {
     setSelectedOrder(order);
@@ -100,7 +82,36 @@ const Orders = () => {
     }
     return sampleProducts;
   };
+  // Add sample orders
+  useEffect(() => {
+    const sampleOrders = [
+      {
+        id: 1,
+        orderId: 'ORD-001',
+        customerName: 'John Doe',
+        created_at: '2023-11-04',
+        totalPrice: 99.99,
+        status: 'Processing',
+        numberOfProduct: '3',
 
+      },
+      {
+        id: 2,
+        orderId: 'ORD-002',
+        customerName: 'Jane Smith',
+        created_at: '2023-11-05',
+        totalPrice: 49.99,
+        status: 'Shipped',
+        numberOfProduct: '3',
+
+      },
+      // Add more sample orders as needed
+    ];
+
+
+
+    setOrders(sampleOrders);
+  }, []);
 
   return (
     <div>
