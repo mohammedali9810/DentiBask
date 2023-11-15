@@ -9,6 +9,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import './categories.css';
 import Addcategory from './addcategory';
 
+
+// {
+//   "id": 6,
+//   "name": "Equipment",
+//   "desc": "High Value Equipment for all dental needs.",
+//   "image": "https://dentibaskbucket.s3.amazonaws.com/images/category/category_20231110121118.jpg"
+// }
+
+
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [pages, setPages] = useState(1);
@@ -16,36 +25,18 @@ const Categories = () => {
   const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState(false);
 
   useEffect(() => {
-    const sampleCategories = [
-      {
-        id: 1,
-        categoryId: 'CAT-001',
-        customerName: 'Eq',
-        numberOfProduct: 12,
-      },
-      {
-        id: 2,
-        categoryId: 'CAT-002',
-        customerName: 'Jane Smith',
-        numberOfProduct: 10,
-      },
-      // Add more sample categories as needed
-    ];
-
-    setCategories(sampleCategories);
-  }, []);
-
-  useEffect(() => {
+    console.log('Fetching data from the API...');
     axiosinstance
-      .get(`/categories?page=${pages}`)
+      .get(`/Products/category/`)
       .then((res) => {
+        console.log('API Response:', res.data);
         setCategories(res.data.categories);
         setMaxPages(res.data.maxpages);
       })
       .catch((err) => {
-        console.error(err);
+        console.error('API Error:', err);
       });
-  }, [pages]);
+  }, []);
 
   const handleOpenAddCategoryDialog = () => {
     setOpenAddCategoryDialog(true);
@@ -66,7 +57,7 @@ const Categories = () => {
         Add Category
       </Button>
       <div className='categoriesgrid'>
-        {Array.isArray(categories) &&
+        {
           categories.map((category, index) => <Categorycard key={index} category={category} />)}
       </div>
       <Pagination page={pages} onChange={(e, v) => setPages(v)} count={maxpages} color="primary" />
