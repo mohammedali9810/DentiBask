@@ -8,17 +8,23 @@ import Cart from "../pages/Cart";
 import Dashboard from "../components/dashboard/navandside/Dashboard";
 import ProductDetails from "../pages/productDetails";
 import NotFound from "../pages/NotFound";
-
+import Header from "../components/Header/Header";
+// import ContactUs from '../pages/ContactUs';
+// import AboutUs from '../pages/AboutUs';
+import Activate from "../pages/activate";
 export default function Router() {
   return (
-    <Routes>
-      <Route path="/" element={<Products />} />
-      <Route path="/Register" element={<Register />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/Cart" element={<Cart />} />
-      <Route path="/Products/products/:id" element={<ProductDetails />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Products />} />
+        <Route path="/Register" element={<Register />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Cart" element={<Cart />} />
+        <Route path="/Products/product_detail/:id" element={<ProductDetails />} />
+        <Route path="/activate/User/activate/:token1/:token2" element={<Activate />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }
