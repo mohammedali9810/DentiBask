@@ -26,18 +26,16 @@ const Rents = () => {
 
   const fetchRents = () => {
     axiosinstance
-      .get('/rents')
+    .get('/User/userrent/')
       .then((res) => {
-        setRents(res.data);
+        setRents(res.data.rents);
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
-  const indexOfLastrent = currentPage * itemsPerPage;
-  const indexOfFirstrent = indexOfLastrent - itemsPerPage;
-  const currentRents = rents.slice(indexOfFirstrent, indexOfLastrent);
+
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
@@ -46,16 +44,12 @@ const Rents = () => {
 
 
   const handleDeleteRent = (rentId) => {
-    // Implement the logic to delete the rent with the given rentId.
-    // You should remove it from the state or send a delete request to your server.
-    // For example, to remove it from the state:
+
     const updatedRents = rents.filter((rent) => rent.rentId !== rentId);
     setRents(updatedRents);
   };
 
   const handleCancelRent = (rentId) => {
-    // Add logic for cancelling the rent with the given rentId.
-    // For example, you can update the status to 'Cancelled'.
     const updatedRents = rents.map((rent) => {
       if (rent.rentId === rentId) {
         return { ...rent, status: 'Cancelled' };
@@ -66,54 +60,6 @@ const Rents = () => {
   };
 
   
-  // Add sample rents
-  useEffect(() => {
-    const sampleRents = [
-      {
-        id: 1,
-        rentId: 'REN-001',
-        renterName: 'John Doe',
-        location: 'Cairo',
-        rentMonthly: 260,
-        rentShift: 45,
-        totalPrice: 99.99,
-        status: 'The rental is over',
-      },
-      {
-        id: 2,
-        rentId: 'REN-002',
-        renterName: 'Jane Smith',
-        location: 'Cairo',
-        rentMonthly: 120,
-        rentShift: 25,
-        totalPrice: 49.99,
-        status: 'Renting is ongoing',
-      },
-      {
-        id: 3,
-        rentId: 'REN-003',
-        renterName: 'Sarah Johnson',
-        location: 'New York',
-        rentMonthly: 400,
-        rentShift: 60,
-        totalPrice: 199.99,
-        status: 'Renting is ongoing',
-      },
-      {
-        id: 4,
-        rentId: 'REN-004',
-        renterName: 'Michael Brown',
-        location: 'Los Angeles',
-        rentMonthly: 350,
-        rentShift: 50,
-        totalPrice: 159.99,
-        status: 'Renting is ongoing',
-      },
-      // Add more sample rents as needed
-    ];
-
-    setRents(sampleRents);
-  }, []);
   return (
     <div>
       <TableContainer component={Paper}>
@@ -131,14 +77,14 @@ const Rents = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentRents.map((rent) => (
+            {rents.map((rent) => (
               <TableRow key={rent.id}>
-                <TableCell>{rent.rentId}</TableCell>
-                <TableCell>{rent.renterName}</TableCell>
+                <TableCell>{rent.id}</TableCell>
+                <TableCell>{rent.renter}</TableCell>
                 <TableCell>{rent.location}</TableCell>
                 <TableCell>${rent.rentMonthly}</TableCell>
                 <TableCell>${rent.rentShift}</TableCell>
-                <TableCell>${rent.totalPrice}</TableCell>
+                <TableCell>${rent.price}</TableCell>
                 <TableCell>          
                   <span
                     style={{

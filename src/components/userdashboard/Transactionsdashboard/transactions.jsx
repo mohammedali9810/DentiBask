@@ -29,18 +29,15 @@ const Transactions = () => {
 
   const fetchTransactions = () => {
     axiosinstance
-      .get('/transactions')
+      .get('/User/usertransaction/')
       .then((res) => {
-        setTransactions(res.data);
+        setTransactions(res.data.transactions);
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
-  const indexOfLasttransaction = currentPage * itemsPerPage;
-  const indexOfFirsttransaction = indexOfLasttransaction - itemsPerPage;
-  const currentTransactions = transactions.slice(indexOfFirsttransaction, indexOfLasttransaction);
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
@@ -56,28 +53,6 @@ const Transactions = () => {
     setOpenSeeTransactionDialog(false);
   };
   
-  // Add sample transactions
-  useEffect(() => {
-    const sampleTransactions = [
-      {
-        id: 1,
-        transactionId: 'TRA-001',
-        transactionDate: '2023-11-04',
-        totalPrice: 99.99,
-        status: 'Processing',
-      },
-      {
-        id: 2,
-        transactionId: 'TRA-002',
-        transactionDate: '2023-11-05',
-        totalPrice: 49.99,
-        status: 'Delivered',
-      },
-      // Add more sample transactions as needed
-    ];
-
-    setTransactions(sampleTransactions);
-  }, []);
 
   return (
     <div>
@@ -93,11 +68,11 @@ const Transactions = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentTransactions.map((transaction) => (
+            {transactions.map((transaction) => (
               <TableRow key={transaction.id}>
-                <TableCell>{transaction.transactionId}</TableCell>
-                <TableCell>{transaction.transactionDate}</TableCell>
-                <TableCell>${transaction.totalPrice}</TableCell>
+                <TableCell>{transaction.id}</TableCell>
+                <TableCell>{transaction.created_at}</TableCell>
+                <TableCell>${transaction.amount}</TableCell>
                 <TableCell>                  <span
                     style={{
                       color:
