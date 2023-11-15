@@ -11,41 +11,14 @@ import Addcategory from './addcategory';
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
-  const [pages, setPages] = useState(1);
-  const [maxpages, setMaxPages] = useState(1);
   const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState(false);
 
   useEffect(() => {
-    const sampleCategories = [
-      {
-        id: 1,
-        categoryId: 'CAT-001',
-        customerName: 'Eq',
-        numberOfProduct: 12,
-      },
-      {
-        id: 2,
-        categoryId: 'CAT-002',
-        customerName: 'Jane Smith',
-        numberOfProduct: 10,
-      },
-      // Add more sample categories as needed
-    ];
-
-    setCategories(sampleCategories);
+    axiosinstance.get(`/Products/get_categories/`)
+    .then((res)=>{setCategories(res.data);
+    })
+    .catch((err) => {console.log(err);});
   }, []);
-
-  useEffect(() => {
-    axiosinstance
-      .get(`/categories?page=${pages}`)
-      .then((res) => {
-        setCategories(res.data.categories);
-        setMaxPages(res.data.maxpages);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, [pages]);
 
   const handleOpenAddCategoryDialog = () => {
     setOpenAddCategoryDialog(true);
@@ -69,7 +42,6 @@ const Categories = () => {
         {Array.isArray(categories) &&
           categories.map((category, index) => <Categorycard key={index} category={category} />)}
       </div>
-      <Pagination page={pages} onChange={(e, v) => setPages(v)} count={maxpages} color="primary" />
       <Dialog open={openAddCategoryDialog} onClose={handleCloseAddCategoryDialog}>
         <DialogTitle>Add Category</DialogTitle>
         <DialogContent>

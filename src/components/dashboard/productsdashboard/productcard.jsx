@@ -12,7 +12,9 @@ import { useContext } from "react";
 import { Theme } from "../../themecontext";
 import axiosinstance from '../../../axiosconfig';
 import "./products.css";
+import { useNavigate } from 'react-router-dom';
 const Productcard = (props) => {
+  const navigate = useNavigate();
   const { theme } = useContext(Theme);
   const [openAddProductDialog, setOpenAddProductDialog] = useState(false);
   const handleOpenAddProductDialog = () => {
@@ -27,7 +29,6 @@ const Productcard = (props) => {
       .delete(`/Products/products/${props.product.id}/`, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          // 'X-CSRFToken': csrf_token,
         },
         withCredentials: true,
       })
@@ -39,8 +40,8 @@ const Productcard = (props) => {
       });
   }
   return (
-  <Card sx={{ maxWidth: 345 }}>
-  <CardActionArea>
+  <Card sx={{ maxWidth: 345, opacity:props.product.stock > 0 ? "1": ".6" }} >
+  <CardActionArea onClick={()=>{navigate(`/Products/products/${props.product.id}`)}}>
     <CardMedia
       component="img"
       style={{ height:"15rem",objectFit: 'contain' }}
@@ -55,7 +56,13 @@ const Productcard = (props) => {
         {props.product.desc}
         </span>
         <p style={{fontWeight:"bold", fontSize:"1rem"}}>Price: {props.product.price} $</p>
-        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Category: {props.product.Categ_id['name']}</p>
+        <p style={{fontWeight:"bold", fontSize:"1rem"}}>Per: {props.product.unit}</p>
+        <p style={{ fontWeight: "bold", fontSize: "1rem" }}>
+  Category: {props.categories
+    .filter(category => category.id === props.product.Categ_id)
+    .map(category => category.name)}
+</p>
+
         <p style={{fontWeight:"bold", fontSize:"1rem"}}>Stock: {props.product.stock}</p>
       </CardContent>
     </CardActionArea>
@@ -70,7 +77,7 @@ const Productcard = (props) => {
     <Dialog open={openAddProductDialog} onClose={handleCloseAddProductDialog}>
         <DialogTitle>Edit Product</DialogTitle>
         <DialogContent>
-          <Editproduct handleclose={handleCloseAddProductDialog} product={props.product} />
+        <Editproduct handleClose={setOpenAddProductDialog} product={props.product} categories={props.categories} />
         </DialogContent>
       </Dialog>
   </Card>

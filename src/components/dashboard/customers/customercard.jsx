@@ -11,6 +11,7 @@ const Customercard = (props) => {
     <Card sx={{ width: 345 }}>
       <CardActionArea>
         <CardMedia
+        style={{ height:"15rem",objectFit: 'contain' }}
           component="img"
           height="200"
           image={props.customer.image ? props.customer.image : userimage}

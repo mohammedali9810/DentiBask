@@ -41,7 +41,8 @@ import { faHouseMedicalFlag } from '@fortawesome/free-solid-svg-icons';
 
 import Products from "../productsdashboard/products";
 import Customers from "../customers/customers";
-import Settings from "../settings/settings";
+
+import Settings from "../settings/settings"
 import Categories from "../categoriesdashboard/category";
 import Orders from "../ordersdashboard/orders";
 import Transactions from "../Transactionsdashboard/transactions";
