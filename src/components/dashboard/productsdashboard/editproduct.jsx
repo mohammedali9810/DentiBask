@@ -4,7 +4,6 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -13,31 +12,14 @@ import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography'; 
 
 const Editproduct = (props) => {
-  const [product, setProduct] = useState({ title: '', price: 0, image: '', description: '',categorry_id:'' });
-  const [producterr, setProductErr] = useState({ title: '', price: "",category:'' });
-  const defaultTheme = createTheme();
-  const [categories, setCategories] = useState([]);
-  const [csrf_token,setCsrfToken] = useState("");
+  const [product, setProduct] = useState({ id:"",title: '', price: 0, image:'',
+  description: '',categorry_id:'',stock:0,unit:'' });
+  const [producterr, setProductErr] = useState({ title: '', price: "",category:'',stock:'',unit:'' });
 
   useEffect(()=>{
-    setProduct({title:props.product.name, price:props.product.price,
+    setProduct({id:props.product.id,title:props.product.name, price:props.product.price,
     categorry_id:props.product.Categ_id,
-    image:props.product.image,description:props.product.desc});
-
-    axiosinstance.get('/Products/category/')
-    .then((response)=>{
-      console.log(response)
-      setCategories(response.data);})
-    .catch((error)=>{console.error(error);});
-
-    
-    axiosinstance.get('/Products/get_csrf_token/')
-    .then((response) => {
-      setCsrfToken(response.data.csrfToken);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+    image:props.product.image,description:props.product.desc, stock:props.product.stock, unit:props.product.unit});
     }
   ,[])
 
@@ -70,26 +52,39 @@ const Editproduct = (props) => {
     } else if (e.target.name === 'description') {
       setProduct({ ...product, description: e.target.value });
     }
-    if(e.target.name === 'category') {
+    else if(e.target.name === 'category') {
         setProduct({ ...product, categorry_id: e.target.value });
     }
+    else if(e.target.name === 'stock') {
+      const stock = parseInt(e.target.value);
+      if(isNaN(stock) || stock < 0) {
+        setProductErr({ ...producterr, stock: "Stock must be a positive number" });
+      }
+      else{
+        setProductErr({ ...producterr, stock: "" });
+      }
+      setProduct({ ...product, stock: e.target.value });
+  }
+  else if(e.target.name === 'unit') {
+    setProduct({ ...product, unit: e.target.value });
+}
   };
-  const senddata = (e) => {
+  const senddata = async(e) => {
     e.preventDefault();
-    console.log(csrf_token);
     if (producterr.category === "" && producterr.price === "" && producterr.title === "") {
-
+      const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
       axiosinstance
-        .put(`/Products/product/${props.product.id}/`, product, {
+        .put(`/Products/update_product/`, product, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'X-CSRFToken': csrf_token,
+            'X-CSRFToken': csrfToken,
+            'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
           },
           withCredentials: true,
         })
         .then((res) => {
-          if (res.status === 201) {
-            props.handleClose();
+          if (res.status === 200) {
+            props.handleClose(false);
           }
         })
         .catch((error) => {
@@ -101,7 +96,7 @@ const Editproduct = (props) => {
   
 
   return (
-      <ThemeProvider theme={defaultTheme}>
+
       <Container component="main" maxWidth="l">
       
         <Box
@@ -177,8 +172,8 @@ const Editproduct = (props) => {
   name='category'
   onChange={handlechange}
 >
-  {categories &&
-    categories.map((category, index) =>
+  {props.categories &&
+    props.categories.map((category, index) =>
       category.id === props.product.Categ_id ? (
         <MenuItem selected key={index} value={category.id}>
           {category.name}
@@ -193,6 +188,41 @@ const Editproduct = (props) => {
 </Select>
 
         </Grid>
+        <Grid item xs={12} sm={6}>
+                <TextField
+                  name="stock"
+                  required
+                  fullWidth
+                  id="stock"
+                  label="Stock"
+                  autoFocus
+                  value={product.stock}
+                  onChange={handlechange}
+                  error={Boolean(producterr.stock)}
+                />
+                 {producterr.stock && (
+                  <Typography variant="caption" color="error">
+                    {producterr.stock}
+                  </Typography>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="unit"
+                  label="Unit"
+                  name="unit"
+                  value={product.unit}
+                  onChange={handlechange}
+                  error={Boolean(producterr.unit)}
+                />
+                 {producterr.unit && (
+                  <Typography variant="caption" color="error">
+                    {producterr.unit}
+                  </Typography>
+                )}
+              </Grid>
             </Grid>
             <label className="custom-upload-button">
   <Button
@@ -226,7 +256,6 @@ const Editproduct = (props) => {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
   );
 };
 

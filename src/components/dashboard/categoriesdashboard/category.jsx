@@ -20,8 +20,6 @@ import Addcategory from './addcategory';
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
-  const [pages, setPages] = useState(1);
-  const [maxpages, setMaxPages] = useState(1);
   const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState(false);
 
   useEffect(() => {
@@ -60,7 +58,6 @@ const Categories = () => {
         {
           categories.map((category, index) => <Categorycard key={index} category={category} />)}
       </div>
-      <Pagination page={pages} onChange={(e, v) => setPages(v)} count={maxpages} color="primary" />
       <Dialog open={openAddCategoryDialog} onClose={handleCloseAddCategoryDialog}>
         <DialogTitle>Add Category</DialogTitle>
         <DialogContent>

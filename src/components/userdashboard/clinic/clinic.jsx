@@ -17,15 +17,20 @@ const Clinic = () => {
   
     useEffect(() => {
       axiosinstance
-        .get(`/products?page=${pages}`)
+        .get(`/User/userclinic/`, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
+          },
+          withCredentials: true,})
         .then((res) => {
-          setClinics(res.data.products);
-          setMaxPages(res.data.maxpages);
+          setClinics(res.data.clinics);
+          // setMaxPages(res.data.maxpages);
         })
         .catch((err) => {
           console.error(err);
         });
-    }, [pages]);
+    }, []);
   
     const handleOpenAddProductDialog = () => {
       setOpenAddProductDialog(true);

@@ -13,23 +13,26 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [pages, setPages] = useState(1);
   const [maxpages, setMaxPages] = useState(1);
+  const [categories,setCategories] = useState([]);
   const [openAddProductDialog, setOpenAddProductDialog] = useState(false);
 
   useEffect(() => {
     axiosinstance
-      .get(`/Products/products/?page=${pages}`,
+      .get(`/Products/get_products/?page=${pages}`,
       {headers: {'Content-Type': 'application/json', 
-      Authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5ODY4MzEwLCJpYXQiOjE2OTk4NjgwMTAsImp0aSI6ImM2NjhiM2M4M2JkYTQ2YTU5MWI3MjY3ZDdkYTZjN2Y0IiwidXNlcl9pZCI6NX0.I0S8S26HNC4Q1iLqdjXK4nYMIfl-ZOZ7NV6h06jXUNE'
-    },
-  withCredentials:true})
+    }})
       .then((res) => {
         setProducts(res.data.results);
+        console.log(res.data.results);
         setMaxPages(Math.ceil((res.data.count)/12));
       })
       .catch((err) => {
         console.error(err);
       });
-  }, [pages,products]);
+      axiosinstance.get('/Products/get_categories/')
+      .then((res)=>{setCategories(res.data); console.log(res.data);})
+      .catch((err) => {console.log(err);});
+  }, [pages]);
 
   const handleOpenAddProductDialog = () => {
     setOpenAddProductDialog(true);
@@ -51,7 +54,7 @@ const Products = () => {
       </Button>
       <div className='productsgrid'>
         {Array.isArray(products) &&
-          products.map((product, index) => <Productcard key={index} product={product} />)}
+          products.map((product, index) => <Productcard key={index} product={product} categories={categories} />)}
       </div>
       <Pagination page={pages} onChange={(e, v) => setPages(v)} count={maxpages} color="primary" />
       <Dialog open={openAddProductDialog} onClose={handleCloseAddProductDialog}>

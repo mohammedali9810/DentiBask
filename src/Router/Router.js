@@ -12,6 +12,7 @@ import Header from "../components/Header/Header";
 // import ContactUs from '../pages/ContactUs';
 // import AboutUs from '../pages/AboutUs';
 import Activate from "../pages/activate";
+import Footer from "../components/footer/footer";
 export default function Router() {
   return (
     <>
@@ -22,9 +23,13 @@ export default function Router() {
         <Route path="/Login" element={<Login />} />
         <Route path="/Cart" element={<Cart />} />
         <Route path="/Products/products/:id" element={<ProductDetails />} />
-        <Route path="/activate/User/activate/:token1/:token2" element={<Activate />} />
+        <Route
+          path="/activate/User/activate/:token1/:token2"
+          element={<Activate />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </>
   );
 }

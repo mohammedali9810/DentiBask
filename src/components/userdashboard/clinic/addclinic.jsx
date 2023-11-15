@@ -80,7 +80,6 @@ const senddata = async (e) => {
   try {
 
     const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
-    console.log(localStorage.getItem('dentibask-access-token'));
     const response = await axiosinstance.post('/User/addclinic/', product, {
       headers: {
         'Content-Type': 'multipart/form-data',

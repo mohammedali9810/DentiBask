@@ -8,48 +8,66 @@ import "./settings.css";
 import TextField from '@mui/material/TextField';
 import axiosinstance from '../../../axiosconfig';
 import {useNavigate} from "react-router-dom";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 const Settings = () => {
   const navigate = useNavigate();
   const { theme, setTheme } = useContext(Theme);
   const { lang, setLang } = useContext(Lang);
-  const [edit,setEdit]= useState({username:false, password:false,email:false,phone:false});
-  const [user,setUser]= useState();
-  const [modifieduser,setModifiedUser]= useState({username:'',password:'',email:'',phone:'',
-  usercheck:'',emailcheck:'',passcheck:'',phonecheck:''});
-  const [usererr,setUserErr]= useState({username:'',password:'',email:'',phone:''});
+  const [edit,setEdit]= useState({username:false, password:false,phone:false,image:false});
+  const [user,setUser]= useState({});
+  const [modifieduser,setModifiedUser]= useState({username:'',password:'',phone:'',image:"",vertifypassword:""});
+  const [usererr,setUserErr]= useState({username:'',password:'',phone:'',vertifypassword:""});
 
 useEffect(()=>{
-  axiosinstance.get('/userdata',{headers: {'Content-Type': 'application/json'},withCredentials:true})
-  .then((response)=>{setUser(response.data.user)}).catch((err)=>{console.log(err)});
+  axiosinstance.get('/User/userdata/',
+  {headers: {'Content-Type': 'application/json',
+  'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
+}
+  ,withCredentials:true})
+  .then((response)=>{setUser(response.data);}).catch((err)=>{console.log(err)});
 },[])
 
 const handlechanges = (e)=>{
   if(e.target.name === 'username'){
     setModifiedUser({...modifieduser,username:e.target.value});
   }
-  if(e.target.name === 'password'){
+  else if(e.target.name === 'password'){
     setModifiedUser({...modifieduser,password:e.target.value});
   }
-  if(e.target.name === 'email'){
-    setModifiedUser({...modifieduser,email:e.target.value});
-  }
-  if(e.target.name === 'phone'){
+  else if(e.target.name === 'phone'){
     setModifiedUser({...modifieduser,phone:e.target.value});
   }
-  if(e.target.name === 'usercheck'){
-    setModifiedUser({...modifieduser,usercheck:e.target.value});
+  else if(e.target.name === 'image'){
+    setModifiedUser({...modifieduser,image:e.target.files[0]});
   }
-  if(e.target.name === 'passcheck'){
-    setModifiedUser({...modifieduser,passcheck:e.target.value});
-  }
-  if(e.target.name === 'emailcheck'){
-    setModifiedUser({...modifieduser,emailcheck:e.target.value});
-  }
-  if(e.target.name === 'phonecheck'){
-    setModifiedUser({...modifieduser,phonecheck:e.target.value});
+  else if (e.target.name === 'vertifypassword') {
+    setModifiedUser({ ...modifieduser, vertifypassword: e.target.value });
   }
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////
+const senddata = async (e)=>{
+  e.preventDefault();
+  if(modifieduser.vertifypassword === ""){
+    setUserErr({...usererr, vertifypassword:"Required!"})
+  }
+  else if (usererr.password ==="" && usererr.phone ==="" && usererr.username===""){
+    const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
+    console.log(csrfToken.data.csrfToken);
+    axiosinstance.put('/User/update_customer/',modifieduser,{
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'X-CSRFToken': csrfToken.data.csrfToken,
+        'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
+      },
+      withCredentials: true,
+    }
+    )
+    .then((res)=>{navigate('/')})
+    .catch((err)=>{console.log(err)});
+  }
+  
+}
+/////////////////////////////////////////////////////////////////////////////////////////
   const handleThemeChange = () => {
     setTheme(!theme);
   };
@@ -106,8 +124,9 @@ const handlechanges = (e)=>{
       >
         <div className='settings-data'>
           <div style={{fontWeight:"bold", fontSize:"1.2rem"}}> 
-                 <label style={{textAlign:"left",width:"5rem",marginRight:"5rem",color:"#1976d2"}}>{lang ? " اسم المستخدم":"Username"}</label>
-                  <label >Shaher emad mohammed</label>
+                 <label style={{textAlign:"left",width:"5rem",marginRight:"5rem",color:"#1976d2"}}>
+                  {lang ? " اسم المستخدم":"Username"}</label>
+                  <label >{user.name}</label>
           </div>
          
           {edit.username &&<><TextField
@@ -123,25 +142,11 @@ const handlechanges = (e)=>{
                   onChange={handlechanges}
                   value={modifieduser.username}
                 />
-                <TextField
-                  required
-                  style={{width:"20%",color: theme && 'white'}}
-                  id="password"
-                  label={lang ? " كلمة السر":"Password"}
-                  name="usercheck"
-                  autoComplete="password"
-                  type='password'
-                  InputProps={{
-                    style: {height:"2.5rem",backgroundColor:"white"},
-                  }}
-                  onChange={handlechanges}
-                  value={modifieduser.usercheck}
-                />
                 </>}
                   {!edit.username && <Button variant="contained" color="warning"
                    onClick={()=>setEdit({...edit,username:true})}>{lang ? "تغيير":"Change"}</Button>}
-                  {edit.username &&<> <Button variant="contained" color="success">{lang ? " تعديل ":"Edit"}</Button>
-                  <Button  onClick={()=>setEdit({...edit,username:false})} 
+                  {edit.username &&<>
+                  <Button  onClick={()=>{setEdit({...edit,username:false});setModifiedUser({...modifieduser,username:""})}} 
                   variant="contained" color="warning">{lang ? " إلغاء ":"Cancel"}</Button> </>}      
         </div>
         </Paper>
@@ -159,59 +164,8 @@ const handlechanges = (e)=>{
       >
         <div className='settings-data'>
         <div style={{fontWeight:"bold", fontSize:"1.2rem"}}> 
-                 <label style={{textAlign:"left",width:"5rem",marginRight:"5rem",color:"#1976d2"}}>{lang ? " البريد الإلكتروني ":"Email"}</label>
-                  <label >Shaher@gmail.com</label>
-          </div>
-          {edit.email &&<><TextField
-                  required
-                  style={{width:"20%",color: theme && 'white'}}
-                  id="email"
-                  label={lang ? " البريد الإلكتروني ":"Email"}
-                  name="email"
-                  autoComplete="email"
-                  InputProps={{
-                    style: {height:"2.5rem",backgroundColor:"white"},
-                  }}
-                  onChange={handlechanges}
-                  value={modifieduser.email}
-                />
-                <TextField
-                  required
-                  style={{width:"20%",color: theme && 'white'}}
-                  id="password"
-                  label={lang ? " كلمة السر":"Password"}
-                  name="emailcheck"
-                  autoComplete="password"
-                  type='password'
-                  InputProps={{
-                    style: {height:"2.5rem",backgroundColor:"white"},
-                  }}
-                  onChange={handlechanges}
-                  value={modifieduser.emailcheck}
-                />
-                </>}
-                  {!edit.email && <Button variant="contained" color="warning"
-                   onClick={()=>setEdit({...edit,email:true})}>{lang ? "تغيير":"Change"}</Button>}
-                  {edit.email &&<> <Button variant="contained" color="success">{lang ? " تعديل ":"Edit"}</Button>
-                  <Button  onClick={()=>setEdit({...edit,email:false})} 
-                  variant="contained" color="warning">{lang ? " إلغاء ":"Cancel"}</Button> </>}      
-        </div>
-        </Paper>
-        <Paper
-          elevation={3}
-        style={{
-          marginTop:"1rem",
-          padding: '16px',
-          display: 'flex',
-          alignItems: 'center',
-          backgroundColor: theme ? '#0e0449' : 'white',
-          color: theme ? 'white' : 'black',
-          flexDirection:"column", justifyContent:"space-around"
-        }}
-      >
-        <div className='settings-data'>
-        <div style={{fontWeight:"bold", fontSize:"1.2rem"}}> 
-                 <label style={{textAlign:"left",width:"5rem",marginRight:"5rem",color:"#1976d2"}}>{lang ? " كلمة السر ":"Password"}</label>
+                 <label style={{textAlign:"left",width:"5rem",marginRight:"5rem",color:"#1976d2"}}>
+                  {lang ? " كلمة السر ":"Password"}</label>
                   <label >********</label>
           </div>
           {edit.password &&<><TextField
@@ -228,25 +182,11 @@ const handlechanges = (e)=>{
                   onChange={handlechanges}
                   value={modifieduser.password}
                 />
-                <TextField
-                  required
-                  style={{width:"20%",color: theme && 'white'}}
-                  id="password"
-                  label={lang ? " كلمة السر القديمه ":"Old Password"}
-                  name="passcheck"
-                  autoComplete="password"
-                  type='password'
-                  InputProps={{
-                    style: {height:"2.5rem",backgroundColor:"white"},
-                  }}
-                  onChange={handlechanges}
-                  value={modifieduser.passcheck}
-                />
                 </>}
                   {!edit.password && <Button variant="contained" color="warning"
                    onClick={()=>setEdit({...edit,password:true})}>{lang ? "تغيير":"Change"}</Button>}
-                  {edit.password &&<> <Button variant="contained" color="success">{lang ? " تعديل ":"Edit"}</Button>
-                  <Button  onClick={()=>setEdit({...edit,password:false})}
+                  {edit.password &&<>
+                  <Button  onClick={()=>{setEdit({...edit,password:false});setModifiedUser({...modifieduser,password:""})}}
                    variant="contained" color="warning">{lang ? " إلغاء ":"Cancel"}</Button> </>}      
         </div>
         </Paper>
@@ -265,7 +205,7 @@ const handlechanges = (e)=>{
         <div className='settings-data'>
         <div style={{fontWeight:"bold", fontSize:"1.2rem"}}> 
                  <label style={{textAlign:"left",width:"5rem",marginRight:"5rem",color:"#1976d2"}}>{lang ? " رقم الموبايل":"Phone"}</label>
-                  <label >0111216161</label>
+                  <label >{user.phone}</label>
           </div>
           {edit.phone &&<><TextField
                   required
@@ -280,29 +220,98 @@ const handlechanges = (e)=>{
                   onChange={handlechanges}
                   value={modifieduser.phone}
                 />
-                <TextField
-                  required
-                  style={{width:"20%",color: theme && 'white'}}
-                  id="password"
-                  label={lang ? " كلمة السر":"Password"}
-                  name="phonecheck"
-                  autoComplete="password"
-                  type='password'
-                  InputProps={{
-                    style: {height:"2.5rem",backgroundColor:"white"},
-                  }}
-                  onChange={handlechanges}
-                  value={modifieduser.phonecheck}
-                />
                 </>}
                   {!edit.phone && <Button variant="contained" color="warning"
                    onClick={()=>setEdit({...edit,phone:true})}>{lang ? "تغيير":"Change"}</Button>}
-                  {edit.phone &&<> <Button variant="contained" color="success">{lang ? " تعديل ":"Edit"}</Button>
-                  <Button  onClick={()=>setEdit({...edit,phone:false})}
+                  {edit.phone &&<>
+                  <Button  onClick={()=>{setEdit({...edit,phone:false});setModifiedUser({...modifieduser,phone:""})}}
                    variant="contained" color="warning">{lang ? " إلغاء ":"Cancel"}</Button> </>}      
         </div>
 
         </Paper>
+        <Paper
+          elevation={3}
+        style={{
+          marginTop:"1rem",
+          padding: '16px',
+          display: 'flex',
+          alignItems: 'center',
+          backgroundColor: theme ? '#0e0449' : 'white',
+          color: theme ? 'white' : 'black',
+          flexDirection:"column", justifyContent:"space-around"
+        }}
+      >
+        <div className='settings-data'>
+        <div style={{fontWeight:"bold", fontSize:"1.2rem"}}> 
+                 <label style={{textAlign:"left",width:"5rem",marginRight:"5rem",color:"#1976d2"}}>
+                  {lang ? "الصورة الشخصيه":"Image"}</label>
+                  <label ><img src={user.image} alt='user image'/></label>
+          </div>
+          {edit.image &&<>
+            <label className="custom-upload-button">
+  <Button
+    fullWidth
+    component="span"
+    variant="contained"
+    startIcon={<CloudUploadIcon />}
+  >
+    Upload Image
+  </Button>
+  <input
+    type="file"
+    name="image"
+    accept="image/*"
+    style={{display:"none"}}
+    onChange={handlechanges}
+  />
+      </label>
+                </>}
+                  {!edit.image && <Button variant="contained" color="warning"
+                   onClick={()=>setEdit({...edit,image:true})}>{lang ? "تغيير":"Change"}</Button>}
+                  {edit.image &&<>
+                  <Button  onClick={()=>{setEdit({...edit,image:false});setModifiedUser({...modifieduser,image:""})}}
+                   variant="contained" color="warning">{lang ? " إلغاء ":"Cancel"}</Button> </>}      
+        </div>
+
+        </Paper>
+
+{(modifieduser.password !=="" || modifieduser.phone !=="" || modifieduser.username !=="" || modifieduser.image !=="") && <Paper
+          elevation={3}
+        style={{
+          marginTop:"1rem",
+          padding: '16px',
+          display: 'flex',
+          alignItems: 'center',
+          backgroundColor: theme ? '#0e0449' : 'white',
+          color: theme ? 'white' : 'black',
+          flexDirection:"column", justifyContent:"space-around"
+        }}
+      >
+        <div className='settings-data'>
+        <div style={{fontWeight:"bold", fontSize:"1.2rem", display:"flex"}}> 
+                 <label style={{textAlign:"left",width:"18rem",marginRight:"5rem",color:"#1976d2"}}>
+                  {lang ? " تأكيد رمز المرور":"Vertify Password"}</label>
+                 <TextField
+                  required
+                  style={{width:"80%",color: theme && 'white'}}
+                  id="vertifypassword"
+                  label={lang ? " تأكيد رمز المرور":"Vertify Password"}
+                  name="vertifypassword"
+                  autoComplete="vertifypassword"
+                  InputProps={{
+                    style: {height:"2.5rem",backgroundColor:"white"},
+                  }}
+                  onChange={handlechanges}
+                  value={modifieduser.vertifypassword}
+                />
+          </div>
+                  {<Button variant="contained" color="success" onClick={senddata}>{lang ? " تعديل ":"Apply modifications"}
+                  </Button>}      
+        </div>
+
+        </Paper>}
+
+
         <Paper
         elevation={3}
         style={{

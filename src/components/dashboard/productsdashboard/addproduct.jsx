@@ -78,7 +78,7 @@ const Addproduct = ({ handleClose }) => {
   const senddata = (e) => {
     e.preventDefault();
     if (producterr.category === "" && producterr.price === "" && producterr.title === "") {
-      console.log(product);
+
       axiosinstance
         .post('/Products/products/', product, {
           headers: {

@@ -15,18 +15,20 @@ const Clinic = () => {
     const [maxpages, setMaxPages] = useState(1);
     const [openAddProductDialog, setOpenAddProductDialog] = useState(false);
   
+
     useEffect(() => {
-      axiosinstance
-        .get(`/products?page=${pages}`)
-        .then((res) => {
-          setClinics(res.data.products);
-          setMaxPages(res.data.maxpages);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }, [pages]);
-  
+  axiosinstance
+      .get(`/User/get_all_clinics/?page=${pages}`,
+      {headers: {'Content-Type': 'application/json', 
+    }})
+      .then((res) => {
+        setClinics(res.data.results);
+        setMaxPages(Math.ceil((res.data.count)/12));
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [pages,clinics]);
     const handleOpenAddProductDialog = () => {
       setOpenAddProductDialog(true);
     };
