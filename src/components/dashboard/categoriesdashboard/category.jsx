@@ -9,15 +9,31 @@ import DialogTitle from '@mui/material/DialogTitle';
 import './categories.css';
 import Addcategory from './addcategory';
 
+
+// {
+//   "id": 6,
+//   "name": "Equipment",
+//   "desc": "High Value Equipment for all dental needs.",
+//   "image": "https://dentibaskbucket.s3.amazonaws.com/images/category/category_20231110121118.jpg"
+// }
+
+
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState(false);
 
   useEffect(() => {
-    axiosinstance.get(`/Products/get_categories/`)
-    .then((res)=>{setCategories(res.data);
-    })
-    .catch((err) => {console.log(err);});
+    console.log('Fetching data from the API...');
+    axiosinstance
+      .get(`/Products/category/`)
+      .then((res) => {
+        console.log('API Response:', res.data);
+        setCategories(res.data.categories);
+        setMaxPages(res.data.maxpages);
+      })
+      .catch((err) => {
+        console.error('API Error:', err);
+      });
   }, []);
 
   const handleOpenAddCategoryDialog = () => {

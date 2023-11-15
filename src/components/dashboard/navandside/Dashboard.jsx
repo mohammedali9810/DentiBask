@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled,alpha } from "@mui/material/styles";
+import { styled, alpha } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
@@ -31,7 +31,7 @@ import { Theme } from "../../themecontext";
 import "./dashboard.css";
 import CategoryIcon from "@mui/icons-material/Category";
 import PaidIcon from "@mui/icons-material/Paid";
-import {Lang} from "../../langcontext";
+import { Lang } from "../../langcontext";
 import logouticon from "./logout.svg";
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
@@ -131,271 +131,276 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 export default function Dashboard() {
-  const {lang} = useContext(Lang);
-  const [ selected , setSelected] = React.useState("Products");
+  const { lang } = useContext(Lang);
+  const [selected, setSelected] = React.useState("Products");
   const { theme } = useContext(Theme);
   const mode = theme ? "darkmode" : "lightmode";
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const [view,setView] = React.useState(<Products/>);
+  const [view, setView] = React.useState(<Products />);
   //////////////////////////////////////////////////////////////////////////////
   const mainListItems = (
     <React.Fragment>
       <ListItemButton
-      sx={{
-        opacity: "1",
-        cursor:"default",
-        color:"#0096FF"
-      }}
+        sx={{
+          opacity: "1",
+          cursor: "default",
+          color: "#0096FF"
+        }}
       >
         <ListItemIcon>
-          <DashboardIcon style={{color:"#0096FF"}}/>
+          <DashboardIcon style={{ color: "#0096FF" }} />
         </ListItemIcon>
-        <ListItemText primary={lang ? " لوحة القياده" : "Dashboard"}  />
+        <ListItemText primary={lang ? " لوحة القياده" : "Dashboard"} />
       </ListItemButton>
-      <Divider sx={{ my: 1, opacity:"1" }} />
+      <Divider sx={{ my: 1, opacity: "1" }} />
       <ListItemButton
-       onClick={() => {setView(<Products/>) ;return setSelected("Products")}}
-       sx={{
-         backgroundColor: selected === "Products" && "#CDCDCD",
-         opacity: selected === "Products" && "1",
-       }}
-       className="sidebtn"
+        onClick={() => { setView(<Products />); return setSelected("Products") }}
+        sx={{
+          backgroundColor: selected === "Products" && "#CDCDCD",
+          opacity: selected === "Products" && "1",
+        }}
+        className="sidebtn"
       >
         <ListItemIcon>
           <ShoppingCartIcon className={theme && "darkicon"} />
         </ListItemIcon>
-        
-        <ListItemText primary={lang ? "المنتجات" : "Products"}  />
+
+        <ListItemText primary={lang ? "المنتجات" : "Products"} />
       </ListItemButton>
       <ListItemButton
-       onClick={() => {setView(<Categories/>) ;return setSelected("Category")}}
-       sx={{
-         backgroundColor: selected === "Category" && "#CDCDCD",
-         opacity: selected === "Category" && "1",
-       }}
-       className="sidebtn"
+        onClick={() => { setView(<Categories />); return setSelected("Category") }}
+        sx={{
+          backgroundColor: selected === "Category" && "#CDCDCD",
+          opacity: selected === "Category" && "1",
+        }}
+        className="sidebtn"
       >
         <ListItemIcon>
-          <CategoryIcon className={theme && "darkicon"}/>
+          <CategoryIcon className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary={lang ? "الأنواع" : "Category"} />
       </ListItemButton>
-      
+
       <ListItemButton
-       onClick={() => {setView(<Customers/>) ;return setSelected("Customers")}}
-       sx={{
-         backgroundColor: selected === "Customers" && "#CDCDCD",
-         opacity: selected === "Customers" && "1",
-       }}
-       className="sidebtn"
+        onClick={() => { setView(<Customers />); return setSelected("Customers") }}
+        sx={{
+          backgroundColor: selected === "Customers" && "#CDCDCD",
+          opacity: selected === "Customers" && "1",
+        }}
+        className="sidebtn"
       >
         <ListItemIcon>
-          <PeopleIcon  className={theme && "darkicon"} />
+          <PeopleIcon className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary={lang ? "المستخدمين" : "Customers"} />
       </ListItemButton>
-      <ListItemButton
-       onClick={() => setSelected("Orders")}
-       sx={{
-         backgroundColor: selected === "Orders" && "#CDCDCD",
-         opacity: selected === "Orders" && "1",
-       }}
-       className="sidebtn"
-      >
-        <ListItemIcon>
-          <BarChartIcon  className={theme && "darkicon"} />
-        </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Orders/>)}} primary={lang ? "الطلبات" : "Orders"} />
-      </ListItemButton>
+
 
 
       <ListItemButton
-       onClick={() => {setView(<Clinic/>) ;return setSelected("Clinic")}}
-       sx={{
-         backgroundColor: selected === "Clinic" && "#CDCDCD",
-         opacity: selected === "Clinic" && "1",
-       }}
-       className="sidebtn"
-      >
-        <ListItemIcon>
-        <FontAwesomeIcon icon={faHouseMedicalFlag} className={theme ? "darkicon" : ""} />
-        </ListItemIcon>
-        <ListItemText onClick={()=>{
+        onClick={() => { setView(<Orders />); return setSelected("Orders") }}
+        sx={{
+          backgroundColor: selected === "Orders" && "#CDCDCD",
+          opacity: selected === "Orders" && "1",
         }}
-         primary={lang ? "العيادات" : "Clinic"}/>
-      </ListItemButton>
-
-
-      <ListItemButton
-       onClick={() => {setView(<Rents/>) ;return setSelected("Rents")}}
-       sx={{
-         backgroundColor: selected === "Rents" && "#CDCDCD",
-         opacity: selected === "Rents" && "1",
-       }}
-       className="sidebtn"
+        className="sidebtn"
       >
         <ListItemIcon>
-          <LayersIcon  className={theme && "darkicon"} />
+          <BarChartIcon className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary={lang ? "الإيجارات" : "Rents"}/>
+        <ListItemText onClick={() => { setView(<Orders />) }} primary={lang ? "الطلبات" : "Orders"} />
       </ListItemButton>
-  
+
+
+
+
       <ListItemButton
-       onClick={() => {setView(<Transactions/>);setSelected("Transactions")}}
-       sx={{
-         backgroundColor: selected === "Transactions" && "#CDCDCD",
-         opacity: selected === "Transactions" && "1",
-       }}
-       className="sidebtn"
+        onClick={() => { setView(<Clinic />); return setSelected("Clinic") }}
+        sx={{
+          backgroundColor: selected === "Clinic" && "#CDCDCD",
+          opacity: selected === "Clinic" && "1",
+        }}
+        className="sidebtn"
+      >
+        <ListItemIcon>
+          <FontAwesomeIcon icon={faHouseMedicalFlag} className={theme ? "darkicon" : ""} />
+        </ListItemIcon>
+        <ListItemText onClick={() => {
+        }}
+          primary={lang ? "العيادات" : "Clinic"} />
+      </ListItemButton>
+
+
+      <ListItemButton
+        onClick={() => { setView(<Rents />); return setSelected("Rents") }}
+        sx={{
+          backgroundColor: selected === "Rents" && "#CDCDCD",
+          opacity: selected === "Rents" && "1",
+        }}
+        className="sidebtn"
+      >
+        <ListItemIcon>
+          <LayersIcon className={theme && "darkicon"} />
+        </ListItemIcon>
+        <ListItemText primary={lang ? "الإيجارات" : "Rents"} />
+      </ListItemButton>
+
+      <ListItemButton
+        onClick={() => { setView(<Transactions />); return setSelected("Transactions") }}
+        sx={{
+          backgroundColor: selected === "Transactions" && "#CDCDCD",
+          opacity: selected === "Transactions" && "1",
+        }}
+        className="sidebtn"
       >
         <ListItemIcon>
           <PaidIcon className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText primary={lang ? "التحويلات" : "Transactions"} />
-      </ListItemButton>   
+        <ListItemText onClick={() => { setView(<Transactions />) }} primary={lang ? "التحويلات" : "Transactions"} />
+      </ListItemButton>
     </React.Fragment>
   );
   const secondaryListItems = (
     <React.Fragment>
       <ListItemButton
-       onClick={() => {setView(<Settings/>); return setSelected("Settings");}}
-       sx={{
-         backgroundColor: selected === "Settings" && "#CDCDCD",
-         opacity: selected === "Settings" && "1",
-       }}
-       className="sidebtn"
+        onClick={() => { setView(<Settings />); return setSelected("Settings"); }}
+        sx={{
+          backgroundColor: selected === "Settings" && "#CDCDCD",
+          opacity: selected === "Settings" && "1",
+        }}
+        className="sidebtn"
       >
         <ListItemIcon>
-          <AssignmentIcon  className={theme && "darkicon"} />
+          <AssignmentIcon className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary={lang ? "الإعدادات" : "Settings"} />
       </ListItemButton>
       <ListItemButton
-      className="sidebtn"
+        className="sidebtn"
       >
         <ListItemIcon>
-          <img src={logouticon} alt="logouticon"  className={theme && "darkicon"} />
+          <img src={logouticon} alt="logouticon" className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary={lang ? "الخروج" : "Logout"} />
       </ListItemButton>
     </React.Fragment>
   );
-////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
   return (
 
-      <Box className={mode} sx={{ display: "flex", flexDirection: lang ? "row-reverse" : "row" }}>
-        <CssBaseline />
-        <AppBar  position="absolute" open={open}
+    <Box className={mode} sx={{ display: "flex", flexDirection: lang ? "row-reverse" : "row" }}>
+      <CssBaseline />
+      <AppBar position="absolute" open={open}
         className={lang ? "app-bar-right" : "app-bar-left"}
-        >
-          <Toolbar
+      >
+        <Toolbar
           className={theme ? "darknav" : "lightnav"}
-            sx={{
-              pr: "24px",
-            }}
-          >
-           <div className="dashboardtitle">
-  <IconButton
-    edge="start"
-    color="inherit"
-    aria-label="open drawer"
-    onClick={toggleDrawer}
-    sx={{
-      marginRight: "36px",
-      ...(open && { display: "none" }),
-    }}
-  >
-    <MenuIcon />
-  </IconButton>
-</div>
-            <Typography
-              component="h1"
-              variant="h6"
+          sx={{
+            pr: "24px",
+          }}
+        >
+          <div className="dashboardtitle"> {/* Add the class to this div */}
+            <IconButton
+              edge="start"
               color="inherit"
-              noWrap
-              sx={{ flexGrow: 1, fontSize:"2rem", fontWeight:"bold" }}
-              className="dashboardtitle"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: "36px",
+                ...(open && { display: "none" }),
+              }}
             >
-              {selected === "Dashboard"? lang ? " لوحة القياده" : "Dashboard" : null }
-              {selected === "Products"? lang ? " المنتجات" : "Products" : null }
-              {selected === "Category"? lang ? " الانواع" : "Category" : null }
-              {selected === "Rents"? lang ? "الإيجارات" : "Rents" : null }
-              {selected === "Settings"? lang ? " الإعدادات " : "Settings" : null }
-              {selected === "Orders"? lang ? " الطلبات " : "Orders" : null }
-              {selected === "Customers"? lang ? " المستخدمين " : "Customers" : null }
-              {selected === "Transactions"? lang ? " التحويلات " : "Transactions" : null }
-              {selected === "Clinic"? lang ? " العيادات " : "Clinic" : null }
-            </Typography>
-            <Search style={{backgroundColor:"white"}}>
+              <MenuIcon />
+            </IconButton>
+          </div>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            sx={{ flexGrow: 1, fontSize: "2rem", fontWeight: "bold" }}
+            className="dashboardtitle"
+          >
+            {selected === "Dashboard" ? lang ? " لوحة القياده" : "Dashboard" : null}
+            {selected === "Products" ? lang ? " المنتجات" : "Products" : null}
+            {selected === "Category" ? lang ? " الانواع" : "Category" : null}
+            {selected === "Rents" ? lang ? "الإيجارات" : "Rents" : null}
+            {selected === "Settings" ? lang ? " الإعدادات " : "Settings" : null}
+            {selected === "Orders" ? lang ? " الطلبات " : "Orders" : null}
+            {selected === "Customers" ? lang ? " المستخدمين " : "Customers" : null}
+            {selected === "Transactions" ? lang ? " التحويلات " : "Transactions" : null}
+            {selected === "Clinic" ? lang ? " العيادات " : "Clinic" : null}
+          </Typography>
+          <Search style={{ backgroundColor: "white" }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}/>
+              inputProps={{ 'aria-label': 'search' }} />
           </Search>
 
-            <IconButton color="inherit">
-              <Badge badgeContent={1} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-              
-              
-            </IconButton>
-            <IconButton color="inherit">
+          <IconButton color="inherit">
+            <Badge badgeContent={1} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+
+
+          </IconButton>
+          <IconButton color="inherit">
             <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open} >
-          <Toolbar
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              px: [1],
-            }}
-            className={theme ? "darkmodesidebar" : "lightsidebar"}
-          >
-            {open && <img src={theme ? darklogo :logo} alt="logo" style={{marginTop:"1rem"}} />}
-            <IconButton  onClick={toggleDrawer} >
-              {lang ? null : <ChevronLeftIcon  className={theme && "darkicon"} />}
-            </IconButton>
-            
-          </Toolbar>
-
-          <List style={{height:"100%"}} component="nav" className={theme ? "darkmodesidebar" : "lightsidebar"}>
-
-            {mainListItems}
-            <Divider sx={{ my: 1, opacity:"1" }} />
-            {secondaryListItems}
-          </List>
-        </Drawer>
-        <Box
-          component="main"
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Drawer variant="permanent" open={open} >
+        <Toolbar
           sx={{
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            px: [1],
+          }}
+          className={theme ? "darkmodesidebar" : "lightsidebar"}
+        >
+          {open && <img src={theme ? darklogo : logo} alt="logo" style={{ marginTop: "1rem" }} />}
+          <IconButton onClick={toggleDrawer} >
+            {lang ? null : <ChevronLeftIcon className={theme && "darkicon"} />}
+          </IconButton>
+
+        </Toolbar>
+
+        <List style={{ height: "100%" }} component="nav" className={theme ? "darkmodesidebar" : "lightsidebar"}>
+
+          {mainListItems}
+          <Divider sx={{ my: 1, opacity: "1" }} />
+          {secondaryListItems}
+        </List>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+        }}
+      >
+        <Toolbar />
+        <Paper
+          className={`${mode} ${mode === 'darkmode' ? 'dark-paper' : ''}`}
+          sx={{
+            p: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: mode === 'darkmode' ? 'black' : '#CDCDCD',
+            color: mode === 'darkmode' ? 'green' : '',
           }}
         >
-          <Toolbar />
-          <Paper
-  className={`${mode} ${mode === 'darkmode' ? 'dark-paper' : ''}`} 
-  sx={{
-    p: 2,
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: mode === 'darkmode' ? 'black' : '#CDCDCD', 
-    color: mode === 'darkmode' ? 'green' : '', 
-  }}
->
-  {view}
-</Paper>
-        </Box>
+          {view}
+        </Paper>
       </Box>
+    </Box>
   );
 }

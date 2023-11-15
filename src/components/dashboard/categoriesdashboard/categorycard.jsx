@@ -1,20 +1,25 @@
-import React, { useState, } from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions, Dialog, DialogContent, DialogTitle } from '@mui/material';
-import Editcategory from "./editcategory";
-import { useContext } from "react";
-import { Theme } from "../../themecontext";
-import "./categories.css";
+import React, { useState, useEffect } from 'react';
+import { Card, CardActionArea, CardContent, CardMedia, Typography, Button, CardActions, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import axiosinstance from '../../../axiosconfig';
+import Editcategory from './editcategory';
 
 const Categorycard = (props) => {
-  const { theme } = useContext(Theme);
   const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState(false);
   const [showProducts, setShowProducts] = useState(false);
-  const [categoryproducts, setCategoryProducts] = useState([]);
+  const [categoryData, setCategoryData] = useState(null);
+
+  useEffect(() => {
+    // Fetch category data when the component mounts
+    if (props.category) {
+      axiosinstance.get(`/Products/category/${props.category.categoryId}`)
+        .then((response) => {
+          setCategoryData(response.data);
+        })
+        .catch((error) => {
+          console.error('Error fetching category data:', error);
+        });
+    }
+  }, [props.category]);
 
   const handleOpenAddCategoryDialog = () => {
     setOpenAddCategoryDialog(true);
@@ -104,7 +109,7 @@ const Categorycard = (props) => {
       <Dialog open={openAddCategoryDialog} onClose={handleCloseAddCategoryDialog}>
         <DialogTitle>Edit Category</DialogTitle>
         <DialogContent>
-          <Editcategory category={props.category} />
+          <Editcategory category={categoryData} />
         </DialogContent>
       </Dialog>
 
