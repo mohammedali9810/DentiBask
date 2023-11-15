@@ -25,6 +25,7 @@ export default function Router() {
         <Route path="/activate/User/activate/:token1/:token2" element={<Activate />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+
     </>
   );
 }

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -12,6 +11,7 @@ import "./style.css";
 export default function ProductDetails() {
   const [productDetails, setProductDetails] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
+
   let  params =  useParams();
   const dispatch = useDispatch();
   const cartQuantity = useSelector(
@@ -29,7 +29,6 @@ export default function ProductDetails() {
         .catch((err) => console.log(err));
     }
   }, [params.id]);
-  
   const handleThumbnailClick = (image) => {
     setSelectedImage(image);
   };
@@ -146,9 +145,7 @@ export default function ProductDetails() {
                     
                   }))}>
                     Add To Cart
-        </Button>
-
-          
+        </Button>   
         </div>
       </div>
       </div>

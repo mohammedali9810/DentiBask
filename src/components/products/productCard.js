@@ -47,8 +47,10 @@ export default function ProductCard(props) {
           </div>
           <div className={`card-text text-truncate`}>
             {productData.desc}
+
           </div>
           <div className="rating mt-2">
+
             <Rating rating={4}/>
           </div>
           <button style={{

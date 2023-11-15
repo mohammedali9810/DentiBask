@@ -72,6 +72,7 @@ function Header() {
                 />
                 <span id="numberOfOrders">{getTotalQuantity()}</span>
         </NavLink>
+
           {localStorage.getItem("dentibask-access-token") ? (
             <>
               <NavLink
@@ -92,7 +93,6 @@ function Header() {
               >
                 Logout
               </NavLink>
-              
             </>
           ) : (
             <>
@@ -112,7 +112,6 @@ function Header() {
               </NavLink>
             </>
           )}
-
           <NavDropdown
             title={<FiSettings style={{ fontSize: "1.2rem" }} />}
             id="basic-nav-dropdown"

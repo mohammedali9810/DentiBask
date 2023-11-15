@@ -3,26 +3,28 @@ import Pagination from '@mui/material/Pagination';
 import axiosinstance from "../../../axiosconfig";
 import Customercard from './customercard';
 const Customers = () => {
-    const [customer, setCustomer] = useState({});
+    const [customers, setCustomer] = useState([]);
     const [pages, setPages] = useState(1);
     const [maxpages, setMaxPages] = useState(1);
     useEffect(()=>{
-        axiosinstance.get(`/customers?page=${pages}`)
-        .then(res=>{setCustomer(res.data.customers); setMaxPages(res.data.maxpages)})
+        axiosinstance.get(`/User/customer/?page=${pages}`,{
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
+          },
+          withCredentials: true,
+        })
+        .then(res=>{console.log(res.data);
+          setCustomer(res.data.results); 
+          setMaxPages(Math.ceil((res.data.count)/12))
+        })
         .catch(err=>{console.error(err)});
     }
-    ,[pages])
+    ,[pages,customers])
   return (
     <div style={{display:"flex", alignItems:"center", flexDirection:"column" }}>
         <div className='productsgrid'>
-            <Customercard/>
-            <Customercard/>
-            <Customercard/>
-            <Customercard/>
-            <Customercard/>
-            <Customercard/>
-            <Customercard/>
-            <Customercard/>
+          {customers.length !== 0 ? customers.map((customer, index)=><Customercard key={index} customer={customer}/>):null}
         </div>
             <Pagination page={pages} onChange={(e,v)=>{setPages(v)}} count={maxpages} color="primary" />
 

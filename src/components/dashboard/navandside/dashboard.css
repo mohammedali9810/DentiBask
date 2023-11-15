@@ -44,5 +44,16 @@
   .sidebtn:hover{
     opacity: 1;
   }
+  @media screen and (max-width: 1024px) {
+    .dashboardtitle {
+      display: none;
+    }
+  }
   
+  
+  @media screen and (max-width: 768px) {
+    .dashboardtitle {
+      display: none;
+    }
+  }
 

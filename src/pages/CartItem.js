@@ -66,6 +66,7 @@ function CartItem({ id, image, title, price, quantity = 0, description }) {
             <BsFillTrash3Fill />
           </Button>
          </div>
+
         </div>
       </div>
   );
