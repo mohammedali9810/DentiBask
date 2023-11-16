@@ -11,10 +11,10 @@ function ProductsList() {
   const [category, setCategory] = useState('Consumble');
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/Products/products_catgory/?name=${category}`)
+    axios.get(`http://127.0.0.1:8000/Products/products/?name=${category}`)
       .then(response => {
   
-        const products  = response.data;
+        const products  = response.data.results;
 
         if (products) {
           console.log(products)

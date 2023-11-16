@@ -38,7 +38,6 @@ function Cart() {
                     ))}
                 </div>
             </div>
-            
             {cart.length > 0 ? (
                 <div className="row text-center m-5 border border-3">
                 <h2>Order Summary</h2>
