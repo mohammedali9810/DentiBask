@@ -15,7 +15,7 @@ const teamMembers = [
   { id: 2, name: 'Yehia Mohammed', image: '/2.jpeg',phoneNumber: '01156929289' },
   { id: 3, name: 'Mohammed Ashraf', image: '/3.jpeg' ,phoneNumber: '01111143574'},
   { id: 4, name: 'Mohammed Sayed', image: '/4.jpeg',phoneNumber: '01113289444' },
-  { id: 5, name: 'Saher Emad', image: '/5.jpeg',phoneNumber: '01112424042' },
+  { id: 5, name: 'Shaher Emad', image: '/5.jpeg',phoneNumber: '01112424042' },
 ];
 
 
