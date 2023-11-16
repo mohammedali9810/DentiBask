@@ -6,7 +6,7 @@ function Category({ updateCategory}) {
   const [categoriesList, setCategoriesList] = useState([]);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/Products/get_categories/')
+    axios.get('http://127.0.0.1:8000/Products/category/')
       .then(response => {
         const data = response.data;
         const categories = data.map(category => category.name);

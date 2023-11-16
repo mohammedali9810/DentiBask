@@ -31,7 +31,7 @@ const Orders = () => {
   const [itemsPerPage] = useState(10);
   const [openSeeOrderDialog, setOpenSeeOrderDialog] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [selectedOrderProducts, setSelectedOrderProducts] = useState([]);
+  const [orderItems, setOrderItems] = useState([]);
 
   useEffect(() => {
     fetchOrders();
@@ -39,18 +39,25 @@ const Orders = () => {
 
   const fetchOrders = () => {
     axiosinstance
-      .get('/orders')
-      .then((res) => {
-        setOrders(res.data);
+    .get('/User/userorder/')
+    .then((res) => {
+        setOrders(res.data.orders);
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
-  const indexOfLastOrder = currentPage * itemsPerPage;
-  const indexOfFirstOrder = indexOfLastOrder - itemsPerPage;
-  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const fetchOrderItems = (orderId) => {
+    axiosinstance
+      .get(`/User/get_items_in_order/${orderId}`)
+      .then((res) => {
+        setOrderItems(res.data.items);
+      })
+      .catch((err) => {
+        console.error('Error fetching order items:', err);
+      });
+  };
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
@@ -72,7 +79,7 @@ const Orders = () => {
 
   const handleSeeOrder = (order) => {
     setSelectedOrder(order);
-    setSelectedOrderProducts(generateSampleProducts(order.numberOfProduct));
+    fetchOrderItems(order.id); // Fetch items for the selected order
     setOpenSeeOrderDialog(true);
   };
 
@@ -80,61 +87,7 @@ const Orders = () => {
     setOpenSeeOrderDialog(false);
   };
 
-  const generateSampleProducts = (numberOfProducts) => {
-    const sampleProducts = [];
-    for (let i = 0; i < numberOfProducts; i++) {
-      sampleProducts.push({
-        id: i,
-        name: `Product ${i + 1}`,
-        description: `Description of Product ${i + 1}`,
-        price: 200,
-        category: 'Instrument',
-        ordered: 3000,
-        thumbnail: 'image_url_here',
-      });
-    }
-    return sampleProducts;
-  };
-  // Add sample orders
-  useEffect(() => {
-    const sampleOrders = [
-      {
-        id: 1,
-        orderId: 'ORD-001',
-        customerName: 'John Doe',
-        created_at: '2023-11-04',
-        totalPrice: 99.99,
-        status: 'Processing',
-        numberOfProduct: '3',
 
-      },
-      {
-        id: 2,
-        orderId: 'ORD-002',
-        customerName: 'Jane Smith',
-        created_at: '2023-11-05',
-        totalPrice: 49.99,
-        status: 'Shipped',
-        numberOfProduct: '3',
-
-      },
-      {
-        id: 3,
-        orderId: 'ORD-003',
-        customerName: 'Jane Smith',
-        created_at: '2023-11-08',
-        totalPrice: 79.99,
-        status: 'Delivered',
-        numberOfProduct: '7',
-
-      },
-      // Add more sample orders as needed
-    ];
-
-
-
-    setOrders(sampleOrders);
-  }, []);
 
   return (
     <div>
@@ -153,10 +106,10 @@ const Orders = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentOrders.map((order) => (
+            {orders.map((order) => (
               <TableRow key={order.id}>
-                <TableCell>{order.orderId}</TableCell>
-                <TableCell>{order.customerName}</TableCell>
+                <TableCell>{order.id}</TableCell>
+                <TableCell>{order.user}</TableCell>
                 <TableCell>{order.created_at}</TableCell>
                 <TableCell>${order.totalPrice}</TableCell>
                 <TableCell>
@@ -261,7 +214,7 @@ const Orders = () => {
                   Products
                 </Typography>
 
-                {selectedOrderProducts.map((product) => (
+                {orderItems.map((product) => (
                   <Card key={product.id}>
                     <CardActionArea>
                       <CardMedia
