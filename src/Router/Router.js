@@ -14,6 +14,7 @@ import Header from "../components/Header/Header";
 import Activate from "../pages/activate";
 import Footer from "../components/footer/footer";
 import AboutUs from '../pages/AboutUs';
+import ContactUs from '../pages/ContactUs'
 
 export default function Router() {
   return (
@@ -30,6 +31,7 @@ export default function Router() {
           element={<Activate />}
         />
         <Route path="/AboutUs" element={<AboutUs />} />
+        <Route path="/ContactUs" element={<ContactUs />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
