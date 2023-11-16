@@ -7,6 +7,7 @@ const CustomPayPalButton = ({ amount, onSuccess }) => {
   return (
     <PayPalButton
       amount={amount}
+      style={{ layout: 'horizontal' }}
       onSuccess={(details, data) => onSuccess(details, data)}
     />
     
