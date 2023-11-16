@@ -13,6 +13,9 @@ import Header from "../components/Header/Header";
 // import AboutUs from '../pages/AboutUs';
 import Activate from "../pages/activate";
 import Footer from "../components/footer/footer";
+import AboutUs from '../pages/AboutUs';
+import ContactUs from '../pages/ContactUs'
+
 export default function Router() {
   return (
     <>
@@ -30,6 +33,8 @@ export default function Router() {
           path="/activate/User/activate/:token1/:token2"
           element={<Activate />}
         />
+        <Route path="/AboutUs" element={<AboutUs />} />
+        <Route path="/ContactUs" element={<ContactUs />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
