@@ -73,7 +73,7 @@ import 'slick-carousel/slick/slick-theme.css';
 const teamMembers = [
   { id: 1, name: 'Mohammed Ali', image: '/1.jpeg', phoneNumber: '01149444026',email:'Muhammed.alyaleem@gmail.com' },
   { id: 2, name: 'Yehia Mohammed', image: '/2.jpeg', phoneNumber: '01156929289',email:'yehia.mohammed@gmail.com' },
-  { id: 3, name: 'Mohammed Ashraf', image: '/3.jpeg', phoneNumber: '01111143574',email: 'Mohamed.ashraf@gmail.com'},
+  { id: 3, name: 'Mohammed Ashraf', image: '/3.jpeg', phoneNumber: '01111143574',email: 'mohammedaly9810@gmail.com'},
   { id: 4, name: 'Mohammed Sayed', image: '/4.jpeg', phoneNumber: '01113289444' ,email:'Mohamed.sayed@gmail.com'},
   { id: 5, name: 'Saher Emad', image: '/5.jpeg', phoneNumber: '01112424042',email: 'Shaher.emad@gmail.com'},
 ];
