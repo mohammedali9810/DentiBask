@@ -1,25 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardActionArea, CardContent, CardMedia, Typography, Button, CardActions, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import React, { useState, } from 'react';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { Button, CardActionArea, CardActions, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import Editcategory from "./editcategory";
+import { useContext } from "react";
+import { Theme } from "../../themecontext";
+import "./categories.css";
 import axiosinstance from '../../../axiosconfig';
-import Editcategory from './editcategory';
 
 const Categorycard = (props) => {
+  const { theme } = useContext(Theme);
   const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState(false);
   const [showProducts, setShowProducts] = useState(false);
-  const [categoryData, setCategoryData] = useState(null);
-
-  useEffect(() => {
-    // Fetch category data when the component mounts
-    if (props.category) {
-      axiosinstance.get(`/Products/category/${props.category.categoryId}`)
-        .then((response) => {
-          setCategoryData(response.data);
-        })
-        .catch((error) => {
-          console.error('Error fetching category data:', error);
-        });
-    }
-  }, [props.category]);
+  const [categoryproducts, setCategoryProducts] = useState([]);
 
   const handleOpenAddCategoryDialog = () => {
     setOpenAddCategoryDialog(true);
@@ -32,18 +27,24 @@ const Categorycard = (props) => {
   const handleCloseShowProductsDialog = () => {
     setShowProducts(false);
   };
-  const deleteCategory = async()=>{
-    axiosinstance.delete(`/Products/delete_category/`,{"category_id":props.category.id},{
-      headers: {
-        'Content-Type': 'application/json',
-        'authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
-      },
-      withCredentials: true,
-    }
+  const deleteCategory = async () => {
+    const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
     
-    ).then(() => {})
-    .catch((err)=>{console.log(err)});
-  }
+    axiosinstance
+      .delete(`/Products/delete_category/?category_id=${props.category.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken.data.csrfToken,
+          'authorization': 'Bearer ' + localStorage.getItem('dentibask-access-token'),
+        },
+        withCredentials: true,
+      })
+      .then(() => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
 
   const showproducts =()=>{
     axiosinstance.get(`Products/get_category_products/?category_id=${props.category.id}`)
@@ -68,17 +69,13 @@ const Categorycard = (props) => {
       });
   }
 
-  const [openAddProductDialog, setOpenAddProductDialog] = useState(false);
-  const handleOpenAddProductDialog = () => {
-    setOpenAddProductDialog(true);
-  };
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 390 }}>
       <CardActionArea>
       <CardMedia
   component="img"
   height="400"
-  style={{ width: '100%', objectFit: 'cover' }}
+  style={{ width: '100%', objectFit: 'contain' }}
   image={props.category.image}
   alt="Category Thumbnail"
 />
@@ -106,10 +103,10 @@ const Categorycard = (props) => {
           Delete
         </Button>
       </CardActions>
-      <Dialog open={openAddCategoryDialog} onClose={handleCloseAddCategoryDialog}>
-        <DialogTitle>Edit Category</DialogTitle>
+      <Dialog open={openAddCategoryDialog} onClose={handleCloseAddCategoryDialog} maxWidth="lg">
+        <DialogTitle>Edit Category: <u>{props.category.name}</u></DialogTitle>
         <DialogContent>
-          <Editcategory category={categoryData} />
+          <Editcategory category={props.category} />
         </DialogContent>
       </Dialog>
 

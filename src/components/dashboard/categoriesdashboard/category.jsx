@@ -9,32 +9,16 @@ import DialogTitle from '@mui/material/DialogTitle';
 import './categories.css';
 import Addcategory from './addcategory';
 
-
-// {
-//   "id": 6,
-//   "name": "Equipment",
-//   "desc": "High Value Equipment for all dental needs.",
-//   "image": "https://dentibaskbucket.s3.amazonaws.com/images/category/category_20231110121118.jpg"
-// }
-
-
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState(false);
 
   useEffect(() => {
-    console.log('Fetching data from the API...');
-    axiosinstance
-      .get(`/Products/category/`)
-      .then((res) => {
-        console.log('API Response:', res.data);
-        setCategories(res.data.categories);
-        setMaxPages(res.data.maxpages);
-      })
-      .catch((err) => {
-        console.error('API Error:', err);
-      });
-  }, []);
+    axiosinstance.get(`/Products/get_categories/`)
+    .then((res)=>{setCategories(res.data);
+    })
+    .catch((err) => {console.log(err);});
+  }, [categories]);
 
   const handleOpenAddCategoryDialog = () => {
     setOpenAddCategoryDialog(true);
@@ -54,7 +38,7 @@ const Categories = () => {
       >
         Add Category
       </Button>
-      <div className='categoriesgrid'>
+      <div className='productsgrid'>
         {categories &&
           categories.map((category, index) => <Categorycard key={index} category={category} />)}
       </div>

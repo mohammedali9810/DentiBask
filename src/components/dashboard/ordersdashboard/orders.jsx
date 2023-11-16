@@ -30,75 +30,49 @@ const Orders = () => {
   const [itemsPerPage] = useState(10);
   const [openSeeOrderDialog, setOpenSeeOrderDialog] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [selectedOrderProducts, setSelectedOrderProducts] = useState([]);
-  const [pages, setPages] = useState(1); 
-  const [products, setProducts] = useState([]);
-  const [maxPages, setMaxPages] = useState(0); 
+  const [orderItems, setOrderItems] = useState([]);
+
   useEffect(() => {
     fetchOrders();
   }, []);
 
   const fetchOrders = () => {
     axiosinstance
-      .get('/orders')
+      .get('/User/get_all_orders/')
       .then((res) => {
-        setOrders(res.data);
+          setOrders(res.data.orders);
       })
       .catch((err) => {
-        console.error(err);
+        console.error('Error fetching orders:', err);
+        // Handle the error gracefully, e.g., show an error message to the user
       });
   };
 
-  const indexOfLastOrder = currentPage * itemsPerPage;
-  const indexOfFirstOrder = indexOfLastOrder - itemsPerPage;
-  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const fetchOrderItems = (orderId) => {
+    axiosinstance
+      .get(`/User/get_items_in_order/${orderId}`)
+      .then((res) => {
+        setOrderItems(res.data.items);
+      })
+      .catch((err) => {
+        console.error('Error fetching order items:', err);
+      });
+  };
+
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
 
-  useEffect(() => {
-    axiosinstance
-      .get(`/User/order/`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer your_token_here', // Replace with your actual token
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        setProducts(res.data.results);
-        setMaxPages(Math.ceil(res.data.count / 12));
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, [pages, products]);
-
   const handleSeeOrder = (order) => {
     setSelectedOrder(order);
-    setSelectedOrderProducts(generateSampleProducts(order.numberOfProduct));
+    fetchOrderItems(order.id); // Fetch items for the selected order
     setOpenSeeOrderDialog(true);
   };
 
+
   const handleCloseSeeOrderDialog = () => {
     setOpenSeeOrderDialog(false);
-  };
-
-  const generateSampleProducts = (numberOfProducts) => {
-    const sampleProducts = [];
-    for (let i = 0; i < numberOfProducts; i++) {
-      sampleProducts.push({
-        id: i,
-        name: `Product ${i + 1}`,
-        description: `Description of Product ${i + 1}`,
-        price: 200,
-        category: 'Instrument',
-        ordered: 3000,
-        thumbnail: 'image_url_here',
-      });
-    }
-    return sampleProducts;
   };
 
 
@@ -117,10 +91,10 @@ const Orders = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentOrders.map((order) => (
+            {orders.map((order) => (
               <TableRow key={order.id}>
-                <TableCell>{order.orderId}</TableCell>
-                <TableCell>{order.customerName}</TableCell>
+                <TableCell>{order.id}</TableCell>
+                <TableCell>{order.user}</TableCell>
                 <TableCell>{order.created_at}</TableCell>
                 <TableCell>${order.totalPrice}</TableCell>
                 <TableCell>
@@ -169,10 +143,11 @@ const Orders = () => {
       <Dialog
         open={openSeeOrderDialog}
         onClose={handleCloseSeeOrderDialog}
-
         style={{ minWidth: 700 }}
 
-        >        <DialogTitle>Order Detail</DialogTitle>
+        >   
+        
+             <DialogTitle>Order Detail</DialogTitle>
         <DialogContent>
           <DialogContentText
                   style={{ minWidth: 500 }}
@@ -203,7 +178,7 @@ const Orders = () => {
                   Products
                 </Typography>
 
-                {selectedOrderProducts.map((product) => (
+                {orderItems.map((product) => (
                   <Card key={product.id}>
                     <CardActionArea>
                       <CardMedia

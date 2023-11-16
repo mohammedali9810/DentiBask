@@ -7,10 +7,11 @@ import Container from '@mui/material/Container';
 import axiosinstance from '../../../axiosconfig';
 import Typography from '@mui/material/Typography'; 
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {useNavigate} from "react-router-dom";
 
 
-
-const Addcategory = ({ handleClose }) => {
+const Addcategory = () => {
+  const navigate = useNavigate();
   const [category, setCategory] = useState({ name: '', image: '', desc: '', });
   const [categoryerr, setCategoryErr] = useState({ name: '',image:'',desc:'' });
   
@@ -57,7 +58,7 @@ const Addcategory = ({ handleClose }) => {
         withCredentials: true,
       })
       .then(() => {
-        
+        navigate("/dashboard")
       })
       .catch((error) => {
         console.log(error);

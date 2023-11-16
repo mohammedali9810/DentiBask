@@ -22,7 +22,10 @@ export default function Router() {
         <Route path="/Register" element={<Register />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Cart" element={<Cart />} />
-        <Route path="/Products/products/:id" element={<ProductDetails />} />
+        <Route
+          path="/Products/product_detail/:id"
+          element={<ProductDetails />}
+        />
         <Route
           path="/activate/User/activate/:token1/:token2"
           element={<Activate />}

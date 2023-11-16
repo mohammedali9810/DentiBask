@@ -4,30 +4,18 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axiosinstance from '../../../axiosconfig';
 import Typography from '@mui/material/Typography';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const Editcategory = (props) => {
-  const [category, setCategory] = useState({ name: '', image: '', description: '' });
-  const [categoryerr, setCategoryErr] = useState({ name: '' });
-  const defaultTheme = createTheme();
-  const [, setCategories] = useState([]);
+  const [category, setCategory] = useState({ name:'', image:'', desc:'' });
+  const [categoryerr, setCategoryErr] = useState({ name:'', desc:'' });
 
   useEffect(() => {
-    axiosinstance.get('/categories')
-      .then((response) => { setCategories(response.data); })
-      .catch((error) => { console.error(error); });
-
-    if (props.category) {
-      setCategory({
-        name: props.category.name || '',
-        image: props.category.image || '',
-        description: props.category.description || ''
-      });
-    }
-  }, [props.category]);
+    setCategory({ name: props.category.name, image: props.category.image, desc: props.category.desc });
+  }, [props.category.name, props.category.image, props.category.desc]);
+  
 
   const handlechange = (e) => {
     if (e.target.name === 'name') {
@@ -38,25 +26,29 @@ const Editcategory = (props) => {
         setCategoryErr({ ...categoryerr, name: "" });
       }
       setCategory({ ...category, name: e.target.value });
-    } else if (e.target.name === 'description') {
-      setCategory({ ...category, description: e.target.value });
     } else if (e.target.name === 'image') {
       setCategory({ ...category, image: e.target.files[0] });
+    } else if (e.target.name === 'desc') {
+      if(e.target.value.trim() ===''){
+        setCategoryErr({ ...categoryerr, desc: "Descriptin is required" });
+      }
+      else{
+        setCategoryErr({ ...categoryerr, desc: "" });
+      }
+      setCategory({ ...category, desc: e.target.value });
     }
+
   };
-
-  const senddata = (e) => {
+  const senddata = async (e) => {
     e.preventDefault();
-    if (categoryerr.name === "") {
-      const formData = new FormData();
-      formData.append("name", category.name);
-      formData.append("description", category.description);
-      formData.append("image", category.image);
-
+    if (categoryerr.name === "" && categoryerr.desc ==="") {
+      const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
       axiosinstance
-        .post('/editcategory', formData, {
+        .patch(`/Products/update_category/`, {"category_id":props.category.id,...category}, {
           headers: {
             'Content-Type': 'multipart/form-data',
+          'X-CSRFToken': csrfToken.data.csrfToken,
+          'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
           },
           withCredentials: true,
         })
@@ -69,8 +61,8 @@ const Editcategory = (props) => {
     }
   };
 
+
   return (
-    <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="l">
         <Box
           sx={{
@@ -79,61 +71,75 @@ const Editcategory = (props) => {
             alignItems: 'center',
           }}
         >
+
           <Box component="form" noValidate onSubmit={senddata} sx={{ mt: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <img src={category.image} alt="" />
+          <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <img name="image" src={category.image} alt="Category image" 
+            style={{ width: '100%',height:"20rem", objectFit: "contain" }}
+            onChange={handlechange}
+            rows={2} />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   name="name"
                   required
                   fullWidth
-                  id="categoryName"
+                  id="categoryname"
                   label="Category Name"
                   autoFocus
                   value={category.name}
                   onChange={handlechange}
                   error={Boolean(categoryerr.name)}
                 />
-                {categoryerr.name && (
+                 {categoryerr.name && (
                   <Typography variant="caption" color="error">
                     {categoryerr.name}
                   </Typography>
                 )}
               </Grid>
+              <Grid item xs={12} sm={6}>
+            <label style={{height:"100%", width:"100%"}}>
+  <Button
+    style={{height:"100%", width:"100%"}}
+    fullWidth
+    component="span"
+    variant="contained"
+    startIcon={<CloudUploadIcon />}
+  >
+    Upload Image
+  </Button>
+  <input
+    type="file"
+    name="image"
+    onChange={handlechange}
+    accept="image/*"
+    style={{display:"none"}}
+  />
+      </label>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                multiline
-                rows={3}
-                required
-                fullWidth
-                id="description"
-                label="Description"
-                name="description"
-                value={category.description}
-                onChange={handlechange}
-              />
+        
+              <Grid item xs={12}>
+                <TextField
+                 multiline
+                  rows={3}
+                  required
+                  fullWidth
+                  id="desc"
+                  label="Description"
+                  name="desc"
+                  value={category.desc}
+                  onChange={handlechange}
+                />
+                 {categoryerr.desc && (
+                  <Typography variant="caption" color="error">
+                    {categoryerr.desc}
+                  </Typography>
+                )}
+              </Grid>
+             
+
             </Grid>
-            <label className="custom-upload-button">
-              <Button
-                sx={{ mt: 3 }}
-                fullWidth
-                component="span"
-                variant="contained"
-                startIcon={<CloudUploadIcon />}
-              >
-                Upload Image
-              </Button>
-              <input
-                type="file"
-                name="image"
-                onChange={handlechange}
-                accept="image/*"
-                style={{ display: "none" }}
-              />
-            </label>
             <Button
               type="submit"
               fullWidth
@@ -146,7 +152,6 @@ const Editcategory = (props) => {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
   );
 };
 

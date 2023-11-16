@@ -41,7 +41,7 @@ const Productcard = (props) => {
       });
   }
   return (
-  <Card sx={{ maxWidth: 345, opacity:props.product.stock > 0 ? "1": ".6" }} >
+  <Card sx={{ maxWidth: 390, opacity:props.product.stock > 0 ? "1": ".6" }} >
   <CardActionArea onClick={()=>{navigate(`/Products/products/${props.product.id}`)}}>
     <CardMedia
       component="img"
