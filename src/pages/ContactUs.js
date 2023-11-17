@@ -1,145 +1,131 @@
-// import React, { useState } from 'react';
-// import { Typography, TextField, Button, Grid, Paper } from '@mui/material';
-
-// const ContactUs = () => {
-//   const [formData, setFormData] = useState({
-//     name: '',
-//     email: '',
-//     message: '',
-//   });
-
-//   const handleChange = (e) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     try {
-//       // Assuming you have an API endpoint to handle form submissions
-//       const response = await fetch('https://api.example.com/contact', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(formData),
-//       });
-
-//       if (response.ok) {
-//         // Handle successful form submission, e.g., show a success message
-//         console.log('Form submitted successfully');
-//       } else {
-//         // Handle errors, e.g., show an error message
-//         console.error('Form submission failed');
-//       }
-//     } catch (error) {
-//       console.error('Error submitting form', error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <img
-//             src="https://i.pinimg.com/originals/9c/87/99/9c879909741ebaa6b7a614071079e542.jpg"
-//             alt="Logo"
-//             style={{ width: '100px', height: '100px', borderRadius: '50%' }}
-//             />
-//       <h1>Contact Us</h1>
-//       <p>If you have any questions or inquiries, please feel free to contact us. We'd love to hear from you!</p>
-
-//       <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
-//         <form onSubmit={handleSubmit}>
-//           <Grid container spacing={2}>
-//             <Grid item xs={12}>
-//               <TextField
-//                 label="Your Name"
-//                 fullWidth
-//                 variant="outlined"
-//                 name="name"
-//                 value={formData.name}
-//                 onChange={handleChange}
-//                 required
-//               />
-//             </Grid>
-//             <Grid item xs={12}>
-//               <TextField
-//                 label="Your Email"
-//                 fullWidth
-//                 variant="outlined"
-//                 name="email"
-//                 value={formData.email}
-//                 onChange={handleChange}
-//                 type="email"
-//                 required
-//               />
-//             </Grid>
-//             <Grid item xs={12}>
-//               <TextField
-//                 label="Message"
-//                 fullWidth
-//                 multiline
-//                 rows={4}
-//                 variant="outlined"
-//                 name="message"
-//                 value={formData.message}
-//                 onChange={handleChange}
-//                 required
-//               />
-//             </Grid>
-//             <Grid item xs={12}>
-//               <Button type="submit" variant="contained" color="primary">
-//                 Submit
-//               </Button>
-//             </Grid>
-//           </Grid>
-//         </form>
-//       </Paper>
-//     </div>
-//   );
-// };
-
-// export default ContactUs;
-// ContactUs.js
 import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Container, Typography, Grid, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import PhoneIcon from '@material-ui/icons/Phone';
+import EmailIcon from '@material-ui/icons/Email';
+import { Icon } from '@iconify/react';
+
+const useStyles = makeStyles((theme) => ({
+  section: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
+  subheading: {
+    fontWeight: 'bold',
+    marginBottom: theme.spacing(1),
+  },
+  content: {
+    marginBottom: theme.spacing(2),
+  },
+  link: {
+    textDecoration: 'none',
+    color: theme.palette.primary.main,
+    cursor: 'pointer',
+    display: 'flex', // Added to align icon and text horizontally
+    alignItems: 'center', // Center icon vertically with text
+    background: '#f2f2f2', // Background color for the clickable area
+    padding: theme.spacing(1), // Add padding for better readability and touch target
+    borderRadius: theme.shape.borderRadius, // Optional: Add border radius for a rounded look
+    '&:hover': {
+      textDecoration: 'underline',
+      background: '#e0e0e0', // Change background color on hover
+    },
+  },
+  whatsappIcon: {
+    marginRight: theme.spacing(1), // Add space between icon and text
+  },
+  imageContainer: {
+    width: '100%',
+    height: '400px', // Adjust the height as needed
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    marginBottom: theme.spacing(2),
+  },
+   card: {
+    // Add styling for the card
+    border: '1px solid #ddd',
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(2),
+    height: '100%', // Ensure the card takes full height of its container
+  },
+}));
 
 const ContactUs = () => {
+  const classes = useStyles();
+
+  const handleWhatsAppClick = () => {
+    window.location.href = 'https://wa.me/01123456789';
+  };
+
+  const handleEmailClick = () => {
+    window.location.href = 'mailto:info@dentibask.com';
+  };
+
+
   return (
-    <div>
-        <img
-         src="https://i.pinimg.com/originals/9c/87/99/9c879909741ebaa6b7a614071079e542.jpg"
-             alt="Logo"
-            style={{ width: '100px', height: '100px', borderRadius: '50%' }}
-            />
-      <h1>Contact Us</h1>
-      <Card>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
+    <Container className={classes.section}>
+
+      <div
+        className={classes.imageContainer}
+        style={{ backgroundImage: `url('https://img1.wsimg.com/isteam/ip/9538b295-048a-48dc-82c0-fba7e8055cac/shutterstock_1497517754.jpg/:/rs=h:1000,cg:true,m')` }}
+      />
+      <Typography variant="h3" className={classes.heading} gutterBottom>
+        Contact Us
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={12}>
+          <Typography variant="h4" className={classes.subheading} gutterBottom>
+            Welcome to our Contact Us page.
+            If you have any questions or inquiries, please feel free to
+            reach out to us using the following contact details
+          </Typography>
+          <Typography variant="h5" className={classes.subheading} gutterBottom>
             DentiBask Contact Information
           </Typography>
-          <Typography variant="body1">
-            Welcome to our Contact Us page. If you have any questions or inquiries, please feel free to
-            reach out to us using the following contact details:
+          <Typography variant="body1" className={classes.content}>
+            CONTACT US
           </Typography>
-          <Typography variant="body2" color="textSecondary" gutterBottom>
-            <strong>Name:</strong> DentiBask Team
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <Typography
+                variant="body1"
+                className={`${classes.content} ${classes.link}`}
+                onClick={handleWhatsAppClick}
+              >
+                <Icon icon="mdi:whatsapp" className={classes.whatsappIcon} />
+                011213289444 (Click to connect on WhatsApp)
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <Typography
+                variant="body1"
+                className={`${classes.content} ${classes.link}`}
+                onClick={handleEmailClick}
+              >
+                <EmailIcon className={classes.whatsappIcon} />
+                info@dentibask.com (Click to send an email)
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography variant="h5" className={classes.content} style={{ textAlign: 'center' }}>
+            Our customer service team is waiting to assist you.
           </Typography>
-          <Typography variant="body2" color="textSecondary" gutterBottom>
-            <strong>Description:</strong> We are team joined together to faclitate your way ro achieve good products in most fast way
+          <Typography variant="h5" className={classes.content} style={{ textAlign: 'center' }}>
+            Please allow up to 2-Business days response time for us to fully address your inquiries.
           </Typography>
-          <Typography variant="body2" color="textSecondary" gutterBottom>
-            <strong>Mission:</strong> Our mission is to provide quality services and products to our
-            customers.
+          <Typography variant="h5" className={classes.content} style={{ textAlign: 'center' }}>
+            You can also check your order status through our website.
           </Typography>
-          <Typography variant="body2" color="textSecondary" gutterBottom>
-            <strong>Phone Number:</strong> 01123456789
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            <strong>Email:</strong> info@dentibask.com
-          </Typography>
-        </CardContent>
-      </Card>
-    </div>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
