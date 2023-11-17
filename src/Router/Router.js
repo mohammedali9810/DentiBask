@@ -15,7 +15,7 @@ import Activate from "../pages/activate";
 import Footer from "../components/footer/footer";
 import AboutUs from "../pages/AboutUs";
 import ContactUs from "../pages/ContactUs";
-
+import Orderdetails from "../components/dashboard/ordersdashboard/orderdetails";
 export default function Router() {
   return (
     <>
@@ -25,6 +25,7 @@ export default function Router() {
         <Route path="/Register" element={<Register />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Cart" element={<Cart />} />
+        <Route path="/orderdetails/:id" element={<Orderdetails />} />
         <Route
           path="/Products/product_detail/:id"
           element={<ProductDetails />}

@@ -165,7 +165,7 @@ export default function Dashboard() {
         <ListItemIcon>
           <DashboardIcon style={{color:"#0096FF"}}/>
         </ListItemIcon>
-        <ListItemText primary={lang ? " لوحة القياده" : "Dashboard"}  />
+        <ListItemText primary={lang ? " الصفحة الرئيسيه " : "Main Page"}  />
       </ListItemButton>
       <Divider sx={{ my: 1, opacity:"1" }} />
       <ListItemButton
