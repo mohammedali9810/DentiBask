@@ -79,7 +79,7 @@ function Header() {
           {localStorage.getItem("dentibask-access-token") ? (
             <>
               <NavLink
-                style={generateActiveLinkStyles}
+                style={(generateActiveLinkStyles, { textAlign: "center" })}
                 className="nav-link"
                 to="/dashboard"
               >

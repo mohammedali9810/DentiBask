@@ -9,7 +9,6 @@ import { addToCart } from "../../store/slices/cartslice";
 
 export default function ProductCard(props) {
   const { productData } = props;
-
   const dispatch = useDispatch();
 
   return (
@@ -20,6 +19,10 @@ export default function ProductCard(props) {
           borderRadius: "15px",
           padding: "5px",
           height: "62vh",
+          position: "relative",
+          display: "flex",
+          flexDirection: "column", // Set the flex direction to column
+          justifyContent: "space-between", // Align children with space between
         }}
         className="my-product-card mt-3"
       >
@@ -48,7 +51,7 @@ export default function ProductCard(props) {
                 <b style={{ fontSize: "1.1rem" }} className="card-title">
                   {productData.name}{" "}
                 </b>
-              </Link>{" "}
+              </Link>
             </div>
             <b
               style={{ fontSize: "1.4rem" }}
@@ -57,9 +60,7 @@ export default function ProductCard(props) {
               {productData.price} $
             </b>
           </div>
-
           <div className={`card-text text-truncate`}>{productData.desc}</div>
-
           <div className="rating mt-2">
             <Rating rating={4} />
           </div>
@@ -68,11 +69,9 @@ export default function ProductCard(props) {
               width: "90%",
               fontSize: "1rem",
               borderRadius: "30px",
-              backgroundColor: "rgb(0, 183, 255)", // Set the button background color to blue
-              color: "white", // Set the text color to white
+              backgroundColor: "rgb(0, 183, 255)",
+              color: "white",
               marginTop: "10px",
-              position: "absolute",
-              top: "89%",
             }}
             className="btn add-to-cart-button"
             onClick={() =>

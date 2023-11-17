@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import axiosinstance from '../../../axiosconfig';
 import {useNavigate} from "react-router-dom";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-const Settings = () => {
+const Settings = (props) => {
   const navigate = useNavigate();
   const { theme, setTheme } = useContext(Theme);
   const { lang, setLang } = useContext(Lang);
@@ -19,12 +19,7 @@ const Settings = () => {
   const [usererr,setUserErr]= useState({username:'',password:'',phone:'',vertifypassword:""});
 
 useEffect(()=>{
-  axiosinstance.get('/User/userdata/',
-  {headers: {'Content-Type': 'application/json',
-  'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
-}
-  ,withCredentials:true})
-  .then((response)=>{setUser(response.data);}).catch((err)=>{console.log(err)});
+  setUser(props.user);
 },[])
 
 const handlechanges = (e)=>{
@@ -53,7 +48,7 @@ const senddata = async (e)=>{
   else if (usererr.password ==="" && usererr.phone ==="" && usererr.username===""){
     const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
     console.log(csrfToken.data.csrfToken);
-    axiosinstance.put('/User/update_customer/',modifieduser,{
+    axiosinstance.patch('/User/update_customer/',modifieduser,{
       headers: {
         'Content-Type': 'multipart/form-data',
         'X-CSRFToken': csrfToken.data.csrfToken,
@@ -230,50 +225,64 @@ const senddata = async (e)=>{
 
         </Paper>
         <Paper
-          elevation={3}
+        elevation={3}
         style={{
-          marginTop:"1rem",
+          marginTop: '1rem',
           padding: '16px',
           display: 'flex',
           alignItems: 'center',
           backgroundColor: theme ? '#0e0449' : 'white',
           color: theme ? 'white' : 'black',
-          flexDirection:"column", justifyContent:"space-around"
+          flexDirection: 'column',
+          justifyContent: 'space-around',
         }}
       >
         <div className='settings-data'>
-        <div style={{fontWeight:"bold", fontSize:"1.2rem"}}> 
-                 <label style={{textAlign:"left",width:"5rem",marginRight:"5rem",color:"#1976d2"}}>
-                  {lang ? "الصورة الشخصيه":"Image"}</label>
-                  <label ><img src={user.image} alt='user image'/></label>
+          <div style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+            <label style={{ textAlign: 'left', width: '5rem', marginRight: '5rem', color: '#1976d2' }}>
+              {lang ? ' الصورة الشخصية' : 'Image'}
+            </label>
+            <label >
+              <img src={user.image} alt='user image' style={{height:"4rem", objectFit:"contain"}}/>
+            </label>
           </div>
-          {edit.image &&<>
-            <label className="custom-upload-button">
-  <Button
-    fullWidth
-    component="span"
-    variant="contained"
-    startIcon={<CloudUploadIcon />}
-  >
-    Upload Image
-  </Button>
-  <input
-    type="file"
-    name="image"
-    accept="image/*"
-    style={{display:"none"}}
-    onChange={handlechanges}
-  />
-      </label>
-                </>}
-                  {!edit.image && <Button variant="contained" color="warning"
-                   onClick={()=>setEdit({...edit,image:true})}>{lang ? "تغيير":"Change"}</Button>}
-                  {edit.image &&<>
-                  <Button  onClick={()=>{setEdit({...edit,image:false});setModifiedUser({...modifieduser,image:""})}}
-                   variant="contained" color="warning">{lang ? " إلغاء ":"Cancel"}</Button> </>}      
+          {edit.image && (
+            <>
+              <label className='custom-upload-button'>
+                <Button fullWidth component='span' variant='contained' startIcon={<CloudUploadIcon />}>
+                  Upload Image
+                </Button>
+                <input
+                  type='file'
+                  name='image'
+                  accept='image/*'
+                  style={{ display: 'none' }}
+                  onChange={handlechanges}
+                />
+              </label>
+            </>
+          )}
+          {!edit.image && (
+            <Button variant='contained' color='warning' onClick={() => setEdit({ ...edit, image: true })}>
+              {lang ? 'تغيير' : 'Change'}
+            </Button>
+          )}
+          {edit.image && (
+            <>
+              <Button
+                onClick={() => {
+                  setEdit({ ...edit, image: false });
+                  setModifiedUser({ ...modifieduser, image: '' });
+                }}
+                variant='contained'
+                color='warning'
+              >
+                {lang ? ' إلغاء ' : 'Cancel'}
+              </Button>{' '}
+            </>
+          )}
         </div>
-
-        </Paper>
+      </Paper>
 
 {(modifieduser.password !=="" || modifieduser.phone !=="" || modifieduser.username !=="" || modifieduser.image !=="") && <Paper
           elevation={3}

@@ -52,8 +52,11 @@ const Editcategory = (props) => {
           },
           withCredentials: true,
         })
-        .then(() => {
-
+        .then((res) => {
+          console.log(res);
+          if(res.status ===200){
+            props.handleCloseAddCategoryDialog();
+          }
         })
         .catch((error) => {
           console.log(error);

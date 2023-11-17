@@ -34,37 +34,39 @@ function CartItem({ id, image, title, price, quantity = 0, description }) {
         />
       </div>
 
-      <Link
-        style={{ textDecoration: "none" }}
-        to={`/Products/product_detail/${id}/`}
-      >
-        <h3 className="card-title">{title}</h3>
-      </Link>
-      <Card.Text className="mt-2">
-        <b>{price} $</b>
-        <p>{description}</p>
-      </Card.Text>
-      <div className="col-6 col-xs-12  d-flex justify-center-start  align-items-center">
-        <Button
-          variant="danger"
-          onClick={() => dispatch(decrementQuantity(id))}
+      <div className="col-6 col-xs-12  ">
+        <Link
+          style={{ textDecoration: "none" }}
+          to={`/Products/product_detail/${id}/`}
         >
-          -
-        </Button>
-        <span className="mx-2">{quantity}</span>
-        <Button
-          variant="success"
-          onClick={() => dispatch(incrementQuantity(id))}
-        >
-          +
-        </Button>
-        <Button
-          variant="danger"
-          className="del-item"
-          onClick={() => dispatch(removeItem(id))}
-        >
-          <BsFillTrash3Fill />
-        </Button>
+          <h3 className="card-title">{title}</h3>
+        </Link>
+        <Card.Text className="mt-2">
+          <b>{price} $</b>
+          <p>{description}</p>
+        </Card.Text>
+        <div className="mt-5">
+          <Button
+            variant="danger"
+            onClick={() => dispatch(decrementQuantity(id))}
+          >
+            -
+          </Button>
+          <span className="mx-2">{quantity}</span>
+          <Button
+            variant="success"
+            onClick={() => dispatch(incrementQuantity(id))}
+          >
+            +
+          </Button>
+          <Button
+            variant="danger"
+            className="del-item"
+            onClick={() => dispatch(removeItem(id))}
+          >
+            <BsFillTrash3Fill />
+          </Button>
+        </div>
       </div>
     </div>
   );

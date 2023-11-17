@@ -106,7 +106,7 @@ const Categorycard = (props) => {
       <Dialog open={openAddCategoryDialog} onClose={handleCloseAddCategoryDialog} maxWidth="lg">
         <DialogTitle>Edit Category: <u>{props.category.name}</u></DialogTitle>
         <DialogContent>
-          <Editcategory category={props.category} />
+          <Editcategory category={props.category}  handleCloseAddCategoryDialog={handleCloseAddCategoryDialog}/>
         </DialogContent>
       </Dialog>
 

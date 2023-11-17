@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useState,useEffect} from "react";
 import { styled,alpha } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -9,10 +9,8 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -39,7 +37,9 @@ import Settings from "../settings/settings";
 import Orders from "../ordersdashboard/orders";
 import Transactions from "../Transactionsdashboard/transactions";
 import Rents from "../rentsdashboard/rents";
-
+import { useNavigate } from "react-router-dom";
+import axiosinstance from "../../../axiosconfig";
+import Footer from "../../footer/footer";
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -126,8 +126,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-
 export default function UserDashboard() {
+  const navigate = useNavigate();
   const {lang} = useContext(Lang);
   const [ selected , setSelected] = React.useState("Orders");
   const { theme } = useContext(Theme);
@@ -136,21 +136,33 @@ export default function UserDashboard() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const [user,setUser]= useState({});
+  useEffect(()=>{
+    axiosinstance.get('/User/userdata/',
+    {headers: {'Content-Type': 'application/json',
+    'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
+  }
+    ,withCredentials:true})
+    .then((response)=>{setUser(response.data);}).catch((err)=>{console.log(err)});
+  },[])
+
+
   const [view,setView] = React.useState(<Orders/>);
   //////////////////////////////////////////////////////////////////////////////
   const mainListItems = (
     <React.Fragment>
       <ListItemButton
+      onClick={()=>{navigate('/')}}
       sx={{
         opacity: "1",
-        cursor:"default",
-        color:"#0096FF"
+        color:"#0096FF",
+        fontWeight:"bold",
       }}
       >
-        <ListItemIcon>
+        <ListItemIcon >
           <DashboardIcon style={{color:"#0096FF"}}/>
         </ListItemIcon>
-        <ListItemText primary={lang ? " لوحة القياده" : "Dashboard"}  />
+        <ListItemText primary={lang ? " الصفحة الرئيسيه " : "Main Page"}  />
       </ListItemButton>
       <Divider sx={{ my: 1, opacity:"1" }} />
 
@@ -221,7 +233,7 @@ export default function UserDashboard() {
   const secondaryListItems = (
     <React.Fragment>
       <ListItemButton
-       onClick={() => {setView(<Settings/>); return setSelected("Settings");}}
+       onClick={() => {setView(<Settings user={user}/>); return setSelected("Settings");}}
        sx={{
          backgroundColor: selected === "Settings" && "#CDCDCD",
          opacity: selected === "Settings" && "1",
@@ -236,7 +248,11 @@ export default function UserDashboard() {
       <ListItemButton
       className="sidebtn"
       >
-        <ListItemIcon>
+        <ListItemIcon onClick={() => {
+                  localStorage.removeItem("dentibask-access-token");
+                  localStorage.removeItem("dentibask-refresh-token");
+                  navigate("/");
+                }}>
           <img src={logouticon} alt="logouticon"  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary={lang ? "الخروج" : "Logout"} />
@@ -248,7 +264,7 @@ export default function UserDashboard() {
 
 
 return (
-
+<>
   <Box className={mode} sx={{ display: "flex", flexDirection: lang ? "row-reverse" : "row" }}>
     <CssBaseline />
     <AppBar  position="absolute" open={open}
@@ -260,7 +276,7 @@ return (
           pr: "24px",
         }}
       >
-       <div className="dashboardtitle"> {/* Add the class to this div */}
+       <div className="dashboardtitle"> 
 <IconButton
 edge="start"
 color="inherit"
@@ -303,16 +319,8 @@ sx={{
           inputProps={{ 'aria-label': 'search' }}
         />
       </Search>
-
         <IconButton color="inherit">
-          <Badge badgeContent={1} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-          
-          
-        </IconButton>
-        <IconButton color="inherit">
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        <Avatar alt="Remy Sharp" src={user.image} />
         </IconButton>
       </Toolbar>
     </AppBar>
@@ -335,7 +343,7 @@ sx={{
       </Toolbar>
 
       <List style={{height:"100%"}} component="nav" className={theme ? "darkmodesidebar" : "lightsidebar"}>
-
+      <Divider sx={{ my: 1, opacity:"1" }} />
         {mainListItems}
         <Divider sx={{ my: 1, opacity:"1" }} />
         {secondaryListItems}
@@ -364,5 +372,7 @@ color: mode === 'darkmode' ? 'green' : '',
 </Paper>
     </Box>
   </Box>
+  <Footer/>
+  </>
 );
 }
