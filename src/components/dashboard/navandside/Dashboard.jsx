@@ -1,4 +1,4 @@
-import * as React from "react";
+import React,{useState,useEffect} from "react";
 import { styled,alpha } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -37,7 +37,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouseMedicalFlag } from '@fortawesome/free-solid-svg-icons';
-
+import { useNavigate } from "react-router-dom";
+import axiosinstance from "../../../axiosconfig";
 
 import Products from "../productsdashboard/products";
 import Customers from "../customers/customers";
@@ -131,6 +132,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 export default function Dashboard() {
+  const navigate = useNavigate();
   const {lang} = useContext(Lang);
   const [ selected , setSelected] = React.useState("Products");
   const { theme } = useContext(Theme);
@@ -139,15 +141,25 @@ export default function Dashboard() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const [user,setUser]= useState({});
+  useEffect(()=>{
+    axiosinstance.get('/User/userdata/',
+    {headers: {'Content-Type': 'application/json',
+    'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
+  }
+    ,withCredentials:true})
+    .then((response)=>{setUser(response.data);}).catch((err)=>{console.log(err)});
+  },[])
   const [view,setView] = React.useState(<Products/>);
   //////////////////////////////////////////////////////////////////////////////
   const mainListItems = (
     <React.Fragment>
       <ListItemButton
+      onClick={()=>{navigate('/')}}
       sx={{
         opacity: "1",
-        cursor:"default",
-        color:"#0096FF"
+        color:"#0096FF",
+        fontWeight:"bold",
       }}
       >
         <ListItemIcon>
@@ -198,7 +210,7 @@ export default function Dashboard() {
         <ListItemText primary={lang ? "المستخدمين" : "Customers"} />
       </ListItemButton>
       <ListItemButton
-       onClick={() => {setView(<Orders/>) ;return setSelected("Orders")}}
+       onClick={() => {setView(<Orders/>);setSelected("Orders")}}
        sx={{
          backgroundColor: selected === "Orders" && "#CDCDCD",
          opacity: selected === "Orders" && "1",
@@ -208,7 +220,7 @@ export default function Dashboard() {
         <ListItemIcon>
           <BarChartIcon  className={theme && "darkicon"} />
         </ListItemIcon>
-        <ListItemText onClick={()=>{setView(<Orders/>)}} primary={lang ? "الطلبات" : "Orders"} />
+        <ListItemText primary={lang ? "الطلبات" : "Orders"} />
       </ListItemButton>
 
 
@@ -261,7 +273,7 @@ export default function Dashboard() {
   const secondaryListItems = (
     <React.Fragment>
       <ListItemButton
-       onClick={() => {setView(<Settings/>); return setSelected("Settings");}}
+       onClick={() => {setView(<Settings user={user}/>); return setSelected("Settings");}}
        sx={{
          backgroundColor: selected === "Settings" && "#CDCDCD",
          opacity: selected === "Settings" && "1",
@@ -276,7 +288,11 @@ export default function Dashboard() {
       <ListItemButton
       className="sidebtn"
       >
-        <ListItemIcon>
+        <ListItemIcon onClick={() => {
+                  localStorage.removeItem("dentibask-access-token");
+                  localStorage.removeItem("dentibask-refresh-token");
+                  navigate("/");
+                }}>
           <img src={logouticon} alt="logouticon"  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary={lang ? "الخروج" : "Logout"} />
@@ -346,7 +362,7 @@ export default function Dashboard() {
               
             </IconButton>
             <IconButton color="inherit">
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+            <Avatar alt="Remy Sharp" src={user.image} />
             </IconButton>
           </Toolbar>
         </AppBar>

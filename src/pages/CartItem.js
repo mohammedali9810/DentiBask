@@ -34,18 +34,19 @@ function CartItem({ id, image, title, price, quantity = 0, description }) {
         />
       </div>
 
-        
-        <div className="col-6 col-xs-12  ">
-        <Link style={{ textDecoration: 'none' }} to={`/Products/product_detail/${id}/`}>
-                <h3 className="card-title">{title}</h3>
-
+      <div className="col-6 col-xs-12  ">
+        <Link
+          style={{ textDecoration: "none" }}
+          to={`/Products/product_detail/${id}/`}
+        >
+          <h3 className="card-title">{title}</h3>
         </Link>
         <Card.Text className="mt-2">
           <b>{price} $</b>
           <p>{description}</p>
         </Card.Text>
-         <div className="mt-5">
-         <Button
+        <div className="mt-5">
+          <Button
             variant="danger"
             onClick={() => dispatch(decrementQuantity(id))}
           >
@@ -65,10 +66,9 @@ function CartItem({ id, image, title, price, quantity = 0, description }) {
           >
             <BsFillTrash3Fill />
           </Button>
-         </div>
-
         </div>
       </div>
+    </div>
   );
 }
 

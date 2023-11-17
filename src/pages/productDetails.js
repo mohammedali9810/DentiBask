@@ -12,19 +12,20 @@ export default function ProductDetails() {
   const [productDetails, setProductDetails] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
 
-  let  params =  useParams();
+  let params = useParams();
   const dispatch = useDispatch();
   const cartQuantity = useSelector(
     (state) => state.cart[productDetails.id]?.quantity || 0
   );
 
   useEffect(() => {
-    console.log(params)
+    console.log(params);
     if (params.id) {
-      axios.get(`http://127.0.0.1:8000/Products/product_detail/?id=${params.id}`)
+      axios
+        .get(`http://127.0.0.1:8000/Products/product_detail/?id=${params.id}`)
         .then((res) => {
           setProductDetails(res.data);
-          setSelectedImage(res.data.image); 
+          setSelectedImage(res.data.image);
         })
         .catch((err) => console.log(err));
     }
@@ -65,7 +66,7 @@ export default function ProductDetails() {
     <Container className="my-margin-top my-border p-3">
       <div className="row">
         <div className="col-lg-6">
-          <img 
+          <img
             style={{
               width: "100%",
               maxHeight: "45vh",
@@ -84,12 +85,12 @@ export default function ProductDetails() {
                 style={{
                   width: "5vw",
                   margin: "5px",
-                  boxShadow:"",
+                  boxShadow: "",
                   borderRadius: "5px",
-                  border:'1px solid black',
+                  border: "1px solid black",
                   cursor: "pointer",
                 }}
-                onClick={() => handleThumbnailClick(image)} 
+                onClick={() => handleThumbnailClick(image)}
               />
             ))}
           </div>
@@ -107,9 +108,9 @@ export default function ProductDetails() {
           <hr></hr>
 
           <div className="row m-3 mt-5">
-            <div  className="">
-            <b>{productDetails.price} $</b>
-            
+            <div className="">
+              <b>{productDetails.price} $</b>
+
               <span className="ms-5">
                 {productDetails.stock !== 0 ? (
                   <span className="badge text-bg-success">On stock</span>
@@ -129,25 +130,34 @@ export default function ProductDetails() {
               </Button>
             </div>
           </div>
-          
 
-        <div className="d-flex justify-content-center pt-5">
-        <Button 
-         style={{width:'50%',fontSize:'0.9rem' , borderRadius:'30px', backgroundColor:'#3384b3'} } className="btn  text-center  my-2 " onClick={() => 
-                  dispatch(addToCart({
-                  id: productDetails.id,
-                  title: productDetails.name,
-                  image: productDetails.image,
-                  price: productDetails.price,
-                  stock: productDetails.stock,
-                  description: productDetails.desc,
-                  quantity: productDetails.unit
-                    
-                  }))}>
-                    Add To Cart
-        </Button>   
+          <div className="d-flex justify-content-center pt-5">
+            <Button
+              style={{
+                width: "50%",
+                fontSize: "0.9rem",
+                borderRadius: "30px",
+                backgroundColor: "#3384b3",
+              }}
+              className="btn  text-center  my-2 "
+              onClick={() =>
+                dispatch(
+                  addToCart({
+                    id: productDetails.id,
+                    title: productDetails.name,
+                    image: productDetails.image,
+                    price: productDetails.price,
+                    stock: productDetails.stock,
+                    description: productDetails.desc,
+                    quantity: productDetails.unit,
+                  })
+                )
+              }
+            >
+              Add To Cart
+            </Button>
+          </div>
         </div>
-      </div>
       </div>
     </Container>
   );

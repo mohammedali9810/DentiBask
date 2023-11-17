@@ -4,76 +4,59 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axiosinstance from '../../../axiosconfig';
 import Typography from '@mui/material/Typography';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const Editcategory = (props) => {
-  const [category, setCategory] = useState({ title: '', image: '', description: '' });
-  const [categoryerr, setCategoryErr] = useState({ title: '' });
-  const defaultTheme = createTheme();
-  const [, setCategories] = useState([]);
+  const [category, setCategory] = useState({ name:'', image:'', desc:'' });
+  const [categoryerr, setCategoryErr] = useState({ name:'', desc:'' });
 
   useEffect(() => {
-    axiosinstance.get('/categories')
-      .then((response) => { setCategories(response.data); })
-      .catch((error) => { console.error(error); });
-  
-    setCategory({ title: props.category.title, image: props.category.image, description: props.category.description });
-  }, [props.category.title, props.category.image, props.category.description]);
+    setCategory({ name: props.category.name, image: props.category.image, desc: props.category.desc });
+  }, [props.category.name, props.category.image, props.category.desc]);
   
 
   const handlechange = (e) => {
-    if (e.target.name === 'title') {
-      const titleValue = e.target.value.trim();
-      if (titleValue.length < 4) {
-        setCategoryErr({ ...categoryerr, title: "Must be at least 4 characters" });
+    if (e.target.name === 'name') {
+      const nameValue = e.target.value.trim();
+      if (nameValue.length < 4) {
+        setCategoryErr({ ...categoryerr, name: "Must be at least 4 characters" });
       } else {
-        setCategoryErr({ ...categoryerr, title: "" });
+        setCategoryErr({ ...categoryerr, name: "" });
       }
-      setCategory({ ...category, title: e.target.value });
-    } else if (e.target.name === 'price') {
-      const input = e.target.value.trim();
-      if (input === '') {
-        setCategoryErr({ ...categoryerr, price: "Required" });
-      } else {
-        const numericValue = parseFloat(input);
-
-        if (isNaN(numericValue) || numericValue <= 0) {
-          setCategoryErr({ ...categoryerr, price: "Must be a positive number" });
-        } else if (numericValue < category.collected) {
-          setCategoryErr({ ...categoryerr, price: "Can't be less than the collected price" });
-        } else {
-          setCategoryErr({ ...categoryerr, price: "" });
-          setCategory({ ...category, price: numericValue });
-        }
-      }
-      setCategory({ ...category, price: e.target.value });
+      setCategory({ ...category, name: e.target.value });
     } else if (e.target.name === 'image') {
       setCategory({ ...category, image: e.target.files[0] });
-    } else if (e.target.name === 'description') {
-      setCategory({ ...category, description: e.target.value });
+    } else if (e.target.name === 'desc') {
+      if(e.target.value.trim() ===''){
+        setCategoryErr({ ...categoryerr, desc: "Descriptin is required" });
+      }
+      else{
+        setCategoryErr({ ...categoryerr, desc: "" });
+      }
+      setCategory({ ...category, desc: e.target.value });
     }
 
   };
-  const senddata = (e) => {
+  const senddata = async (e) => {
     e.preventDefault();
-    if (categoryerr.title === "") {
-      const formData = new FormData();
-      formData.append("title", category.title);
-      formData.append("description", category.description);
-      formData.append("image", category.image);
-
+    if (categoryerr.name === "" && categoryerr.desc ==="") {
+      const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
       axiosinstance
-        .post('/editcategory', formData, {
+        .patch(`/Products/update_category/`, {"category_id":props.category.id,...category}, {
           headers: {
             'Content-Type': 'multipart/form-data',
+          'X-CSRFToken': csrfToken.data.csrfToken,
+          'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
           },
           withCredentials: true,
         })
-        .then(() => {
-
+        .then((res) => {
+          console.log(res);
+          if(res.status ===200){
+            props.handleCloseAddCategoryDialog();
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -83,7 +66,6 @@ const Editcategory = (props) => {
 
 
   return (
-    <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="l">
         <Box
           sx={{
@@ -94,60 +76,73 @@ const Editcategory = (props) => {
         >
 
           <Box component="form" noValidate onSubmit={senddata} sx={{ mt: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <img src={category.image} alt="" />
+          <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <img name="image" src={category.image} alt="Category image" 
+            style={{ width: '100%',height:"20rem", objectFit: "contain" }}
+            onChange={handlechange}
+            rows={2} />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  name="title"
+                  name="name"
                   required
                   fullWidth
-                  id="categoryTitle"
-                  label="Category Title"
+                  id="categoryname"
+                  label="Category Name"
                   autoFocus
-                  value={category.title}
+                  value={category.name}
                   onChange={handlechange}
-                  error={Boolean(categoryerr.title)}
+                  error={Boolean(categoryerr.name)}
                 />
-                {categoryerr.title && (
+                 {categoryerr.name && (
                   <Typography variant="caption" color="error">
-                    {categoryerr.title}
+                    {categoryerr.name}
                   </Typography>
                 )}
               </Grid>
+              <Grid item xs={12} sm={6}>
+            <label style={{height:"100%", width:"100%"}}>
+  <Button
+    style={{height:"100%", width:"100%"}}
+    fullWidth
+    component="span"
+    variant="contained"
+    startIcon={<CloudUploadIcon />}
+  >
+    Upload Image
+  </Button>
+  <input
+    type="file"
+    name="image"
+    onChange={handlechange}
+    accept="image/*"
+    style={{display:"none"}}
+  />
+      </label>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                multiline
-                rows={3}
-                required
-                fullWidth
-                id="description"
-                label="Description"
-                name="description"
-                value={category.description}
-                onChange={handlechange}
-              />
+        
+              <Grid item xs={12}>
+                <TextField
+                 multiline
+                  rows={3}
+                  required
+                  fullWidth
+                  id="desc"
+                  label="Description"
+                  name="desc"
+                  value={category.desc}
+                  onChange={handlechange}
+                />
+                 {categoryerr.desc && (
+                  <Typography variant="caption" color="error">
+                    {categoryerr.desc}
+                  </Typography>
+                )}
+              </Grid>
+             
+
             </Grid>
-            <label className="custom-upload-button">
-              <Button
-                sx={{ mt: 3 }}
-                fullWidth
-                component="span"
-                variant="contained"
-                startIcon={<CloudUploadIcon />}
-              >
-                Upload Image
-              </Button>
-              <input
-                type="file"
-                name="image"
-                onChange={handlechange}
-                accept="image/*"
-                style={{ display: "none" }}
-              />
-            </label>
             <Button
               type="submit"
               fullWidth
@@ -160,7 +155,6 @@ const Editcategory = (props) => {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
   );
 };
 

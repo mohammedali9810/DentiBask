@@ -27,24 +27,59 @@ const Categorycard = (props) => {
   const handleCloseShowProductsDialog = () => {
     setShowProducts(false);
   };
+  const deleteCategory = async () => {
+    const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
+    
+    axiosinstance
+      .delete(`/Products/delete_category/?category_id=${props.category.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken.data.csrfToken,
+          'authorization': 'Bearer ' + localStorage.getItem('dentibask-access-token'),
+        },
+        withCredentials: true,
+      })
+      .then(() => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
 
   const showproducts =()=>{
-    axiosinstance.get(`get_category_products/?category_id=${props.category.id}`)
+    axiosinstance.get(`Products/get_category_products/?category_id=${props.category.id}`)
     .then((res)=>{setCategoryProducts(res.data);})
     .catch((err)=>{console.log(err);});
     setShowProducts(!showProducts);
   }
 
+  const deleteproduct = (id) =>{
+    axiosinstance
+      .delete(`/Products/products/${id}/`, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+      })
+      .then(() => {
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 390 }}>
       <CardActionArea>
-        <CardMedia
-          component="img"
-          height="200"
-          image={props.category.image}
-          alt="Category Thumbnail"
-        />
+      <CardMedia
+  component="img"
+  height="400"
+  style={{ width: '100%', objectFit: 'contain' }}
+  image={props.category.image}
+  alt="Category Thumbnail"
+/>
+
         <CardContent className={theme && "darkcard"}>
           <Typography gutterBottom variant="h5" component="div">
             {props.category.name}
@@ -63,43 +98,61 @@ const Categorycard = (props) => {
         <Button size="large" color="primary" onClick={() => {showproducts();}}>
           See Products
         </Button>
-        <Button size="large" color="error" >
+        <Button size="large" color="error" onClick={()=>{deleteCategory();
+        }} >
           Delete
         </Button>
       </CardActions>
-      <Dialog open={openAddCategoryDialog} onClose={handleCloseAddCategoryDialog}>
-        <DialogTitle>Edit Category</DialogTitle>
+      <Dialog open={openAddCategoryDialog} onClose={handleCloseAddCategoryDialog} maxWidth="lg">
+        <DialogTitle>Edit Category: <u>{props.category.name}</u></DialogTitle>
         <DialogContent>
-          <Editcategory category={props.category} />
+          <Editcategory category={props.category}  handleCloseAddCategoryDialog={handleCloseAddCategoryDialog}/>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={showProducts} onClose={handleCloseShowProductsDialog} style={{ minWidth: 700 }}>
-        {props.category.numberOfProduct > 0 && (
-          <div>
-            {categoryproducts.map((product, index) => (
-              <Card key={index} sx={{ minWidth: 600 }}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="700"
-                    image={product.image}
-                    alt={product.name}
-                  />
-                  <CardContent className={theme && "darkcard"}>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {product.price}
-                    </Typography>
-                    <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
-                      {product.desc}
-                    </span>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            ))}
-          </div>
-        )}
-      </Dialog>
+      <Dialog open={showProducts} onClose={handleCloseShowProductsDialog} fullWidth
+  maxWidth="lg">
+    <DialogTitle>Products of {props.category.name}</DialogTitle>
+    <DialogContent>
+  {categoryproducts.length > 0 && (
+    <div className='productsgrid' style={{padding:"20px"}}>
+      {categoryproducts.map((product, index) => (
+        <Card key={index} >
+          <CardActionArea>
+            <CardMedia
+              component="img"
+              height="400"
+              style={{ width: '100%', objectFit: 'contain' }}
+              image={product.image}
+              alt={product.name}
+            />
+            <CardContent className={theme && "darkcard"}>
+              <p style={{ fontSize: "1rem", fontWeight: "bold" }}>
+                {product.desc}
+              </p>
+              <p style={{ fontSize: "1rem", fontWeight: "bold" }}>
+                {product.stock}
+              </p>
+              <Typography gutterBottom variant="h5" component="div">
+                {product.price} $
+              </Typography>
+              <p style={{ fontSize: "1rem", fontWeight: "bold" }}>
+                per {product.unit}
+              </p>
+            </CardContent>
+            <CardActions  className={theme && "darkcard"}>
+      <Button size="large" color="error" onClick={()=>{deleteproduct(product.id)}}>
+        Delete
+      </Button>
+    </CardActions>
+          </CardActionArea>
+        </Card>
+      ))}
+    </div>
+  )}
+  </DialogContent>
+</Dialog>
+
     </Card>
   );
 };

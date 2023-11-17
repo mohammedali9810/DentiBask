@@ -18,7 +18,7 @@ const Categories = () => {
     .then((res)=>{setCategories(res.data);
     })
     .catch((err) => {console.log(err);});
-  }, []);
+  }, [categories]);
 
   const handleOpenAddCategoryDialog = () => {
     setOpenAddCategoryDialog(true);
@@ -38,8 +38,8 @@ const Categories = () => {
       >
         Add Category
       </Button>
-      <div className='categoriesgrid'>
-        {Array.isArray(categories) &&
+      <div className='productsgrid'>
+        {categories &&
           categories.map((category, index) => <Categorycard key={index} category={category} />)}
       </div>
       <Dialog open={openAddCategoryDialog} onClose={handleCloseAddCategoryDialog}>

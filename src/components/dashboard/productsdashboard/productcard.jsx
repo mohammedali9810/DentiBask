@@ -29,18 +29,19 @@ const Productcard = (props) => {
       .delete(`/Products/products/${props.product.id}/`, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': 'Bearer ' + localStorage.getItem('dentibask-access-token'),
         },
         withCredentials: true,
       })
       .then(() => {
-        
+        navigate("/dashboard")
       })
       .catch((error) => {
         console.log(error);
       });
   }
   return (
-  <Card sx={{ maxWidth: 345, opacity:props.product.stock > 0 ? "1": ".6" }} >
+  <Card sx={{ maxWidth: 390, opacity:props.product.stock > 0 ? "1": ".6" }} >
   <CardActionArea onClick={()=>{navigate(`/Products/products/${props.product.id}`)}}>
     <CardMedia
       component="img"
@@ -74,7 +75,7 @@ const Productcard = (props) => {
         Delete
       </Button>
     </CardActions>
-    <Dialog open={openAddProductDialog} onClose={handleCloseAddProductDialog}>
+    <Dialog open={openAddProductDialog} onClose={handleCloseAddProductDialog} maxWidth="lg">
         <DialogTitle>Edit Product</DialogTitle>
         <DialogContent>
         <Editproduct handleClose={setOpenAddProductDialog} product={props.product} categories={props.categories} />
