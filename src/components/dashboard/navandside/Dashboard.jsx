@@ -198,7 +198,7 @@ export default function Dashboard() {
         <ListItemText primary={lang ? "المستخدمين" : "Customers"} />
       </ListItemButton>
       <ListItemButton
-       onClick={() => setSelected("Orders")}
+       onClick={() => {setView(<Orders/>) ;return setSelected("Orders")}}
        sx={{
          backgroundColor: selected === "Orders" && "#CDCDCD",
          opacity: selected === "Orders" && "1",
