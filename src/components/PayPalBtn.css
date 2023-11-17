@@ -1,0 +1,12 @@
+/* CustomPayPalButton.css */
+
+.custom-paypal-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .custom-paypal-button .paypal-button-container {
+    width: 400px; /* Adjust the width as needed */
+  }
+  

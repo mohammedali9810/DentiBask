@@ -7,17 +7,22 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import "./style.css";
 import { CLIENT_ID } from "../Config/Config";
-// import { PayPalButton } from 'react-paypal-button-v2';
-import CustomPayPalButton from "../components/PaypalBtn";
+import Paypal from "../components/PaypalBtn";
+import { toast } from "react-toastify";
 
 function Cart() {
   const cart = useSelector((state) => state.cart);
   const [cartReloadKey, setCartReloadKey] = useState(0);
-  const handlePaymentSuccess = (details, data) => {
-    console.log("Payment successful:", details);
-    // Handle success message here, e.g., show a success notification
-    alert("Payment successful! Thank you for your purchase.");
+
+  const handlePaymentSuccess = (order) => {
+    console.log("Payment successful:", order);
+    toast.success("Payment successful! Thank you for your purchase.");
     setCartReloadKey((prevKey) => prevKey + 1);
+  };
+
+  const handlePaymentError = (error) => {
+    console.error("Error processing payment:", error);
+    toast.error("An error occurred while processing the payment.");
   };
 
   const getTotal = () => {
@@ -31,12 +36,7 @@ function Cart() {
   };
 
   return (
-    <PayPalScriptProvider
-      options={{
-        "client-id": CLIENT_ID, // Replace with your actual PayPal client ID
-        currency: "USD",
-      }}
-    >
+    <div>
       <div className="row">
         <div>
           <h3 className="text-center cart-title">
@@ -61,22 +61,18 @@ function Cart() {
       </div>
 
       {cart.length > 0 ? (
-        (console.log("Total Price:", getTotal().totalPrice),
-        (
-          <div className="row text-center m-5 border border-3">
-            <h2>Order Summary</h2>
-            <h5>
-              The price for all {getTotal().totalQuantity} items is{" "}
-              {getTotal().totalPrice} $
-            </h5>
-
-            <CustomPayPalButton
-              amount={getTotal().totalPrice}
-              style={{ shape: "pill", layout: "vertical" }}
-              onSuccess={(data, actions) => handlePaymentSuccess(data, actions)}
-            />
-          </div>
-        ))
+        <div className="row text-center m-5 border border-3">
+          <h2>Order Summary</h2>
+          <h5>
+            The price for all {getTotal().totalQuantity} items is{" "}
+            {getTotal().totalPrice} $
+          </h5>
+          <Paypal
+            cart={cart}
+            onSuccess={handlePaymentSuccess}
+            onError={handlePaymentError}
+          />
+        </div>
       ) : (
         <div className="text-center mt-5">
           <img
@@ -96,7 +92,7 @@ function Cart() {
           </NavLink>
         </div>
       )}
-    </PayPalScriptProvider>
+    </div>
   );
 }
 

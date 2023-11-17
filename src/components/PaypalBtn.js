@@ -1,52 +1,71 @@
-// PayPalButton.js
+import React, { useRef, useEffect } from "react";
 
-import React from 'react';
-import { PayPalButton } from 'react-paypal-button-v2';
+export default function Paypal({ onSuccess, onError, onCancel, cart }) {
+  const paypal = useRef();
 
+  useEffect(() => {
+    if (!window.paypal || !cart) {
+      console.error("PayPal script not loaded or cart is undefined.");
+      return;
+    }
 
+    const actions = window.paypal.Buttons({
+      style: {
+        layout: "vertical",
+        color: "blue",
+        shape: "pill",
+        label: "checkout",
+        height: 40,
+      },
+      createOrder: (data, actions, err) => {
+        // Dynamically set up the order creation on button click
+        const orderData = {
+          intent: "CAPTURE",
+          purchase_units: [
+            {
+              description: cart.map((item) => item.title).join(", "), // Use cart items names as description
+              amount: {
+                currency_code: "USD",
+                value: cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2),
+              },
+            },
+          ],
+        };
+      
+        console.log("Order data:", orderData); // Add this line for debugging
+      
+        return actions.order.create(orderData);
+      },
+      
+      onApprove: async (data, actions) => {
+        // Capture the order when approved
+        const order = await actions.order.capture();
+        console.log(order);
+        onSuccess(order);
+      },
+      onError: (err) => {
+        console.log(err);
+        onError(err);
+      },
+      onCancel: () => {
+        // Handle cancel event
+        console.log("Payment canceled by user");
+        if (onCancel) {
+          onCancel();
+        }
+      },
+    });
 
-function CustomPayPalButton({ amount, onSuccess, cartReloadKey, onClick, style }) {
+    // Render the buttons
+    actions.render(paypal.current);
+
+    // Clean up the PayPal buttons on component unmount
+    return () => actions.close();
+  }, [onSuccess, onError, onCancel, cart]);
+
   return (
-    <PayPalButton
-      amount={amount}
-      onSuccess={(data, actions) => {
-        if (onSuccess) onSuccess(data, actions);
-        if (cartReloadKey) onClick(); // Trigger re-render by calling the onClick function
-      }}
-      style={style}
-    />
+    <div>
+      <div ref={paypal}></div>
+    </div>
   );
 }
-
-export default CustomPayPalButton;
-
-
-// const CustomPayPalButton = ({ amount, onSuccess }) => {
-//   return (
-//     <PayPalButton
-//       amount={amount}
-//       onSuccess={(details, data) => onSuccess(details, data)}
-//     />
-    
-//   );
-// };
-
-// export default CustomPayPalButton;
-
-
-
-// import React from 'react';
-// import { PayPalButtons } from '@paypal/react-paypal-js';
-
-
-// onError={(error) => {
-//     console.error('PayPal Error:', error);
-
-//     // Log the entire error object
-//     console.log('Full Error Object:', error);
-
-//     // Optionally, log more specific details if available
-//     console.log('Error details:', error.details);
-//     console.log('Error response:', error.response);
-// }}
-// onClick={() => setCartReloadKey((prevKey) => prevKey + 1)}
