@@ -7,7 +7,8 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import './style.css';
 import { CLIENT_ID } from '../Config/Config';
-import { PayPalButton } from 'react-paypal-button-v2';
+// import { PayPalButton } from 'react-paypal-button-v2';
+import CustomPayPalButton from '../components/PaypalBtn';
 
 function Cart() {
   const cart = useSelector((state) => state.cart);
@@ -65,11 +66,11 @@ function Cart() {
             The price for all {getTotal().totalQuantity} items is {getTotal().totalPrice} $
           </h5>
           
-          <PayPalButton
+          <CustomPayPalButton
             amount={getTotal().totalPrice}
             style={{  shape: "pill", layout: 'vertical' }}
             onSuccess={(data, actions) => handlePaymentSuccess(data, actions)}
-            onClick={() => setCartReloadKey((prevKey) => prevKey + 1)}
+            
           />
         </div>
       ) : (

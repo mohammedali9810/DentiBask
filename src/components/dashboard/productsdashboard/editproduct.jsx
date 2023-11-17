@@ -11,6 +11,7 @@ import axiosinstance from '../../../axiosconfig';
 import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography'; 
 
+
 const Editproduct = (props) => {
   const [product, setProduct] = useState({ id:"",title: '', price: 0, image:'',
   description: '',categorry_id:'',stock:0,unit:'' });
