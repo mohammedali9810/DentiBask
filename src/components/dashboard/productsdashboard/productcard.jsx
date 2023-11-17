@@ -75,7 +75,7 @@ const Productcard = (props) => {
         Delete
       </Button>
     </CardActions>
-    <Dialog open={openAddProductDialog} onClose={handleCloseAddProductDialog}>
+    <Dialog open={openAddProductDialog} onClose={handleCloseAddProductDialog} maxWidth="lg">
         <DialogTitle>Edit Product</DialogTitle>
         <DialogContent>
         <Editproduct handleClose={setOpenAddProductDialog} product={props.product} categories={props.categories} />

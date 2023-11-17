@@ -66,6 +66,12 @@ const Editproduct = (props) => {
       setProduct({ ...product, stock: e.target.value });
   }
   else if(e.target.name === 'unit') {
+    if(e.target.value.trim() ===""){
+      setProductErr({ ...producterr, unit: "Unit is required" });
+    }
+    else{
+      setProductErr({ ...producterr, unit: "" });
+    }
     setProduct({ ...product, unit: e.target.value });
 }
   };
@@ -74,7 +80,7 @@ const Editproduct = (props) => {
     if (producterr.category === "" && producterr.price === "" && producterr.title === "") {
       const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
       axiosinstance
-        .put(`/Products/update_product/`, product, {
+        .patch(`/Products/update_product/`, product, {
           headers: {
             'Content-Type': 'multipart/form-data',
             'X-CSRFToken': csrfToken,
@@ -107,10 +113,10 @@ const Editproduct = (props) => {
           }}
         >
 
-          <Box  sx={{ mt: 2 }}>
+          <Box  sx={{ }}>
             <Grid container spacing={2}>
             <Grid item xs={12}>
-              <img src={product.image} alt="" style={{objectFit:"contain"}} />
+              <img src={product.image} alt="" style={{ width: '100%',height:"20rem", objectFit: "contain" }} />
             </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -147,47 +153,6 @@ const Editproduct = (props) => {
                   </Typography>
                 )}
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                 multiline
-                  rows={3}
-                  required
-                  fullWidth
-                  id="description"
-                  label="Description"
-                  name="description"
-                  value={product.description}
-                  onChange={handlechange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-              <InputLabel id="demo-simple-select-label">Category</InputLabel>
-            <Select
-  required
-  fullWidth
-  labelId="demo-simple-select-label"
-  id="demo-simple-select"
-  value={product.categorry_id}
-  label="Category"
-  name='category'
-  onChange={handlechange}
->
-  {props.categories &&
-    props.categories.map((category, index) =>
-      category.id === props.product.Categ_id ? (
-        <MenuItem selected key={index} value={category.id}>
-          {category.name}
-        </MenuItem>
-      ) : (
-        <MenuItem key={index} value={category.id}>
-          {category.name}
-        </MenuItem>
-      )
-    )
-  }
-</Select>
-
-        </Grid>
         <Grid item xs={12} sm={6}>
                 <TextField
                   name="stock"
@@ -223,11 +188,50 @@ const Editproduct = (props) => {
                   </Typography>
                 )}
               </Grid>
-            </Grid>
-            <label className="custom-upload-button">
+              <Grid item xs={12}>
+                <TextField
+                 multiline
+                  rows={3}
+                  required
+                  fullWidth
+                  id="description"
+                  label="Description"
+                  name="description"
+                  value={product.description}
+                  onChange={handlechange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+              <InputLabel id="demo-simple-select-label">Category</InputLabel>
+            <Select
+  required
+  fullWidth
+  labelId="demo-simple-select-label"
+  id="demo-simple-select"
+  value={product.categorry_id}
+  label="Category"
+  name='category'
+  onChange={handlechange}
+>
+  {props.categories &&
+    props.categories.map((category, index) =>
+      category.id === props.product.Categ_id ? (
+        <MenuItem selected key={index} value={category.id}>
+          {category.name}
+        </MenuItem>
+      ) : (
+        <MenuItem key={index} value={category.id}>
+          {category.name}
+        </MenuItem>
+      )
+    )
+  }
+</Select>
+        </Grid>
+        <Grid xs={12} sm={6}>
+            <label  style={{height:"100%", width:"100%"}}>
   <Button
-    sx={{ mt: 3 }}
-    fullWidth
+    style={{height:"60%", width:"97%",marginTop:"2.3rem", marginLeft:"1rem"}}
     component="span"
     variant="contained"
     startIcon={<CloudUploadIcon />}
@@ -242,7 +246,8 @@ const Editproduct = (props) => {
     style={{display:"none"}}
   />
       </label>
-
+      </Grid>
+            </Grid>
             <Button
               type="submit"
               fullWidth
