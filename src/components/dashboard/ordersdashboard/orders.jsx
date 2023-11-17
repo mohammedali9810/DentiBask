@@ -6,6 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CardActionArea from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import { Select, MenuItem } from '@mui/material';
 
 
 import {
@@ -74,7 +75,18 @@ const Orders = () => {
   const handleCloseSeeOrderDialog = () => {
     setOpenSeeOrderDialog(false);
   };
-
+  const handleStatusChange = (event, orderId) => {
+    const newStatus = event.target.value;
+  
+    // Update the order status in the state or make an API call to update it on the server
+    // For example, you can update the state like this:
+    setOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        order.id === orderId ? { ...order, status: newStatus } : order
+      )
+    );
+  };
+  
 
   return (
     <div>
@@ -98,24 +110,28 @@ const Orders = () => {
                 <TableCell>{order.created_at}</TableCell>
                 <TableCell>${order.totalPrice}</TableCell>
                 <TableCell>
-                  <span
-                    style={{
-                      color:
-                        order.status === 'Canceled'
-                          ? 'red'
-                          : order.status === 'Processing'
-                            ? 'blue'
-                            : order.status === 'Shipped'
-                              ? 'gray'
-                              : order.status === 'Delivered'
-                                ? 'green'
-                                : 'black', // Default color
-                    }}
-                  >
-                    {order.status}
+  <Select
+    value={order.status}
+    onChange={(e) => handleStatusChange(e, order.id)}
+  >
+    <MenuItem value="Canceled" style={{ color: 'red' }}>
+      Canceled
+    </MenuItem>
+    <MenuItem value="Processing" style={{ color: 'blue' }}>
+      Processing
+    </MenuItem>
+    <MenuItem value="Shipped" style={{ color: 'gray' }}>
+      Shipped
+    </MenuItem>
+    <MenuItem value="Delivered" style={{ color: 'green' }}>
+      Delivered
+    </MenuItem>
+    <MenuItem value="Other" style={{ color: 'black' }}>
+      Other
+    </MenuItem>
+  </Select>
+</TableCell>
 
-                  </span>
-                </TableCell>
                 <TableCell>
                   <Button
                     onClick={() => handleSeeOrder(order)}
