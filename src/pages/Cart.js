@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import CartItem from './CartItem';
 import { BsFillCartPlusFill } from 'react-icons/bs';
 import previewImage from './preview.png';
@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import './style.css';
 import { CLIENT_ID } from '../Config/Config';
-import CustomPayPalButton from '../components/PaypalBtn';
+import { PayPalButton } from 'react-paypal-button-v2';
 
 function Cart() {
   const cart = useSelector((state) => state.cart);
@@ -33,7 +33,7 @@ function Cart() {
   return (
     <PayPalScriptProvider
       options={{
-        'client-id': 'CLIENT_ID', // Replace with your actual PayPal client ID
+        'client-id': CLIENT_ID, // Replace with your actual PayPal client ID
         currency: 'USD',
       }}
     >
@@ -58,15 +58,18 @@ function Cart() {
       </div>
 
       {cart.length > 0 ? (
+        console.log('Total Price:', getTotal().totalPrice),
         <div className="row text-center m-5 border border-3">
           <h2>Order Summary</h2>
           <h5>
             The price for all {getTotal().totalQuantity} items is {getTotal().totalPrice} $
           </h5>
-          <CustomPayPalButton onClick={() => console.log('Total Price:', getTotal().totalPrice)}
+          
+          <PayPalButton
             amount={getTotal().totalPrice}
-            style={{ layout: 'horizontal' }}
+            style={{  shape: "pill", layout: 'vertical' }}
             onSuccess={(data, actions) => handlePaymentSuccess(data, actions)}
+            onClick={() => setCartReloadKey((prevKey) => prevKey + 1)}
           />
         </div>
       ) : (
