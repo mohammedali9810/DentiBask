@@ -7,7 +7,7 @@ const Customers = () => {
     const [pages, setPages] = useState(1);
     const [maxpages, setMaxPages] = useState(1);
     useEffect(()=>{
-        axiosinstance.get(`/User/customer/?page=${pages}`,{
+        axiosinstance.get(`/User/get_all_customers/?page=${pages}`,{
           headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
@@ -20,7 +20,7 @@ const Customers = () => {
         })
         .catch(err=>{console.error(err)});
     }
-    ,[pages,customers])
+    ,[pages])
   return (
     <div style={{display:"flex", alignItems:"center", flexDirection:"column" }}>
         <div className='productsgrid'>

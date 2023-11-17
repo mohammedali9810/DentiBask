@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { PayPalScriptProvider } from '@paypal/react-paypal-js';
-import CartItem from './CartItem';
-import { BsFillCartPlusFill } from 'react-icons/bs';
-import previewImage from './preview.png';
-import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux/es/hooks/useSelector';
-import './style.css';
-import { CLIENT_ID } from '../Config/Config';
+import React, { useState } from "react";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import CartItem from "./CartItem";
+import { BsFillCartPlusFill } from "react-icons/bs";
+import previewImage from "./preview.png";
+import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import "./style.css";
+import { CLIENT_ID } from "../Config/Config";
 import Paypal from "../components/PaypalBtn";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 function Cart() {
   const cart = useSelector((state) => state.cart);
@@ -43,7 +43,10 @@ function Cart() {
             Shopping Cart <BsFillCartPlusFill />
           </h3>
           {cart?.map((item, index) => (
-            <div key={item.id} className={index === cart.length - 1 ? 'last-child' : ''}>
+            <div
+              key={item.id}
+              className={index === cart.length - 1 ? "last-child" : ""}
+            >
               <CartItem
                 id={item.id}
                 image={item.image}
@@ -61,16 +64,30 @@ function Cart() {
         <div className="row text-center m-5 border border-3">
           <h2>Order Summary</h2>
           <h5>
-            The price for all {getTotal().totalQuantity} items is {getTotal().totalPrice} $
+            The price for all {getTotal().totalQuantity} items is{" "}
+            {getTotal().totalPrice} $
           </h5>
-          <Paypal cart={cart} onSuccess={handlePaymentSuccess} onError={handlePaymentError}  />
+          <Paypal
+            cart={cart}
+            onSuccess={handlePaymentSuccess}
+            onError={handlePaymentError}
+          />
         </div>
       ) : (
         <div className="text-center mt-5">
-          <img src={previewImage} alt="Preview" className="img-fluid mb-4" style={{ maxWidth: '300px' }} />
+          <img
+            src={previewImage}
+            alt="Preview"
+            className="img-fluid mb-4"
+            style={{ maxWidth: "300px" }}
+          />
           <h1>Cart is empty</h1>
           <p>Continue shopping and explore our products.</p>
-          <NavLink to="/" className="btn btn-primary" onClick={() => console.log('Continue Shopping Clicked')}>
+          <NavLink
+            to="/"
+            className="btn btn-primary"
+            onClick={() => console.log("Continue Shopping Clicked")}
+          >
             Continue Shopping
           </NavLink>
         </div>
@@ -80,5 +97,3 @@ function Cart() {
 }
 
 export default Cart;
-
-

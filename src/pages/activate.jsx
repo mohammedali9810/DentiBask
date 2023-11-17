@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axiosinstance from '../axiosconfig';
 import logoimg from './logo.png';
-import Button from '@mui/material/Button';
 
 const Activate = () => {
   const param = useParams();

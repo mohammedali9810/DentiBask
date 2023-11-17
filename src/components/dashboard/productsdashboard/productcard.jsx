@@ -21,23 +21,25 @@ const Productcard = (props) => {
     setOpenAddProductDialog(true);
   };
 
+
   const handleCloseAddProductDialog = () => {
     setOpenAddProductDialog(false);
   };
-  const deleteproduct = () =>{
+  const deleteproduct = async () =>{
+    const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
+    console.log(props.product.id);
     axiosinstance
-      .delete(`/Products/products/${props.product.id}/`, {
+      .delete(`/Products/delete_product/?product_id=${props.product.id}`, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': 'Bearer ' + localStorage.getItem('dentibask-access-token'),
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken.data.csrfToken,
+          'authorization': 'Bearer ' + localStorage.getItem('dentibask-access-token'),
         },
         withCredentials: true,
       })
-      .then(() => {
-        navigate("/dashboard")
-      })
-      .catch((error) => {
-        console.log(error);
+      .then(() => {})
+      .catch((err) => {
+        console.log(err);
       });
   }
   return (

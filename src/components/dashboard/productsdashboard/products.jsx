@@ -53,7 +53,7 @@ const Products = () => {
         Add Product
       </Button>
       <div className='productsgrid'>
-        {Array.isArray(products) &&
+        {products &&
           products.map((product, index) => <Productcard key={index} product={product} categories={categories} />)}
       </div>
       <Pagination page={pages} onChange={(e, v) => setPages(v)} count={maxpages} color="primary" />

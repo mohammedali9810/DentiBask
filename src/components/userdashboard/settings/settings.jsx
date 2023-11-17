@@ -20,7 +20,7 @@ const Settings = (props) => {
 
 useEffect(()=>{
   setUser(props.user);
-},[])
+},[props.user])
 
 const handlechanges = (e)=>{
   if(e.target.name === 'username'){
