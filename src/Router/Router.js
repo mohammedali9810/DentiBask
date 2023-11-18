@@ -4,13 +4,13 @@ import Products from "../pages/Products";
 
 import Register from "../pages/Register";
 import Login from "../pages/Login";
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPasswordConfirm from "../pages/ResetPasswordConfirm";
 import Cart from "../pages/Cart";
 import Dashboard from "../components/dashboard/navandside/Dashboard";
 import ProductDetails from "../pages/productDetails";
 import NotFound from "../pages/NotFound";
 import Header from "../components/Header/Header";
-// import ContactUs from '../pages/ContactUs';
-// import AboutUs from '../pages/AboutUs';
 import Activate from "../pages/activate";
 import Footer from "../components/footer/footer";
 import AboutUs from "../pages/AboutUs";
@@ -25,6 +25,8 @@ export default function Router() {
         <Route path="/" element={<Products />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/confirm/:uidb64/:token" element={<ResetPasswordConfirm />} />
         <Route path="/Cart" element={<Cart />} />
         <Route path="/orderdetails/:id" element={<Orderdetails />} />
         <Route path="/orderdetailsuser/:id" element={<Orderdetailsuser />} />
