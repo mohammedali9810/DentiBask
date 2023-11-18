@@ -91,7 +91,7 @@ const Orders = () => {
             {orders && orders.map((order) => (
               <TableRow key={order.id}>
                 <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{order.id}</TableCell>
-                <TableCell  >{order.user}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}} >{order.user}</TableCell>
                 <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{order.created_at}</TableCell>
                 <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>${order.totalPrice}</TableCell>
                 <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>
