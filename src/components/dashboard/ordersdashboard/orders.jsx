@@ -4,7 +4,7 @@ import axiosinstance from '../../../axiosconfig';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import CardActionArea from '@mui/material/CardMedia';
+import CardActionArea from '@mui/material/CardActionArea'; 
 import Typography from '@mui/material/Typography';
 import { Select, MenuItem } from '@mui/material';
 
@@ -45,7 +45,6 @@ const Orders = () => {
       })
       .catch((err) => {
         console.error('Error fetching orders:', err);
-        // Handle the error gracefully, e.g., show an error message to the user
       });
   };
 
@@ -67,7 +66,7 @@ const Orders = () => {
 
   const handleSeeOrder = (order) => {
     setSelectedOrder(order);
-    fetchOrderItems(order.id); // Fetch items for the selected order
+    fetchOrderItems(order.id); 
     setOpenSeeOrderDialog(true);
   };
 
@@ -75,16 +74,39 @@ const Orders = () => {
   const handleCloseSeeOrderDialog = () => {
     setOpenSeeOrderDialog(false);
   };
+
+
   const handleStatusChange = (event, orderId) => {
     const newStatus = event.target.value;
   
-    // Update the order status in the state or make an API call to update it on the server
-    // For example, you can update the state like this:
     setOrders((prevOrders) =>
       prevOrders.map((order) =>
         order.id === orderId ? { ...order, status: newStatus } : order
       )
     );
+  
+    axiosinstance
+  .post(`/User/change_order_status/${orderId}/`, { new_status: newStatus })
+  .then((res) => {
+    console.log('Order status update response:', res.data.order);
+  })
+  .catch((err) => {
+    console.error('Error updating order status:', err);
+    // Handle the error gracefully, e.g., show an error message to the user
+  });
+  };
+  
+  const handleSaveOrderStatus = (orderId) => {
+    // Make an API call to save the updated status in the database
+    axiosinstance
+      .post(`/User/save_order_status/${orderId}/`)
+      .then((res) => {
+        console.log('Order status saved successfully:', res.data.order);
+      })
+      .catch((err) => {
+        console.error('Error saving order status:', err);
+        // Handle the error gracefully, e.g., show an error message to the user
+      });
   };
   
 
@@ -108,12 +130,13 @@ const Orders = () => {
                 <TableCell>{order.id}</TableCell>
                 <TableCell>{order.user}</TableCell>
                 <TableCell>{order.created_at}</TableCell>
-                <TableCell>${order.totalPrice}</TableCell>
+                <TableCell>${order.total}</TableCell>
                 <TableCell>
-  <Select
-    value={order.status}
-    onChange={(e) => handleStatusChange(e, order.id)}
-  >
+         <Select
+          value={order.status}
+          onChange={(e) => handleStatusChange(e, order.id)}
+        >
+
     <MenuItem value="Canceled" style={{ color: 'red' }}>
       Canceled
       
@@ -141,6 +164,14 @@ const Orders = () => {
                   >
                     See Order
                   </Button>
+
+                  <Button
+          onClick={() => handleSaveOrderStatus(order.id)}
+          variant="outlined"
+          color="primary"
+        >
+          Save
+        </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -182,7 +213,7 @@ const Orders = () => {
                   <strong>Created At:</strong> {selectedOrder.created_at}
                 </div>
                 <div>
-                  <strong>Total Price:</strong> ${selectedOrder.totalPrice}
+                  <strong>Total Price:</strong> ${selectedOrder.total}
                 </div>
                 <div>
                   <strong>Number Of Products:</strong> {selectedOrder.numberOfProduct}

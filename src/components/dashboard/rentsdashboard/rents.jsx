@@ -42,12 +42,21 @@ const Rents = () => {
 
 
   const handleDeleteRent = (rentId) => {
-    const updatedRents = rents.filter((rent) => rent.rentId !== rentId);
-    setRents(updatedRents);
-  };
+    // Make a DELETE request to the backend
+    axiosinstance
+      .delete(`/api/rents/${rentId}/`) // Adjust the endpoint based on your Django API
+      .then((response) => {
+        console.log('Rent deleted successfully:', response);
+        // Update the local state after successful deletion
+        const updatedRents = rents.filter((rent) => rent.id !== rentId);
+        setRents(updatedRents);
+      })
+      .catch((error) => {
+        console.error('Error deleting rent:', error);
+        // Handle errors as needed
+      });
+    };
 
-
-  
   
   return (
     <div>
@@ -57,39 +66,24 @@ const Rents = () => {
             <TableRow>
               <TableCell>Rent ID</TableCell>
               <TableCell>Renter</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Monthly</TableCell>
-              <TableCell>Shift</TableCell>
-              <TableCell>Total Revenue</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell>Start Date</TableCell>
+              <TableCell>End Date</TableCell>
+              <TableCell>Duration Months</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Created At</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rents.map((rent) => (
               <TableRow key={rent.id}>
-                <TableCell>{rent.rentId}</TableCell>
-                <TableCell>{rent.renterName}</TableCell>
-                <TableCell>{rent.location}</TableCell>
-                <TableCell>${rent.rentMonthly}</TableCell>
-                <TableCell>${rent.rentShift}</TableCell>
-                <TableCell>${rent.totalPrice}</TableCell>
-                <TableCell>          
-                  <span
-                    style={{
-                      color:
-                        rent.status === 'The rental is over'
-                          ? 'red'
-                          : rent.status === 'Renting is ongoing'
-                          ? 'green'
-                          : 'black', // Default color
-                    }}
-                  >
-                  {rent.status}
-                  
-                  </span>
-
-                  </TableCell>
+                <TableCell>{rent.id}</TableCell>
+                <TableCell>{rent.renter}</TableCell>
+                <TableCell>{rent.start_date}</TableCell>
+                <TableCell>{rent.end_date}</TableCell>
+                <TableCell>{rent.duration_months}</TableCell>
+                <TableCell>${rent.price}</TableCell>
+                <TableCell>{rent.created_at}</TableCell>
                 <TableCell>
                
                   <Button
