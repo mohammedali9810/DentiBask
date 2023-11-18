@@ -61,7 +61,8 @@ function Header() {
             src="https://i.pinimg.com/originals/9c/87/99/9c879909741ebaa6b7a614071079e542.jpg"
             alt="Logo"
           />
-          <span style={{ fontSize: "1.5rem" }}>DentiBask</span>
+          <span style={{ fontSize: "1.9rem" ,fontFamily: 'Brush Script MT ',
+ }}>DentiBask</span>
         </NavLink>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
