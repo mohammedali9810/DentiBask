@@ -66,20 +66,19 @@ export default function Paypal({ onSuccess, onError, onCancel, cart }) {
     const approvedorder = async()=>{
       try {
         const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
-        const response = await axiosinstance.post(
-          "/User/add_transaction/",
-          {'order_id':orderid} ,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRFToken": csrfToken.data.csrfToken,
-              Authorization:
-                "Bearer " + localStorage.getItem("dentibask-access-token"),
-            },
-            withCredentials: true,
-          }
-        );
-    
+const response = await axiosinstance.post(
+  "/User/add_transaction/",
+  {'order_id': orderid},
+  {
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken.data.csrfToken,
+      Authorization: "Bearer " + localStorage.getItem("dentibask-access-token"),
+    },
+    withCredentials: true,
+  }
+);
+
         console.log(response.data);
       } catch (error) {
         console.error("Error creating order:", error);

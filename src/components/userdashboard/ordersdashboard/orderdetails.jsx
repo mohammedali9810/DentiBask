@@ -14,7 +14,7 @@ const Orderdetails = () => {
   const [customer_email, setCustomerEmail] = useState("");
 
   useEffect(() => {
-    axiosinstance(`/User/get_order_items_admin/?order_id=${param.id}`, {
+    axiosinstance(`/User/get_order_items_user/?order_id=${param.id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('dentibask-access-token'),

@@ -1,36 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from '@mui/material/Pagination';
 import axiosinstance from '../../../axiosconfig';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 
 import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Button,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Transactions = () => {
+  const navigate = useNavigate();
   const [transactions, setTransactions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const [openSeeTransactionDialog, setOpenSeeTransactionDialog] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   useEffect(() => {
     fetchTransactions();
   }, []);
 
+
   const fetchTransactions = () => {
     axiosinstance
-      .get('/User/usertransaction/')
+    .get('/User/get_user_transactions/',{
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
+          },
+          withCredentials: true,
+        })
       .then((res) => {
+        console.log(res.data.transactions);
         setTransactions(res.data.transactions);
       })
       .catch((err) => {
@@ -39,97 +42,55 @@ const Transactions = () => {
   };
 
 
+
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
 
-  const handleSeeTransaction = (transaction) => {
-    setSelectedTransaction(transaction);
-    setOpenSeeTransactionDialog(true);
-  };
   
-
-  const handleCloseSeeTransactionDialog = () => {
-    setOpenSeeTransactionDialog(false);
-  };
-  
-
   return (
-    <div>
-      <TableContainer component={Paper}>
+    <div >
         <Table>
-          <TableHead>
+          <TableHead style={{backgroundColor:"#2196f3", width:"100%"}}>
             <TableRow>
-              <TableCell>Transaction ID</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Total Price</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Action</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Transaction ID</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Send From </TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Date</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Total Price</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {transactions.map((transaction) => (
-              <TableRow key={transaction.id}>
-                <TableCell>{transaction.id}</TableCell>
-                <TableCell>{transaction.created_at}</TableCell>
-                <TableCell>${transaction.amount}</TableCell>
-                <TableCell>                  <span
-                    style={{
-                      color:
-                      transaction.status === 'Canceled'
-                          ? 'red'
-                          : transaction.status === 'Processing'
-                            ? 'blue'
-                              : transaction.status === 'Delivered'
-                                ? 'green'
-                                : 'black', // Default color
-                    }}
-                  >
-                    {transaction.status}
-
-                  </span>
-                  </TableCell>
-                <TableCell>
+            {transactions.map((transaction,index) => (
+              <TableRow key={transaction.id} style={{textAlign:"center", backgroundColor:index%2 === 0 && "white"}}>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{transaction.id}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{transaction.user}</TableCell>  
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{transaction.created_at}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{transaction.amount} $</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>
                 <Button
-                    onClick={() => handleSeeTransaction(transaction)}
+                    onClick={() => {navigate(`/orderdetailsuser/${transaction.order_id}`)}}
                     variant="outlined"
                     color="primary"
+
                   >
-                    See Transaction
+                    See Order Details
                   </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
 
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop:"2rem" }}>
         <Pagination
           count={Math.ceil(transactions.length / itemsPerPage)}
           color="primary"
           page={currentPage}
-          onChange={handlePageChange}
+          onChange={(e, v) => setCurrentPage(v)}
         />
       </div>
-
-      <Dialog open={openSeeTransactionDialog} onClose={handleCloseSeeTransactionDialog}>
-  <DialogTitle>Transaction Details</DialogTitle>
-  <DialogContent>
-    {/* Display transaction details here */}
-    {selectedTransaction && (
-      <div>
-        <p>Transaction ID: {selectedTransaction.transactionId}</p>
-        <p>Send From: {selectedTransaction.SendFrom}</p>
-        <p>Date: {selectedTransaction.transactionDate}</p>
-        <p>Total Price: ${selectedTransaction.totalPrice}</p>
-        <p>Status: {selectedTransaction.status}</p>
-        {/* Add more transaction details here */}
-      </div>
-    )}
-  </DialogContent>
-</Dialog>
-
     </div>
     
   );
