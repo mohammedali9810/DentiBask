@@ -9,7 +9,7 @@ import "./style.css";
 import { CLIENT_ID } from "../Config/Config";
 import Paypal from "../components/PaypalBtn";
 import { toast } from "react-toastify";
-
+import { Navigate } from "react-router-dom";
 function Cart() {
   const cart = useSelector((state) => state.cart);
   const [cartReloadKey, setCartReloadKey] = useState(0);
@@ -18,6 +18,7 @@ function Cart() {
     console.log("Payment successful:", order);
     toast.success("Payment successful! Thank you for your purchase.");
     setCartReloadKey((prevKey) => prevKey + 1);
+    Navigate('/')
   };
 
   const handlePaymentError = (error) => {
@@ -42,11 +43,11 @@ function Cart() {
           <h3 className="text-center cart-title">
             Shopping Cart <BsFillCartPlusFill />
           </h3>
-          {cart?.map((item, index) => (
-            <div
-              key={item.id}
-              className={index === cart.length - 1 ? "last-child" : ""}
-            >
+          {console.log('Cart length before mapping:', cart.length)}
+          {cart?.map((item, index) => {
+          console.log(`Item ${item.id} quantity: ${item.quantity}`);
+          return item.quantity > 0 && (
+            <div key={item.id} className={index === cart.length - 1 ? "last-child" : ""}>
               <CartItem
                 id={item.id}
                 image={item.image}
@@ -56,17 +57,21 @@ function Cart() {
                 description={item.description}
               />
             </div>
-          ))}
+          );
+        })}
+{console.log('Cart length after mapping:', cart.length)}
+
+
         </div>
       </div>
-
-      {cart.length > 0 ? (
+      {cart.length > 0 && getTotal().totalPrice >0 ? (
         <div className="row text-center m-5 border border-3">
           <h2>Order Summary</h2>
           <h5>
             The price for all {getTotal().totalQuantity} items is{" "}
             {getTotal().totalPrice} $
           </h5>
+          
           <Paypal
             cart={cart}
             onSuccess={handlePaymentSuccess}
