@@ -39,7 +39,7 @@ const Orders = () => {
 
   const fetchOrders = () => {
     axiosinstance
-      .get('/User/get_all_orders/')
+      .get(`/User/get_all_orders/?page=${currentPage}`)
       .then((res) => {
           setOrders(res.data.orders);
       })
@@ -153,7 +153,7 @@ const Orders = () => {
           count={Math.ceil(orders.length / itemsPerPage)}
           color="primary"
           page={currentPage}
-          onChange={handlePageChange}
+          onChange={(e, v) => setCurrentPage(v)}
         />
       </div>
 

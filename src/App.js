@@ -53,7 +53,7 @@ function App() {
           <PayPalScriptProvider options={{ "client-id": CLIENT_ID }}>
             <div className="App">
               <Routes>
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard" element={<UserDashboard />} />
                 <Route path="/*" element={<Router />} />
               </Routes>
             </div>
