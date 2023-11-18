@@ -37,7 +37,7 @@ const Orders = () => {
 
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [currentPage]);
 
   const fetchOrders = () => {
     axiosinstance
@@ -183,8 +183,12 @@ const Orders = () => {
       </TableContainer>
 
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <Pagination page={pages} onChange={(e, v) => setPages(v)} count={maxpages} color="primary" />
-
+        <Pagination
+          page={currentPage}
+          onChange={handlePageChange}
+          count={maxpages}
+          color="primary"
+        />
       </div>
 
       <Dialog
