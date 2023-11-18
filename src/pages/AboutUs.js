@@ -13,11 +13,22 @@ import { Link } from 'react-router-dom';
 
 
 const teamMembers = [
-  { id: 1, name: 'Mohammed Ali', image: '/1.jpeg', phoneNumber: '01149444026', email: 'Muhammed.alyaleem@gmail.com', github: 'https://github.com/muhammedalyaleem', linkedin: 'https://www.linkedin.com/in/muhammedalyaleem/', cvLink: '/cv-mohammed-ali.pdf' },
-  { id: 2, name: 'Yehia Mohammed', image: '/2.jpeg', phoneNumber: '01156929289', email: 'yehia.mohammed@gmail.com', github: 'https://github.com/yahyamohmuedpro99', linkedin: 'https://www.linkedin.com/in/yahya-mohmued-6a0394174/', cvLink: 'yahya99resume.pdf' },
-  { id: 3, name: 'Mohammed Ashraf', image: '/3.jpeg', phoneNumber: '01111143574', email: 'mohammedaly9810@gmail.com', github: 'https://github.com/mohammedali9810', linkedin: 'https://www.linkedin.com/in/mohammed-aly-9810/', cvLink: '/Mohammed_Ashraf_Resume.pdf' },
-  { id: 4, name: 'Mohammed Sayed', image: '/4.jpg', phoneNumber: '01113289444', email: 'Mohamed.sayed@gmail.com', github: 'https://github.com/Mohamedsayed10', linkedin: 'https://www.linkedin.com/in/mohamed-sayed99/', cvLink: 'Mohamed Sayed Resume.pdf' },
-  { id: 5, name: 'Saher Emad', image: '/5.jpeg', phoneNumber: '01112424042', email: 'Shaher.emad@gmail.com', github: 'https://github.com/Shaher2018', linkedin: 'https://www.linkedin.com/in/shaher-emad-211852223', cvLink: '/Shaher Emad Mohammed.pdf' },
+  { id: 1, name: 'Mohammed Ali', image: '/1.jpeg',
+   phoneNumber: '01149444026', email: 'Muhammed.alyaleem@gmail.com',
+    github: 'https://github.com/muhammedalyaleem', linkedin: 'https://www.linkedin.com/in/muhammedalyaleem/',
+     cvLink: '/cv-mohammed-ali.pdf' },
+  { id: 2, name: 'Yehia Mohammed', image: '/2.jpeg', phoneNumber: '01156929289', email: 'yehia.mohammed@gmail.com',
+   github: 'https://github.com/yahyamohmuedpro99', linkedin: 'https://www.linkedin.com/in/yahya-mohmued-6a0394174/',
+    cvLink: 'yahya99resume.pdf' },
+  { id: 3, name: 'Mohammed Ashraf', image: '/3.jpeg', phoneNumber: '01111143574', email: 'mohammedaly9810@gmail.com',
+   github: 'https://github.com/mohammedali9810', linkedin: 'https://www.linkedin.com/in/mohammed-aly-9810/',
+    cvLink: '/Mohammed_Ashraf_Resume.pdf' },
+  { id: 4, name: 'Mohammed Sayed', image: '/4.jpg', phoneNumber: '01113289444', email: 'Mohamed.sayed@gmail.com',
+   github: 'https://github.com/Mohamedsayed10', linkedin: 'https://www.linkedin.com/in/mohamed-sayed99/',
+    cvLink: 'Mohamed Sayed Resume.pdf' },
+  { id: 5, name: 'Saher Emad', image: '/5.jpeg', phoneNumber: '01112424042', email: 'Shaher.emad@gmail.com',
+   github: 'https://github.com/Shaher2018', linkedin: 'https://www.linkedin.com/in/shaher-emad-211852223', 
+   cvLink: '/Shaher Emad Mohammed.pdf' },
 ];
 
 const AboutUs = () => {
@@ -145,7 +156,7 @@ const AboutUs = () => {
       <Slider {...settings}>
         {teamMembers.map((member) => (
           <div key={member.id}>
-            <Card>
+            <Card style={{marginLeft:"3rem"}}>
               <CardMedia component="img" alt={member.name} height="420" image={member.image} />
               <CardContent>
                 <Typography variant="body2" color="textSecondary" onClick={() => handleEmailClick(member.email)}>

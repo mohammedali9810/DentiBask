@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from '@mui/material/Pagination';
 import axiosinstance from '../../../axiosconfig';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CardActionArea from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CancelIcon from '@mui/icons-material/Cancel';
 
@@ -18,20 +13,14 @@ import {
   TableRow,
   Paper,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Orders = () => {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const [openSeeOrderDialog, setOpenSeeOrderDialog] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [orderItems, setOrderItems] = useState([]);
 
   useEffect(() => {
     fetchOrders();
@@ -39,26 +28,21 @@ const Orders = () => {
 
   const fetchOrders = () => {
     axiosinstance
-    .get('/User/userorder/')
+    .get('/User/get_user_orders/',{
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer '+localStorage.getItem('dentibask-access-token'),
+      },
+      withCredentials: true,
+    })
     .then((res) => {
-        setOrders(res.data.orders);
+        setOrders(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         console.error(err);
       });
   };
-
-  const fetchOrderItems = (orderId) => {
-    axiosinstance
-      .get(`/User/get_items_in_order/${orderId}`)
-      .then((res) => {
-        setOrderItems(res.data.items);
-      })
-      .catch((err) => {
-        console.error('Error fetching order items:', err);
-      });
-  };
-
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
@@ -77,15 +61,7 @@ const Orders = () => {
     setOrders(updatedOrders);
   };
 
-  const handleSeeOrder = (order) => {
-    setSelectedOrder(order);
-    fetchOrderItems(order.id); // Fetch items for the selected order
-    setOpenSeeOrderDialog(true);
-  };
 
-  const handleCloseSeeOrderDialog = () => {
-    setOpenSeeOrderDialog(false);
-  };
 
 
 
@@ -96,7 +72,6 @@ const Orders = () => {
           <TableHead>
             <TableRow>
               <TableCell>Order ID</TableCell>
-              <TableCell>Customer</TableCell>
               <TableCell>Date</TableCell>
               <TableCell>Total Price</TableCell>
               <TableCell>Status</TableCell>
@@ -106,12 +81,11 @@ const Orders = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((order) => (
+            {orders && orders.map((order) => (
               <TableRow key={order.id}>
                 <TableCell>{order.id}</TableCell>
-                <TableCell>{order.user}</TableCell>
-                <TableCell>{order.created_at}</TableCell>
-                <TableCell>${order.totalPrice}</TableCell>
+                <TableCell>{new Date(order.created_at).toLocaleDateString('en-GB')}</TableCell>
+                <TableCell>{order.total} $</TableCell>
                 <TableCell>
                   <span
                     style={{
@@ -133,7 +107,7 @@ const Orders = () => {
                 </TableCell>
                 <TableCell>
                   <Button
-                    onClick={() => handleSeeOrder(order)}
+                    onClick={() => {navigate(`/orderdetailsuser/${order.id}`)}}
                     variant="outlined"
                     color="primary"
                   >
@@ -176,83 +150,6 @@ const Orders = () => {
           onChange={handlePageChange}
         />
       </div>
-
-      <Dialog
-        open={openSeeOrderDialog}
-        onClose={handleCloseSeeOrderDialog}
-
-        style={{ minWidth: 700 }}
-
-        >        <DialogTitle>Order Detail</DialogTitle>
-        <DialogContent>
-          <DialogContentText
-                  style={{ minWidth: 500 }}
-
-          >
-            {selectedOrder && (
-              <>
-                <div>
-                  <strong>Order Id:</strong> {selectedOrder.orderId}
-                </div>
-                <div>
-                  <strong>Customer Name:</strong> {selectedOrder.customerName}
-                </div>
-                <div>
-                  <strong>Created At:</strong> {selectedOrder.created_at}
-                </div>
-                <div>
-                  <strong>Total Price:</strong> ${selectedOrder.totalPrice}
-                </div>
-                <div>
-                  <strong>Number Of Products:</strong> {selectedOrder.numberOfProduct}
-                </div>
-                <div>
-                  <strong>Status:</strong> {selectedOrder.status}
-                </div>
-
-                <Typography variant="h6" gutterBottom>
-                  Products
-                </Typography>
-
-                {orderItems.map((product) => (
-                  <Card key={product.id}>
-                    <CardActionArea>
-                      <CardMedia
-                        component="img"
-                        height="200"
-                        image={product.thumbnail}
-                        alt={product.name}
-                      />
-                      <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                          {product.name}
-                        </Typography>
-                        <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>
-                          {product.description}
-                        </span>
-                        <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>
-                          Price: ${product.price}
-                        </p>
-                        <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>
-                          Category: {product.category}
-                        </p>
-                        <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>
-                          Ordered: {product.ordered} times
-                        </p>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                ))}
-              </>
-            )}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseSeeOrderDialog} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 };
