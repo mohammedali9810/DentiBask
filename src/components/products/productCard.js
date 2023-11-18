@@ -18,17 +18,17 @@ export default function ProductCard(props) {
           boxShadow: "7px 7px 10px rgba(0, 149, 175, 0.5)",
           borderRadius: "15px",
           padding: "5px",
-          height: "62vh",
+          maxHeight: "60vh",
           position: "relative",
           display: "flex",
-          flexDirection: "column", // Set the flex direction to column
-          justifyContent: "space-between", // Align children with space between
+          flexDirection: "column", 
+          justifyContent: "space-between", 
         }}
         className="my-product-card mt-3"
       >
         <img
           style={{
-            maxHeight: "35vh",
+            maxHeight: "30vh",
             minHeight: "35vh",
             objectFit: "contain",
           }}
@@ -43,7 +43,7 @@ export default function ProductCard(props) {
             <span className="badge text-bg-secondary">out of stock</span>
           )}
           <div className="row">
-            <div className="col-8">
+            <div className="col-6">
               <Link
                 style={{ textDecoration: "none" }}
                 to={`/Products/product_detail/${productData.id}`}
@@ -54,7 +54,7 @@ export default function ProductCard(props) {
               </Link>
             </div>
             <b
-              style={{ fontSize: "1.4rem" }}
+              style={{ fontSize: "1.1rem" }}
               className="col-4 d-flex justify-content-end"
             >
               {productData.price} $
@@ -64,16 +64,18 @@ export default function ProductCard(props) {
           <div className="rating mt-2">
             <Rating rating={4} />
           </div>
+          <div className="row d-flex justify-content-center">
           <button
             style={{
-              width: "90%",
+              width: "90vw",
+              maxWidth: "300px",
               fontSize: "1rem",
               borderRadius: "30px",
               backgroundColor: "rgb(0, 183, 255)",
               color: "white",
               marginTop: "10px",
             }}
-            className="btn add-to-cart-button"
+            className="btn add-to-cart-button this is is not "
             onClick={() =>
               dispatch(
                 addToCart({
@@ -90,6 +92,7 @@ export default function ProductCard(props) {
           >
             Add To Cart
           </button>
+          </div>
         </div>
       </Card>
     </Container>
