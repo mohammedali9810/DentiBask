@@ -1,7 +1,6 @@
 import React from 'react';
-import { Container, Typography, Grid, Button } from '@material-ui/core';
+import { Container, Typography, Grid, Card, } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import PhoneIcon from '@material-ui/icons/Phone';
 import EmailIcon from '@material-ui/icons/Email';
 import { Icon } from '@iconify/react';
 
@@ -11,47 +10,74 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(4),
   },
   heading: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(5),
+    fontFamily: 'Roboto, sans-serif', 
+    fontWeight: 'bold',
   },
   subheading: {
     fontWeight: 'bold',
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    fontFamily: 'Roboto, sans-serif', 
   },
   content: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(4),
+    fontFamily: 'Roboto, sans-serif',
   },
   link: {
     textDecoration: 'none',
     color: theme.palette.primary.main,
     cursor: 'pointer',
-    display: 'flex', // Added to align icon and text horizontally
-    alignItems: 'center', // Center icon vertically with text
-    background: '#f2f2f2', // Background color for the clickable area
-    padding: theme.spacing(1), // Add padding for better readability and touch target
-    borderRadius: theme.shape.borderRadius, // Optional: Add border radius for a rounded look
+    display: 'flex',
+    alignItems: 'center',
+    // background: '#f2f2f2',
+    padding: theme.spacing(1),
+    borderRadius: theme.shape.borderRadius,
     '&:hover': {
       textDecoration: 'underline',
-      background: '#e0e0e0', // Change background color on hover
+      background: '#e0e0e0',
     },
+    fontFamily: 'Roboto, sans-serif', // Customize the font family
   },
   whatsappIcon: {
-    marginRight: theme.spacing(1), // Add space between icon and text
+    marginRight: theme.spacing(2),
+     fontSize: '4em' 
   },
   imageContainer: {
     width: '100%',
-    height: '400px', // Adjust the height as needed
+    height: '400px',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(3),
   },
-   card: {
-    // Add styling for the card
+  card: {
     border: '1px solid #ddd',
     borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(4),
+    height: '100%',
+  },
+
+  phoneCard: {
+    border: '1px solid #ddd',
+    borderRadius: theme.shape.borderRadius,
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     padding: theme.spacing(2),
-    height: '100%', // Ensure the card takes full height of its container
+    justifyContent: 'center',
+  },
+  emailCard: {
+    border: '1px solid #ddd',
+    borderRadius: theme.shape.borderRadius,
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: theme.spacing(2),
+    justifyContent: 'center',
   },
 }));
+
 
 const ContactUs = () => {
   const classes = useStyles();
@@ -75,42 +101,52 @@ const ContactUs = () => {
       <Typography variant="h3" className={classes.heading} gutterBottom>
         Contact Us
       </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={12}>
-          <Typography variant="h4" className={classes.subheading} gutterBottom>
-            Welcome to our Contact Us page.
-            If you have any questions or inquiries, please feel free to
-            reach out to us using the following contact details
-          </Typography>
-          <Typography variant="h5" className={classes.subheading} gutterBottom>
-            DentiBask Contact Information
-          </Typography>
-          <Typography variant="body1" className={classes.content}>
-            CONTACT US
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <Typography
-                variant="body1"
-                className={`${classes.content} ${classes.link}`}
-                onClick={handleWhatsAppClick}
-              >
-                <Icon icon="mdi:whatsapp" className={classes.whatsappIcon} />
-                011213289444 (Click to connect on WhatsApp)
-              </Typography>
-            </Grid>
 
-            <Grid item xs={12} sm={6}>
-              <Typography
-                variant="body1"
-                className={`${classes.content} ${classes.link}`}
-                onClick={handleEmailClick}
-              >
-                <EmailIcon className={classes.whatsappIcon} />
-                info@dentibask.com (Click to send an email)
-              </Typography>
-            </Grid>
-          </Grid>
+      <Grid item xs={12} sm={12}>
+        <Typography variant="h4" className={classes.subheading} gutterBottom>
+          Welcome to our Contact Us page.
+          If you have any questions or inquiries, please feel free to
+          reach out to us using the following contact details
+        </Typography>
+
+        <Typography variant="h5" className={classes.subheading} gutterBottom>
+          DentiBask Contact Information
+        </Typography>
+      </Grid>
+
+
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6}>
+          <Card className={classes.phoneCard}>
+          <Icon icon="mdi:whatsapp" className={classes.whatsappIcon}  />
+            <Typography variant="h3" className={classes.content}>
+              Talk to Sales
+            </Typography>
+            <Typography variant="h5" className={classes.content}>
+              interested in DentiBask ? Just pick up the phone to chat with a member of our sales team
+            </Typography>
+            <Typography variant="body1" className={classes.link} onClick={handleWhatsAppClick}>
+              011213289444 
+            </Typography>
+
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <Card className={classes.emailCard}>
+            <EmailIcon className={classes.whatsappIcon}  />
+            <Typography variant="h3" className={classes.content}>
+              Contact customer service
+            </Typography>
+            <Typography variant="h5" className={classes.content}>
+             You cau  contact by sending a message to our mail 
+            </Typography>
+
+            <Typography variant="body1" className={classes.link} onClick={handleEmailClick}>
+              info@dentibask.com 
+            </Typography>
+
+          </Card>
         </Grid>
 
         <Grid item xs={12}>
@@ -125,6 +161,8 @@ const ContactUs = () => {
           </Typography>
         </Grid>
       </Grid>
+
+
     </Container>
   );
 };
