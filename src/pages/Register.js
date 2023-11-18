@@ -217,7 +217,7 @@ export default function SignUp() {
         </Box>
       </Box>
       <Dialog open={openAddProductDialog} onClose={handleCloseAddProductDialog}>
-        <DialogTitle>Vertify Email</DialogTitle>
+        <DialogTitle>Verify Email</DialogTitle>
         <DialogContent>
           <Emailsent handleClose={handleCloseAddProductDialog} />
         </DialogContent>
