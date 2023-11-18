@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Pagination from '@mui/material/Pagination';
 import axiosinstance from '../../../axiosconfig';
 import Categorycard from './categorycard';
 import Button from '@mui/material/Button';
