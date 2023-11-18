@@ -17,6 +17,8 @@ const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [pages, setPages] = useState(1);
+  const [maxpages, setMaxPages] = useState(1);
 
   useEffect(() => {
     fetchTransactions();
@@ -35,6 +37,8 @@ const Transactions = () => {
       .then((res) => {
         console.log(res.data.transactions);
         setTransactions(res.data.transactions);
+        setMaxPages(Math.ceil((res.data.count)/12));
+
       })
       .catch((err) => {
         console.error(err);
@@ -84,12 +88,8 @@ const Transactions = () => {
 
 
       <div style={{ display: 'flex', justifyContent: 'center', marginTop:"2rem" }}>
-        <Pagination
-          count={Math.ceil(transactions.length / itemsPerPage)}
-          color="primary"
-          page={currentPage}
-          onChange={(e, v) => setCurrentPage(v)}
-        />
+      <Pagination page={pages} onChange={(e, v) => setPages(v)} count={maxpages} color="primary" />
+
       </div>
     </div>
     

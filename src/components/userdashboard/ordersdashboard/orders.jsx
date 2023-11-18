@@ -21,6 +21,12 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [openSeeOrderDialog, setOpenSeeOrderDialog] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [orderItems, setOrderItems] = useState([]);
+  const [pages, setPages] = useState(1);
+  const [maxpages, setMaxPages] = useState(1);
+
 
   useEffect(() => {
     fetchOrders();
@@ -37,6 +43,7 @@ const Orders = () => {
     })
     .then((res) => {
         setOrders(res.data);
+        setMaxPages(Math.ceil((res.data.count)/12));
         console.log(res.data);
       })
       .catch((err) => {
@@ -69,24 +76,25 @@ const Orders = () => {
     <div>
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
+          <TableHead style={{backgroundColor:"#2196f3", width:"100%"}}>
             <TableRow>
-              <TableCell>Order ID</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Total Price</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Action</TableCell>
-              <TableCell>Action</TableCell>
-
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Order ID</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Customer</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Date</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Total Price</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Status</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Action</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {orders && orders.map((order) => (
               <TableRow key={order.id}>
-                <TableCell>{order.id}</TableCell>
-                <TableCell>{new Date(order.created_at).toLocaleDateString('en-GB')}</TableCell>
-                <TableCell>{order.total} $</TableCell>
-                <TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{order.id}</TableCell>
+                <TableCell  >{order.user}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{order.created_at}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>${order.totalPrice}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>
                   <span
                     style={{
                       color:
@@ -105,7 +113,7 @@ const Orders = () => {
 
                   </span>
                 </TableCell>
-                <TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>
                   <Button
                     onClick={() => {navigate(`/orderdetailsuser/${order.id}`)}}
                     variant="outlined"
@@ -143,12 +151,8 @@ const Orders = () => {
       </TableContainer>
 
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Pagination
-          count={Math.ceil(orders.length / itemsPerPage)}
-          color="primary"
-          page={currentPage}
-          onChange={handlePageChange}
-        />
+      <Pagination page={pages} onChange={(e, v) => setPages(v)} count={maxpages} color="primary" />
+
       </div>
     </div>
   );
