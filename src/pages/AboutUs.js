@@ -126,31 +126,53 @@ const AboutUs = () => {
         alt="Logo"
         style={{ width: '100px', height: '100px', borderRadius: '50%' }}
       />
-      <Typography variant="h4" className={classes.heading} gutterBottom>
-        About DentiBask: Your Trusted E-commerce Platform for Dentists
-      </Typography>
-      <Typography variant="body1" className={classes.content} gutterBottom style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-        Welcome to DentiBask, your one-stop-shop for all your dental product needs.
-        With our specialized focus on the dental industry, we cater to the unique requirements of dentists and dental professionals. Our mission is to provide a comprehensive range of high-quality products and services to support and enhance your dental practice.
-      </Typography>
-      <Typography variant="body1" className={classes.content} gutterBottom style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-        At DentiBask, we understand the importance of precision, reliability, and efficiency in the field of dentistry. That's why we have curated a wide selection of products specifically tailored to meet the needs of dentists like you. From dental instruments and supplies to cutting-edge technology and equipment, we strive to offer everything you need to deliver exceptional dental care to your patients.
-      </Typography>
-      <Typography variant="h4" className={classes.heading} gutterBottom>
+     <Typography variant="h3" className={classes.heading} gutterBottom style={{ fontFamily: 'Garamond', fontWeight: '600' }}>
         Welcome to DentiBask!
       </Typography>
-      <Typography variant="h4" className={classes.heading} gutterBottom>
+
+      <Typography variant="h4" className={classes.heading} gutterBottom style={{ fontFamily: 'YourFont', fontWeight: '500' }}>
+        About DentiBask: Your Trusted E-commerce Platform for Dentists
+      </Typography>
+
+      <Typography variant="h4" className={classes.heading} gutterBottom style={{ fontFamily: 'YourFont', fontWeight: '500' }}>
         We are dedicated to providing quality services and products.
       </Typography>
+
+      <Typography
+        variant="body1"
+        className={classes.content}
+        gutterBottom
+        style={{
+          paddingLeft: '100px',
+          paddingRight: '100px',
+          fontFamily: 'Lucida Handwriting',
+          fontSize: '1.3rem',
+        }}
+      >
+    <b>Welcome to DentiBask, your one-stop-shop for all your dental product needs. With our specialized focus on the dental industry, we cater to the unique requirements of dentists and dental professionals. Our mission is to provide a comprehensive range of high-quality products and services to support and enhance your dental practice.</b>      </Typography>
+
+      <Typography
+        variant="body1"
+        className={classes.content}
+        gutterBottom
+        style={{
+          paddingLeft: '100px',
+          paddingRight: '100px',
+          fontFamily: 'Lucida Handwriting',
+          fontWeight: '400',
+        }}
+      >
+        At DentiBask, we understand the importance of precision, reliability, and efficiency in the field of dentistry. That's why we have curated a wide selection of products specifically tailored to meet the needs of dentists like you. From dental instruments and supplies to cutting-edge technology and equipment, we strive to offer everything you need to deliver exceptional dental care to your patients.
+      </Typography>
+
       <Typography
         variant="h4"
         className={classes.heading}
         gutterBottom
-        style={{ marginBottom: '50px' }}
+        style={{ marginBottom: '50px', fontFamily: 'YourFont', fontWeight: '500' }}
       >
         Learn more about our team behind DentiBask.
       </Typography>
-
 
 
       <Slider {...settings}>
