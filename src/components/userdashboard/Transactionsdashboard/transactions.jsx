@@ -72,7 +72,6 @@ const Transactions = () => {
                     onClick={() => {navigate(`/orderdetailsuser/${transaction.order_id}`)}}
                     variant="outlined"
                     color="primary"
-
                   >
                     See Order Details
                   </Button>
