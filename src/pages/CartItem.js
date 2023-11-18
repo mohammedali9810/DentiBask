@@ -16,7 +16,11 @@ function CartItem({ id, image, title, price, quantity = 0, description }) {
   return (
     <div
       className="row d-flex  my-border p-5 m-5"
-      style={{ maxHeight: "40vh" }}
+      style={{ maxHeight: "40vh" ,
+               boxShadow: "7px 7px 10px rgba(62, 93, 99, 0.5)",
+
+    }}
+      
     >
       <div className="col-6 justify-content-start img-product container">
         <Card.Img
@@ -34,7 +38,7 @@ function CartItem({ id, image, title, price, quantity = 0, description }) {
         />
       </div>
 
-      <div className="col-6 col-xs-12  ">
+      <div className="col-6 col-xs-12">
         <Link
           style={{ textDecoration: "none" }}
           to={`/Products/product_detail/${id}/`}
@@ -47,21 +51,24 @@ function CartItem({ id, image, title, price, quantity = 0, description }) {
         </Card.Text>
         <div className="mt-5">
           <Button
-            variant="danger"
+            variant="outline-danger"
+            className="ml-2"
             onClick={() => dispatch(decrementQuantity(id))}
           >
             -
           </Button>
-          <span className="mx-2">{quantity}</span>
+          <b className="mx-2">{quantity}</b>
           <Button
-            variant="success"
+            variant="outline-success"
+            className="ml-2"
             onClick={() => dispatch(incrementQuantity(id))}
           >
             +
           </Button>
           <Button
-            variant="danger"
-            className="del-item"
+            variant="outline-danger"
+            className="del-item ml-2 m-3 w-50"
+            
             onClick={() => dispatch(removeItem(id))}
           >
             <BsFillTrash3Fill />

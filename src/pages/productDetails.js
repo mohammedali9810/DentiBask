@@ -7,11 +7,42 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, setQuantity } from "../store/slices/cartslice";
 import { Button } from "react-bootstrap";
 import "./style.css";
+import { Link } from 'react-router-dom';
 
 export default function ProductDetails() {
   const [productDetails, setProductDetails] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
-
+  const categories = [
+    {
+      "id": 3,
+      "name": "Endodontics"
+    },
+    {
+      "id": 6,
+      "name": "Equipment"
+    },
+    {
+      "id": 7,
+      "name": "Instruments"
+    },
+    {
+      "id": 8,
+      "name": "Prosthesis"
+    },
+    {
+      "id": 4,
+      "name": "Surgery"
+    },
+    {
+      "id": 5,
+      "name": "Restorations"
+    },
+    {
+      "id": 1,
+      "name": "Consumble"
+    }
+  ];
+  
   let params = useParams();
   const dispatch = useDispatch();
   const cartQuantity = useSelector(
@@ -19,7 +50,7 @@ export default function ProductDetails() {
   );
 
   useEffect(() => {
-    console.log(params);
+    console.log(productDetails);
     if (params.id) {
       axios
         .get(`http://127.0.0.1:8000/Products/product_detail/?id=${params.id}`)
@@ -29,7 +60,7 @@ export default function ProductDetails() {
         })
         .catch((err) => console.log(err));
     }
-  }, [params.id]);
+  }, [params.id, productDetails.id]);
   const handleThumbnailClick = (image) => {
     setSelectedImage(image);
   };
@@ -102,8 +133,13 @@ export default function ProductDetails() {
             <Rating rating={productDetails.rating} />
           </div>
 
-          {/* <span className="btn border-info border-1 rounded-pill m-3"><strong>Brand : </strong>{productDetails.brand}</span>
-          <span className="btn border-info border-1 rounded-pill "><strong>category : </strong>{productDetails.category}</span> */}
+          <span className="btn border-info border-1 rounded-pill">
+  <strong>Category: </strong>
+  {/* to={`/Products/products_catgory/?name=${categories.find(category => category.id === productDetails.Categ_id)?.name || 'new'}`} */}
+  <Link >
+    {categories.find(category => category.id === productDetails.Categ_id)?.name || "Unknown"}
+  </Link>
+</span>
 
           <hr></hr>
 
@@ -121,11 +157,14 @@ export default function ProductDetails() {
             </div>
 
             <div className="m-2 d-flex justify-content-center">
-              <Button variant="danger" onClick={handleDecrement}>
+              <Button
+                  variant="outline-danger"
+                  className="ml-2" onClick={handleDecrement}>
                 -
               </Button>
-              <b className="mx-2">{cartQuantity}</b>
-              <Button variant="primary" onClick={handleIncrement}>
+              <b className="m-2">{cartQuantity}</b>
+              <Button variant="outline-success"
+               className="ml-2" onClick={handleIncrement}>
                 +
               </Button>
             </div>
@@ -137,7 +176,7 @@ export default function ProductDetails() {
                 width: "50%",
                 fontSize: "0.9rem",
                 borderRadius: "30px",
-                backgroundColor: "#3384b3",
+                backgroundColor: "#56b0e4",
               }}
               className="btn  text-center  my-2 "
               onClick={() =>
