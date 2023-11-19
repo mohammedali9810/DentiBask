@@ -21,6 +21,7 @@ export default function Rentcard(props) {
           display: "flex",
           flexDirection: "column", 
           justifyContent: "space-between", 
+          marginBottom: "30px",
         }}
         className="my-product-card mt-3"
       >
@@ -36,9 +37,9 @@ export default function Rentcard(props) {
         />
         <div className="card-body">
           {productData.stock !== 0 ? (
-            <span className="badge text-bg-success">On stock</span>
+            <span className="badge text-bg-success">Is Available</span>
           ) : (
-            <span className="badge text-bg-secondary">out of stock</span>
+            <span className="badge text-bg-secondary">Not Available</span>
           )}
           <div className="row">
             <div className="col-6">
@@ -46,31 +47,31 @@ export default function Rentcard(props) {
                 style={{ textDecoration: "none" }}
                 to={`/Products/product_detail/${productData.id}`}
               >
-                <b style={{ fontSize: "1.1rem" }} className="card-title">
+                <b style={{ fontSize: "1rem" }} className="card-title">
                   {productData.title}{" "}
                 </b>
               </Link>
             </div>
             <b
-              style={{ fontSize: "1.1rem" }}
+              style={{ fontSize: ".9rem" }}
               className="col-4 d-flex justify-content-end"
             >
               {productData.price} $
             </b>
             <b
-              style={{ fontSize: "1.1rem" }}
-              className="col-4 d-flex justify-content-end"
+              style={{ fontSize: "1rem" }}
+              className="col-12 d-flex justify-content-center"
             >
-              {productData.location}
+                Location : {productData.location}
             </b>
           </div>
           <div className={`card-text text-truncate`}>{productData.desc}</div>
           <div className="row d-flex justify-content-center">
           <button
             style={{
-              width: "90vw",
-              maxWidth: "300px",
-              fontSize: "1rem",
+              width: "80vw",
+              maxWidth: "250px",
+              fontSize: ".9rem",
               borderRadius: "30px",
               backgroundColor: "green",
               color: "white",
