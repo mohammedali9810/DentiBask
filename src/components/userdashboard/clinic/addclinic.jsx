@@ -91,6 +91,9 @@ const senddata = async (e) => {
 
     // Handle the response as needed
     console.log(response);
+    if (response.status === 201){
+      handleClose();
+    }
 
   } catch (error) {
     console.error(error);

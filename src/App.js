@@ -54,6 +54,7 @@ function App() {
             <div className="App">
               <Routes>
                 <Route path="/dashboard" element={<UserDashboard />} />
+                <Route path="admindashboard" element={<Dashboard />} />
                 <Route path="/*" element={<Router />} />
               </Routes>
             </div>

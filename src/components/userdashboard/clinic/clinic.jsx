@@ -30,7 +30,7 @@ const Clinic = () => {
         .catch((err) => {
           console.error(err);
         });
-    }, []);
+    }, [clinics]);
   
     const handleOpenAddProductDialog = () => {
       setOpenAddProductDialog(true);
