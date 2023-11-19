@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // 1- save any change from this(add , + or - the quantity , remove) 
 // load the cart from local storage 
 
+//there is an issue with immutability with cart (solve this issue by updating the function of add to cart and the increment make a check that everything is right)
 
 const loadCartFromLocalStorage = () => {
   try {
@@ -24,10 +25,11 @@ const cartSlice = createSlice({
       if (itemInCart) {
         itemInCart.quantity++;
       } else {
-        state.cart.push({ ...action.payload, quantity: 1 });
+        state.cart = [...state.cart, { ...action.payload, quantity: 1 }];
       }
       localStorage.setItem('cart', JSON.stringify(state.cart));
     },
+    
 
     incrementQuantity: (state, action) => {
       const item = state.cart.find((item) => item.id === action.payload);
@@ -39,9 +41,10 @@ const cartSlice = createSlice({
 
     decrementQuantity: (state, action) => {
       const item = state.cart.find((item) => item.id === action.payload);
-      if (item && item.quantity > 1) {
+      if (item && item.quantity > 0) {
         item.quantity--;
       }
+      
       localStorage.setItem('cart', JSON.stringify(state.cart));
     },
 

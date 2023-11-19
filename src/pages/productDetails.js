@@ -4,7 +4,8 @@ import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Rating from "../components/products/Rating";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, setQuantity } from "../store/slices/cartslice";
+import { addToCart, setQuantity , decrementQuantity,
+  incrementQuantity,} from "../store/slices/cartslice";
 import { Button } from "react-bootstrap";
 import "./style.css";
 import { Link } from 'react-router-dom';
@@ -46,8 +47,10 @@ export default function ProductDetails() {
   let params = useParams();
   const dispatch = useDispatch();
   const cartQuantity = useSelector(
-    (state) => state.cart[productDetails.id]?.quantity || 0
+    (state) => state.cart.find((item) => item.id === productDetails.id)?.quantity || 0
   );
+  
+  console.log(cartQuantity)
 
   useEffect(() => {
     console.log(productDetails);
@@ -134,12 +137,12 @@ export default function ProductDetails() {
           </div>
 
           <span className="btn border-info border-1 rounded-pill">
-  <strong>Category: </strong>
-  {/* to={`/Products/products_catgory/?name=${categories.find(category => category.id === productDetails.Categ_id)?.name || 'new'}`} */}
-  <Link >
-    {categories.find(category => category.id === productDetails.Categ_id)?.name || "Unknown"}
-  </Link>
-</span>
+          <strong>Category: </strong>
+          {/* to={`/Products/products_catgory/?name=${categories.find(category => category.id === productDetails.Categ_id)?.name || 'new'}`} */}
+          <Link >
+            {categories.find(category => category.id === productDetails.Categ_id)?.name || "Unknown"}
+          </Link>
+        </span>
 
           <hr></hr>
 
@@ -159,12 +162,12 @@ export default function ProductDetails() {
             <div className="m-2 d-flex justify-content-center">
               <Button
                   variant="outline-danger"
-                  className="ml-2" onClick={handleDecrement}>
+                  className="ml-2" onClick={() => dispatch(decrementQuantity(productDetails.id))}>
                 -
               </Button>
               <b className="m-2">{cartQuantity}</b>
               <Button variant="outline-success"
-               className="ml-2" onClick={handleIncrement}>
+               className="ml-2" onClick={() => dispatch(incrementQuantity(productDetails.id))}>
                 +
               </Button>
             </div>

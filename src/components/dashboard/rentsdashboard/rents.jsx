@@ -17,7 +17,8 @@ const Rents = () => {
   const [rents, setRents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-
+  const [pages, setPages] = useState(1);
+  const [maxpages, setMaxPages] = useState(1);
   useEffect(() => {
     fetchRents();
   }, []);
@@ -27,6 +28,8 @@ const Rents = () => {
     .get('/User/get_all_rents/')
     .then((res) => {
         setRents(res.data.rents);
+        setMaxPages(Math.ceil((res.data.count)/12));
+
       })
       .catch((err) => {
         console.error(err);
@@ -62,29 +65,29 @@ const Rents = () => {
     <div>
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
+          <TableHead style={{backgroundColor:"#2196f3", width:"100%"}}>
             <TableRow>
-              <TableCell>Rent ID</TableCell>
-              <TableCell>Renter</TableCell>
-              <TableCell>Start Date</TableCell>
-              <TableCell>End Date</TableCell>
-              <TableCell>Duration Months</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Created At</TableCell>
-              <TableCell>Action</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Rent ID</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Renter</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Start Date</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>End Date</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Duration Months</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Price</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Created At</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rents.map((rent) => (
               <TableRow key={rent.id}>
-                <TableCell>{rent.id}</TableCell>
-                <TableCell>{rent.renter}</TableCell>
-                <TableCell>{rent.start_date}</TableCell>
-                <TableCell>{rent.end_date}</TableCell>
-                <TableCell>{rent.duration_months}</TableCell>
-                <TableCell>${rent.price}</TableCell>
-                <TableCell>{rent.created_at}</TableCell>
-                <TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{rent.id}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{rent.renter}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{rent.start_date}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{rent.end_date}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{rent.duration_months}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>${rent.price}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{rent.created_at}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>
                
                   <Button
                     onClick={() => handleDeleteRent(rent.rentId)}
@@ -101,12 +104,8 @@ const Rents = () => {
       </TableContainer>
 
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Pagination
-          count={Math.ceil(rents.length / itemsPerPage)}
-          color="primary"
-          page={currentPage}
-          onChange={handlePageChange}
-        />
+      <Pagination page={pages} onChange={(e, v) => setPages(v)} count={maxpages} color="primary" />
+
       </div>
     </div>
   );

@@ -48,45 +48,51 @@ const Orders = () => {
   };
 
   const handleDeleteOrder = (orderId) => {
-    const updatedOrders = orders.filter((order) => order.orderId !== orderId);
-    setOrders(updatedOrders);
-  };
-  const handleCancelOrder = (orderId) => {
-    const updatedOrders = orders.map((order) => {
-      if (order.orderId === orderId) {
-        return { ...order, status: 'Cancelled' };
-      }
-      return order;
-    });
-    setOrders(updatedOrders);
-  };
-
-
-
+    axiosinstance
+        .delete(`/User/api/delete_order/${orderId}/`)
+        .then((response) => {
+            console.log(response.data.message);
+            fetchOrders(); 
+        })
+        .catch((error) => {
+            console.error('Error deleting order:', error);
+        });
+};
+const handleCancelOrder = (orderId) => {
+  axiosinstance
+      .post(`/User/api/cancel_order/${orderId}/`)
+      .then((response) => {
+          console.log(response.data.message);
+          fetchOrders(); 
+      })
+      .catch((error) => {
+          console.error('Error canceling order:', error);
+      });
+};
 
 
   return (
     <div>
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
+          <TableHead style={{backgroundColor:"#2196f3", width:"100%"}}>
             <TableRow>
-              <TableCell>Order ID</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Total Price</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Action</TableCell>
-              <TableCell>Action</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Order ID</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Date</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Total Price</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Status</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Action</TableCell>
+              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Action</TableCell>
 
             </TableRow>
           </TableHead>
           <TableBody>
             {orders && orders.map((order) => (
               <TableRow key={order.id}>
-                <TableCell>{order.id}</TableCell>
-                <TableCell>{new Date(order.created_at).toLocaleDateString('en-GB')}</TableCell>
-                <TableCell>{order.total} $</TableCell>
-                <TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{order.id}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{new Date(order.created_at).toLocaleDateString('en-GB')}</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{order.total} $</TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>
                   <span
                     style={{
                       color:
@@ -105,7 +111,7 @@ const Orders = () => {
 
                   </span>
                 </TableCell>
-                <TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>
                   <Button
                     onClick={() => {navigate(`/orderdetailsuser/${order.id}`)}}
                     variant="outlined"
@@ -115,25 +121,25 @@ const Orders = () => {
                   </Button>
                 </TableCell>
 
-                <TableCell>
+                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>
                   {order.status === 'Delivered' || order.status === 'Cancelled' ? (
                     <Button
                       variant="outlined"
                       color="secondary"
-                      onClick={() => handleDeleteOrder(order.orderId)}
+                      onClick={() => handleDeleteOrder(order.Id)}
                       startIcon={<DeleteIcon />}
                     >
                       Delete
                     </Button>
                   ) : (
                     <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={() => handleCancelOrder(order.orderId)}
-                      startIcon={<CancelIcon />}
-                    >
-                      Cancel
-                    </Button>
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => handleCancelOrder(order.id)}
+                    startIcon={<CancelIcon />}
+                  >
+                    Cancel
+                  </Button>
                   )}
                 </TableCell>
               </TableRow>
