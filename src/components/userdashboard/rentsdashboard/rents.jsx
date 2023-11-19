@@ -97,7 +97,7 @@ const Rents = () => {
                           ? 'red'
                           : rent.status === 'Renting is ongoing'
                           ? 'green'
-                          : 'black', // Default color
+                          : 'black',
                     }}
                   >
                   {rent.status}
