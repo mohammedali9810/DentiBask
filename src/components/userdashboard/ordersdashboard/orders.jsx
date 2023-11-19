@@ -87,8 +87,8 @@ const handleCancelOrder = (orderId) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders && orders.map((order) => (
-              <TableRow key={order.id}>
+            {orders && orders.map((order,index) => (
+              <TableRow key={index} style={{ backgroundColor:index%2 === 0 && "white"}}>
                 <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{order.id}</TableCell>
                 <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{new Date(order.created_at).toLocaleDateString('en-GB')}</TableCell>
                 <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>{order.total} $</TableCell>
