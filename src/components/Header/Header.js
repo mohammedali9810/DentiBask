@@ -79,7 +79,7 @@ function Header() {
               <NavLink
                 style={(generateActiveLinkStyles, { textAlign: "center" })}
                 className="nav-link"
-                to="/dashboard"
+                to={localStorage.getItem('dentibask-role') === 'admin' ? "/admindashboard" : "/dashboard"}
               >
                 <img src={usericon} alt="Dashboard" />
               </NavLink>
