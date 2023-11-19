@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
 import axiosinstance from '../../axiosconfig';
+import Pagination from '@mui/material/Pagination';
+
 import { Container, Row, Col } from "react-bootstrap"; // Make sure to import Container
 import Rentcard from "./rentcard";
 const Rentpage = () => {
     const [clinics, setClinics] = useState([]);
-  
+    const [maxpages, setMaxPages] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
         axiosinstance
         .get(`/User/get_all_clinics/`)
         .then((response) => {
             console.log(response.data);
           setClinics(response.data.results);
+          setMaxPages(Math.ceil((response.data.count)/12));
         })
         .catch((error) => {
           console.error("There was an error!", error);
         });
     }, []);
-  
+    const handlePageChange = (event, page) => {
+      setCurrentPage(page);
+    };
     return (
       <Container>
         <Row
@@ -38,6 +44,14 @@ const Rentpage = () => {
             </Col>
           ))}
         </Row>
+        <div style={{ display: 'flex', justifyContent: 'center' , marginBottom:'10px'}}>
+        <Pagination
+          page={currentPage}
+          onChange={handlePageChange}
+          count={maxpages}
+          color="primary"
+        />
+      </div>
       </Container>
     );
   }

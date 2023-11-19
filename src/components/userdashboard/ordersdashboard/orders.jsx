@@ -60,7 +60,7 @@ const Orders = () => {
 };
 const handleCancelOrder = (orderId) => {
   axiosinstance
-      .post(`/User/api/cancel_order/${orderId}/`)
+      .post(`/User/cancel_order/${orderId}/`)
       .then((response) => {
           console.log(response.data.message);
           fetchOrders(); 
