@@ -1,5 +1,5 @@
 import React from "react";
-
+import rentimage from "./rent.png";
 const RentSection = () => {
   return (
     <section className="rent-section">
@@ -16,7 +16,7 @@ const RentSection = () => {
           <div className="col-5">
             <img
               className="w-100"
-              src="https://media.istockphoto.com/id/492519338/vector/for-rent-sign-hanging-isolated-on-white-wall.jpg?s=612x612&w=0&k=20&c=gk4UhrjDZeN8nJvxZNkDkXZwPbVJPtMP-rxtZYveh9g="
+              src={rentimage}
               alt="Service 2"
             />
           </div>
