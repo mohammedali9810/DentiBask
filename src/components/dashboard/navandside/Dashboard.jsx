@@ -241,7 +241,7 @@ export default function Dashboard() {
       </ListItemButton>
 
 
-      <ListItemButton
+      {/* <ListItemButton
        onClick={() => {setView(<Rents/>) ;return setSelected("Rents")}}
        sx={{
          backgroundColor: selected === "Rents" && "#CDCDCD",
@@ -253,7 +253,7 @@ export default function Dashboard() {
           <LayersIcon  className={theme && "darkicon"} />
         </ListItemIcon>
         <ListItemText primary={lang ? "الإيجارات" : "Rents"}/>
-      </ListItemButton>
+      </ListItemButton> */}
   
       <ListItemButton
        onClick={() => {setView(<Transactions/>);setSelected("Transactions")}}
@@ -338,7 +338,7 @@ export default function Dashboard() {
               {selected === "Dashboard"? lang ? " لوحة القياده" : "Dashboard" : null }
               {selected === "Products"? lang ? " المنتجات" : "Products" : null }
               {selected === "Category"? lang ? " الانواع" : "Category" : null }
-              {selected === "Rents"? lang ? "الإيجارات" : "Rents" : null }
+              {/* {selected === "Rents"? lang ? "الإيجارات" : "Rents" : null } */}
               {selected === "Settings"? lang ? " الإعدادات " : "Settings" : null }
               {selected === "Orders"? lang ? " الطلبات " : "Orders" : null }
               {selected === "Customers"? lang ? " المستخدمين " : "Customers" : null }
