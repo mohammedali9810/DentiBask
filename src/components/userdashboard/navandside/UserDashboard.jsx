@@ -308,7 +308,6 @@ sx={{
           {selected === "Transactions"? lang ? " التحويلات " : "Transactions" : null }
           {selected === "Clinic"? lang ? " العيادات " : "Clinic" : null }
         </Typography>
-
         <Search style={{backgroundColor:"white"}}>
         <SearchIconWrapper>
           <SearchIcon />
