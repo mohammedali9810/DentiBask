@@ -1,13 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../store/slices/cartslice";
-
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 export default function Rentcard(props) {
   const { productData } = props;
   const dispatch = useDispatch();
+  const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState(false);
+  
+  const handleOpenAddCategoryDialog = () => {
+    setOpenAddCategoryDialog(true);
+  };
+
+  const handleCloseAddCategoryDialog = () => {
+    setOpenAddCategoryDialog(false);
+  };
 
   return (
     <Container className="card-hover-grow">
@@ -79,24 +91,29 @@ export default function Rentcard(props) {
             }}
             className="btn add-to-cart-button this is is not "
             onClick={() =>
-              dispatch(
-                addToCart({
-                  id: productData.id,
-                  title: productData.name,
-                  image: productData.image,
-                  price: productData.price,
-                  stock: productData.stock,
-                  description: productData.desc,
-                  quantity: productData.unit,
-                })
-              )
+              {handleOpenAddCategoryDialog()}
             }
           >
-            Rent
+            Contact Owner
           </button>
           </div>
         </div>
       </Card>
+      <Dialog open={openAddCategoryDialog} onClose={handleCloseAddCategoryDialog}>
+        <DialogTitle>Owner Info</DialogTitle>
+        <DialogContent>
+          <div>
+            <div style={{display:"flex", justifyContent:"space-around", fontSize:"1.5rem",fontWeight:"bold"}}>
+            <FontAwesomeIcon icon={faEnvelope}  style={{ color: "#2196f3", textAlign:"left", marginRight:"1rem" }} />
+            <p>Email: {productData.user.email}</p>
+            </div>
+            <div style={{display:"flex", justifyContent:"space-around", fontSize:"1.5rem",fontWeight:"bold"}}>
+            <FontAwesomeIcon icon={faPhone} style={{ color: "#2196f3", textAlign:"left", marginRight:"1rem" }} />
+            <p>Phone: {productData.user.phone}</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 }
