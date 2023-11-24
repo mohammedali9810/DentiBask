@@ -41,7 +41,7 @@ export default function Paypal({ onSuccess, onError, onCancel, cart }) {
     };
 
     const cancelorder = async ()=>{
-      try {
+      try {console.log("cancel trans");
         const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
         const response = await axiosinstance.patch(
           "/User/cancel_order/",
@@ -65,6 +65,7 @@ export default function Paypal({ onSuccess, onError, onCancel, cart }) {
 
     const approvedorder = async()=>{
       try {
+        console.log("sent trans");
         const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
 const response = await axiosinstance.post(
   "/User/add_transaction/",
@@ -128,8 +129,10 @@ const response = await axiosinstance.post(
       onApprove: async (data, actions) => {
         // Capture the order when approved
         const order = await actions.order.capture();
-        onSuccess(order);
+        console.log("in on approve")
         approvedorder();
+        onSuccess(order);
+        
       },
       onError: (err) => {
         console.log(err);
