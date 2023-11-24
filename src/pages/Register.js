@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -14,10 +14,12 @@ import axiosinstance from "../axiosconfig";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useNavigate } from "react-router-dom";
 import Emailsent from "./emailsent";
 
 export default function SignUp() {
   const [openAddProductDialog, setOpenAddProductDialog] = useState(false);
+  const navigate = useNavigate();
   const handleOpenAddProductDialog = () => {
     setOpenAddProductDialog(true);
   };
@@ -31,6 +33,13 @@ export default function SignUp() {
     formState: { errors },
     getValues,
   } = useForm();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("dentibask-access-token");
+    if (accessToken) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const onSubmit = async (data) => {
     console.log("Form Data:", data);
