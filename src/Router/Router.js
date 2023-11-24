@@ -16,7 +16,7 @@ import AboutUs from "../pages/AboutUs";
 import ContactUs from "../pages/ContactUs";
 import Orderdetails from "../components/dashboard/ordersdashboard/orderdetails";
 import Orderdetailsuser from "../components/userdashboard/ordersdashboard/orderdetails";
-
+import Rentpage from "../components/rent/rentpage";
 export default function Router() {
   const navigate = useNavigate();
   const [redirectRoute, setRedirectRoute] = useState(null);
@@ -44,6 +44,7 @@ export default function Router() {
         <Route path="/Cart" element={<Cart />} />
         <Route path="/orderdetails/:id" element={<Orderdetails />} />
         <Route path="/orderdetailsuser/:id" element={<Orderdetailsuser />} />
+        <Route path="/rentpage" element={<Rentpage />} />
         <Route
           path="/Products/product_detail/:id"
           element={<ProductDetails />}

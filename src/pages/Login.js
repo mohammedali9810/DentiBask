@@ -66,7 +66,7 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     axiosinstance
-      .get(`http://127.0.0.1:8000/User/checkemail/?username=${user.username}`)
+      .get(`/User/checkemail/?username=${user.username}`)
       .catch((err) => {
         setUserErr({ ...userErr, username: "email not found" });
       });
@@ -83,6 +83,10 @@ export default function SignIn() {
           localStorage.setItem(
             "dentibask-refresh-token",
             res.data.token["refresh"]
+          );
+          localStorage.setItem(
+            "dentibask-role",
+            res.data.role
           );
           navigate("/");
         })
