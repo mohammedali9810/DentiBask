@@ -1,15 +1,22 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import axiosinstance from "../axiosconfig";
+import { useDispatch } from "react-redux";
+import { resetItem } from "../store/slices/cartslice";
 
 export default function Paypal({ onSuccess, onError, onCancel, cart }) {
+  const dispatch = useDispatch();
   const paypal = useRef();
-  const [orderid, setOrderid]= useState();
+  const orderid = useRef();
+
+  const resetlist = () => {
+    dispatch(resetItem());
+  };
+
   useEffect(() => {
     if (!window.paypal || !cart) {
       console.error("PayPal script not loaded or cart is undefined.");
       return;
     }
-
 
     const createorder = async () => {
       const orderitem_set = await Promise.all(
@@ -23,7 +30,7 @@ export default function Paypal({ onSuccess, onError, onCancel, cart }) {
         const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
         const response = await axiosinstance.post(
           "/User/create_order/",
-          {"orderitem_set":orderitem_set} ,
+          { "orderitem_set": orderitem_set },
           {
             headers: {
               "Content-Type": "application/json",
@@ -34,18 +41,20 @@ export default function Paypal({ onSuccess, onError, onCancel, cart }) {
             withCredentials: true,
           }
         );
-        setOrderid(response.data['order_id'])
+        console.log("the order id is:" + response.data['order_id']);
+        orderid.current = response.data['order_id'];
       } catch (error) {
         console.error("Error creating order:", error);
       }
     };
 
-    const cancelorder = async ()=>{
-      try {console.log("cancel trans");
+    const cancelorder = async () => {
+      try {
+        console.log("cancel trans");
         const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
         const response = await axiosinstance.patch(
           "/User/cancel_order/",
-          {'order_id':orderid} ,
+          { 'order_id': orderid.current },
           {
             headers: {
               "Content-Type": "application/json",
@@ -56,36 +65,37 @@ export default function Paypal({ onSuccess, onError, onCancel, cart }) {
             withCredentials: true,
           }
         );
-    
+
         console.log(response.data);
       } catch (error) {
         console.error("Error creating order:", error);
       }
-    }
+    };
 
-    const approvedorder = async()=>{
+    const approvedorder = async () => {
       try {
         console.log("sent trans");
         const csrfToken = await axiosinstance.get("/Products/get_csrf_token/");
-const response = await axiosinstance.post(
-  "/User/add_transaction/",
-  {'order_id': orderid},
-  {
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrfToken.data.csrfToken,
-      Authorization: "Bearer " + localStorage.getItem("dentibask-access-token"),
-    },
-    withCredentials: true,
-  }
-);
+        console.log("the order id is:" + orderid.current);
+        const response = await axiosinstance.post(
+          "/User/add_transaction/",
+          { 'order_id': orderid.current },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrfToken.data.csrfToken,
+              Authorization:
+                "Bearer " + localStorage.getItem("dentibask-access-token"),
+            },
+            withCredentials: true,
+          }
+        );
 
         console.log(response.data);
       } catch (error) {
         console.error("Error creating order:", error);
       }
-    }
-    
+    };
 
     const actions = window.paypal.Buttons({
       style: {
@@ -96,7 +106,6 @@ const response = await axiosinstance.post(
         height: 40,
       },
       createOrder: (data, actions, err) => {
-        // Dynamically set up the order creation on button click
         const orderData = {
           intent: "CAPTURE",
           purchase_units: [
@@ -106,7 +115,7 @@ const response = await axiosinstance.post(
                   console.log(item.quantity);
                   return item.title;
                 })
-                .join(", "), // Use cart items names as description
+                .join(", "),
               amount: {
                 currency_code: "USD",
                 value: cart
@@ -119,42 +128,32 @@ const response = await axiosinstance.post(
             },
           ],
         };
-
-        console.log("Order data:", orderData); // Add this line for debugging
         createorder();
-
         return actions.order.create(orderData);
       },
 
       onApprove: async (data, actions) => {
-        // Capture the order when approved
         const order = await actions.order.capture();
-        console.log("in on approve")
         approvedorder();
+        resetlist();
         onSuccess(order);
-        
       },
       onError: (err) => {
         console.log(err);
         onError(err);
       },
       onCancel: () => {
-        // Handle cancel event
         console.log("Payment canceled by user");
         cancelorder();
       },
     });
-
-    // Render the buttons
     actions.render(paypal.current);
-
-    // Clean up the PayPal buttons on component unmount
     return () => actions.close();
   }, [onSuccess, onError, onCancel, cart]);
 
   return (
-    <div>
-      <div ref={paypal}></div>
+    <div style={{display:"flex", flexDirection:"column", justifyContent:"space-around", alignItems:"center"}}>
+      <div style={{width:"50%"}} ref={paypal}></div>
     </div>
   );
 }

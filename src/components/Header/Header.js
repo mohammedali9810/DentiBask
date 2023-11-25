@@ -3,13 +3,16 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Navbar, Container, NavDropdown } from "react-bootstrap";
 import { FaShoppingCart } from "react-icons/fa";
 import { FiSettings } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import usericon from "./usericon.svg";
-
+import { resetItem } from "../../store/slices/cartslice";
 function Header() {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
+  const resetlist = () => {
+    dispatch(resetItem());
+  };
 
   const getTotalQuantity = () => {
     let total = 0;
@@ -88,6 +91,7 @@ function Header() {
                 onClick={() => {
                   localStorage.removeItem("dentibask-access-token");
                   localStorage.removeItem("dentibask-refresh-token");
+                  resetlist();
                   navigate("/");
                 }}
                 style={generateActiveLinkStyles}
