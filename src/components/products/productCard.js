@@ -48,14 +48,14 @@ export default function ProductCard(props) {
                 style={{ textDecoration: "none" }}
                 to={`/Products/product_detail/${productData.id}`}
               >
-                <b style={{ fontSize: "1.1rem" }} className="card-title">
+                <b style={{ fontSize: ".9rem" }} className="card-title col-5">
                   {productData.name}{" "}
                 </b>
               </Link>
             </div>
             <b
-              style={{ fontSize: "1.1rem" }}
-              className="col-4 d-flex justify-content-end"
+              style={{ fontSize: "1rem" }}
+              className="col-5 d-flex justify-content-end"
             >
               {productData.price} $
             </b>

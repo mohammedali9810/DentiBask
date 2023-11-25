@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react"; // Import useEffect here
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -53,6 +53,15 @@ export default function SignIn() {
       setUser({ ...user, password: e.target.value });
     }
   };
+
+  useEffect(() => {
+    // Check for access token in local storage
+    const accessToken = localStorage.getItem("dentibask-access-token");
+    if (accessToken) {
+      // If access token is found, redirect to the desired page
+      navigate("/");
+    }
+  }, [navigate]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -180,3 +189,6 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
+
+
+
