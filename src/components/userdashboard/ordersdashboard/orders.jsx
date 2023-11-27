@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from '@mui/material/Pagination';
 import axiosinstance from '../../../axiosconfig';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CancelIcon from '@mui/icons-material/Cancel';
 
 import {
   Table,
@@ -47,30 +45,6 @@ const Orders = () => {
     setCurrentPage(page);
   };
 
-  const handleDeleteOrder = (orderId) => {
-    axiosinstance
-        .delete(`/User/api/delete_order/${orderId}/`)
-        .then((response) => {
-            console.log(response.data.message);
-            fetchOrders(); 
-        })
-        .catch((error) => {
-            console.error('Error deleting order:', error);
-        });
-};
-const handleCancelOrder = (orderId) => {
-  axiosinstance
-      .post(`/User/cancel_order/${orderId}/`)
-      .then((response) => {
-          console.log(response.data.message);
-          fetchOrders(); 
-      })
-      .catch((error) => {
-          console.error('Error canceling order:', error);
-      });
-};
-
-
   return (
     <div>
       <TableContainer component={Paper}>
@@ -81,7 +55,6 @@ const handleCancelOrder = (orderId) => {
               <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Date</TableCell>
               <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Total Price</TableCell>
               <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Status</TableCell>
-              <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Action</TableCell>
               <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>Action</TableCell>
 
             </TableRow>
@@ -104,7 +77,7 @@ const handleCancelOrder = (orderId) => {
                               ? 'gray'
                               : order.status === 'Delivered'
                                 ? 'green'
-                                : 'black', // Default color
+                                : 'black', 
                     }}
                   >
                     {order.status}
@@ -121,27 +94,6 @@ const handleCancelOrder = (orderId) => {
                   </Button>
                 </TableCell>
 
-                <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>
-                  {order.status === 'Delivered' || order.status === 'Cancelled' ? (
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={() => handleDeleteOrder(order.Id)}
-                      startIcon={<DeleteIcon />}
-                    >
-                      Delete
-                    </Button>
-                  ) : (
-                    <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => handleCancelOrder(order.id)}
-                    startIcon={<CancelIcon />}
-                  >
-                    Cancel
-                  </Button>
-                  )}
-                </TableCell>
               </TableRow>
             ))}
           </TableBody>
