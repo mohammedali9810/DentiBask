@@ -37,7 +37,7 @@ function Cart() {
   };
 
   return (
-    <div>
+    <div >
       <div className="row">
         <div>
           <h3 className="text-center cart-title">
@@ -71,12 +71,12 @@ function Cart() {
             The price for all {getTotal().totalQuantity} items is{" "}
             {getTotal().totalPrice} $
           </h5>
-          
+          { localStorage.getItem('dentibask-access-token') &&
           <Paypal
             cart={cart}
             onSuccess={handlePaymentSuccess}
             onError={handlePaymentError}
-          />
+          />}
         </div>
       ) : (
         <div className="text-center mt-5">
