@@ -287,9 +287,10 @@ function SignIn() {
     axiosinstance
       .post("/User/google-signin/", {token: tokenId.credential })
       .then((res) => {
-        localStorage.setItem("dentibask-access-token", res.data.token["access"]);
-        localStorage.setItem("dentibask-refresh-token", res.data.token["refresh"]);
-        localStorage.setItem("dentibask-role", res.data.role);
+        console.log(res.data);
+        localStorage.setItem("dentibask-access-token", res.data.access);
+        localStorage.setItem("dentibask-refresh-token", res.data.refresh);
+        localStorage.setItem("dentibask-role", "user");
         navigate("/");
       })
       .catch((err) => {
