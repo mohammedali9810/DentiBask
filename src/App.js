@@ -40,6 +40,7 @@ import { Lang } from "./components/langcontext";
 import Router from "./Router/Router";
 import UserDashboard from "./components/userdashboard/navandside/UserDashboard";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { CLIENT_ID } from "./Config/Config";
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
     <BrowserRouter>
       <Theme.Provider value={{ theme, setTheme }}>
         <Lang.Provider value={{ lang, setLang }}>
+        <GoogleOAuthProvider clientId="211650131656-10hp9abqvemrbvo7v13o62hq48bs5ouk.apps.googleusercontent.com">
           <PayPalScriptProvider options={{ "client-id": CLIENT_ID }}>
             <div className="App">
               <Routes>
@@ -59,6 +61,7 @@ function App() {
               </Routes>
             </div>
           </PayPalScriptProvider>
+        </GoogleOAuthProvider>;
         </Lang.Provider>
       </Theme.Provider>
     </BrowserRouter>

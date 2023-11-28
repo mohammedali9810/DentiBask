@@ -86,7 +86,7 @@ const Orders = () => {
                 </TableCell>
                 <TableCell style={{textAlign:"center", fontSize:"1.2rem"}}>
                   <Button
-                    onClick={() => {navigate(/orderdetailsuser/${order.id})}}
+                    onClick={() => {navigate(`/orderdetailsuser/${order.id}`)}}
                     variant="outlined"
                     color="primary"
                   >
