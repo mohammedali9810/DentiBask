@@ -73,10 +73,8 @@ const Orders = () => {
         console.log(csrfToken.data.csrfToken);
 
         await axiosinstance.patch(
-            `/User/change_order_status/${orderId}/`,
-            {
-                new_status: orders.find((order) => order.id === orderId).status,
-            },
+            `/User/change_order_status/${orderId}/`,orders.find((order) => order.id === orderId).status,
+
             {
                 headers: {
                     'Content-Type': 'application/json',
