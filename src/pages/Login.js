@@ -278,14 +278,14 @@ function SignIn() {
       const decodedToken = jwtDecode(tokenId.credential);
 
       // Extract the relevant information from the decoded token
-      const { sub: email, name } = decodedToken;
+      const { sub: userId, email, name } = decodedToken;
 
     // Now you can use the decoded information as needed
     console.log('Decoded Token:', decodedToken);
 
     // Example: Send the decoded data to Django backend for sign-in
     axiosinstance
-      .post("/User/google-signin/", { email, name })
+      .post("/User/google-signin/", {token: tokenId.credential })
       .then((res) => {
         localStorage.setItem("dentibask-access-token", res.data.token["access"]);
         localStorage.setItem("dentibask-refresh-token", res.data.token["refresh"]);
